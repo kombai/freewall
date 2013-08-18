@@ -1,0 +1,284 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 14px;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	background: rgb(32, 27, 27);
+	line-height: 18px;
+	color: white;
+	position: relative;
+	font-family: Helvetica, Arial, Tahoma;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+ol, ul {
+	padding: 0 10px;
+	margin: 0 10px;
+	line-height: 24px;
+}
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+	font-family: Georgia, "MS Sans Serif", Helvetica, Arial, verdana;
+	margin: 20px 0;
+	font-weight: normal;
+}
+h1 {
+	font-size: 30px;
+}
+h2 {
+	font-size: 26px;
+}
+h3 {
+	font-size: 20px;
+}
+h4 {
+	font-size: 18px;
+	color: white;
+}
+h5 {
+	font-size: 16px;
+}
+h6 {
+	font-size: 14px;
+}
+a {
+	text-decoration: none;
+	color: #FFFFD3;
+}
+a:hover {
+	color: #FFFFFF;
+}
+a:visited {
+	color: #FFFFD3;
+}
+h3 {
+	cursor: pointer;
+}
+pre {
+	color: #FFFFFF;
+	margin-left: -466px;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.header {
+	padding: 14px 20px;
+	background-color: rgb(19, 17, 17);
+	background-image:	
+					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+    background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
+    background-size: 8px 8px;
+	margin-bottom: 30px;
+	border-bottom: 1px solid rgb(41, 41, 41);
+}
+.header a {
+	font-size: 35px;
+	color: white;
+	display: inline-block;
+}
+.header:after {
+	background: rgb(19, 17, 17);
+	background: 
+				linear-gradient(115deg, transparent 75%, rgba(32, 27, 27,1) 75%) 0 0,
+				linear-gradient(245deg, transparent 75%, rgba(32, 27, 27,1) 75%) 0 0,
+				linear-gradient(115deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px,
+				linear-gradient(245deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px, transparent;
+	background-size: 60px 30px;
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 15px;
+	margin: 0 -20px;
+}
+.header a::first-letter {
+	font-size: 60px;
+	line-height: 40px;
+	font-weight: bold;
+}
+.header .target {
+	margin-left: 5px;
+	margin-bottom: 20px;
+}
+.free-wall {
+	margin: auto;
+}
+
+.size11 {
+	height: 150px;
+	width: 150px;
+}
+.size12 {
+	width: 150px;
+	height: 300px;
+}
+.size21 {
+	width: 300px;
+	height: 150px;
+}
+.size22 {
+	height: 300px;
+	width: 300px;
+}
+.size13 {
+	width: 150px;
+	height: 450px;
+}
+.size23 {
+	width: 300px;
+	height: 450px;
+}
+.size32 {
+	width: 450px;
+	height: 300px;
+}
+.size33 {
+	width: 450px;
+	height: 450px;
+}
+.size34 {
+	width: 450px;
+	height: 600px;
+}
+.size35 {
+	width: 450px;
+	height: 750px;
+}
+
+.img-demo {
+	vertical-align: bottom;
+}
+
+.img-demo img {
+	border: 1px solid #FFFFD3;
+	float: left;
+	margin: 4px;
+	width: 99px;
+	height: 99px;
+}
+
+.float-left {
+	float: left;
+}
+.rest-left {
+	margin-left: 244px;
+}
+.brick {
+    background-color: #282828;
+    background-image: radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+    radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+    background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
+    background-repeat: repeat, repeat, repeat, repeat;
+    background-size: 8px 8px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 0px rgba(255, 255, 255, 0.2);
+	border-radius: 2px;
+	float: left;
+	color: #FFFFD3;
+	overflow: hidden;
+}
+.brick .cover {
+	overflow: hidden;
+	margin: 20px;
+}
+.brick .desc {
+	display: none;
+}
+.full-width .desc {
+	display: block;
+}
+.open .desc {
+	display: block;
+}
+.example {
+	width: 0px;
+	height: 0px;
+	overflow: visible !important; /* for ie7 */
+}
+.example .cell {
+	background: white;
+	position: absolute;
+}
+.facebook-share {
+	cursor: pointer;
+}
+.twitter-share {
+	cursor: pointer;
+}
+/*
+
+@-webkit-keyframes start {
+	from {
+		-webkit-transform:rotate(3600deg) scale(6);
+		opacity: 0;
+	}
+	to {
+		-webkit-transform:rotate(0deg) scale(1);
+		opacity: 1;
+	}
+}
+
+@-moz-keyframes start {
+	from {
+		-moz-transform:rotate(3600deg) scale(6);
+		opacity: 0;
+	}
+	to {
+		-moz-transform:rotate(0deg) scale(1);
+		opacity: 1;
+	}
+}
+
+@-ms-keyframes start {
+	from {
+		-ms-transform:rotate(3600deg) scale(12);
+		opacity: 0;
+	}
+	to {
+		-ms-transform:rotate(0deg) scale(1);
+		opacity: 1;
+	}
+}
+
+.free-wall[data-state="start"] .brick {
+	-webkit-animation: start 0.8s;
+	-moz-animation: start 0.8s;
+	-ms-animation: start 0.8s;
+}
+
+.free-wall[data-state="move"] .brick {
+    -webkit-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
+    -moz-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
+    -ms-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
+    -o-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
+    transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
+}
+
+*/
