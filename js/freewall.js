@@ -111,10 +111,17 @@
 					position: 'absolute',
 					opacity: 1
 				});
-				// with fit container method, sometime some blocks out of container
-				// because the container have been filled
-				// so them not appear on the block list
-				layout.block[id] && $item.stop()[method](layout.block[id]);
+				// with fit zone method, sometime some blocks out of container;
+				// because the container have been filled;
+				// so them won't appear on the wall;
+				$item.stop()['css']({
+					width: layout.block[id]['width'],
+					height: layout.block[id]['height']
+				});
+				$item[method]({
+					top: layout.block[id]['top'],
+					left: layout.block[id]['left']
+				});
 			}
 		}
 
@@ -125,7 +132,7 @@
 			setTimeout(function() {
 				layout.busy = 0;
 				setting.onResize.call(klass, container);
-			}, setting.animate ? 300 : 100);
+			}, 255);
 		});
 		
 		
@@ -252,9 +259,8 @@
 					for (var s = 0; s < smallLoop; ++s) {
 						if (!items.length) break;
 						check ? (x = s) : (y = s);
-						
 						if (grid[x + '-' + y]) continue;
-
+						
 						for (var n = s; n < smallLoop; ++n) {
 							next = check ? (n + '-' + b) : (b + '-' + n);
 							if (grid[next] == true) break;
@@ -262,7 +268,7 @@
 						
 						rest = n - s;
 						block = null;
-						// find items fit into gap;
+						// find item fit into gap;
 						for (var i = 0; i < items.length; ++i) {
 							if (items[i].height > rest && !check) continue;
 							if (items[i].width > rest && check) continue;
@@ -270,6 +276,7 @@
 							break;
 						}
 						
+						// trying resize the next block to fit gap;
 						if (block == null && setting.fillGap) {
 							// resize near block to fill gap;
 							if (layout.minHeight > rest && !check) {
@@ -287,27 +294,27 @@
 							}
 						}
 
-						if (block) {
-							lastBook = {
+						if (block != null) {
+							wall[block.id] = {
 								id: block.id,
 								x: x,
 								y: y,
 								width: block.width,
 								height: block.height
 							};
-						}
-
-						if (lastBook) {
-							wall[lastBook.id] = lastBook;
+							
 							// don't fill block-point on grid;
-							if (lastBook.width * lastBook.height == 0) {
+							if (block.width * block.height == 0) {
 								s -= 1;
 							} else {
+								// keep success block for next round;
+								lastBook = wall[block.id];
 								fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
 							}
-						} 
+						}
 					}
 				}
+
 				for (var i in wall) {
 					wall.hasOwnProperty(i) && setBlock(wall[i]);
 				}
