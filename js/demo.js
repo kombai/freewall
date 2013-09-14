@@ -1,47 +1,31 @@
 
 
 // demo for freewall layout;
-// create by Minh Nguyen;
+// created by Minh Nguyen;
 (function($) {
 	
-	var setting = {};
-
-	var wall, demo;
+	var setting = {},
+		wall,
+		demo,
+		ewall;
 	
 	var colour = [
-		"rgb(25, 42, 27)",
-		"rgb(43, 44, 83)",
-		"rgb(47, 118, 197)",
-		"rgb(56, 36, 74)",
-		"rgb(57, 137, 34)",
-		"rgb(62, 68, 9)",
-		"rgb(73, 70, 57)",
-		"rgb(75, 35, 130)",
-		"rgb(77, 55, 90)",
-		"rgb(89, 42, 112)",
-		"rgb(93, 16, 27)",
-		"rgb(108, 76, 105)",
-		"rgb(110, 114, 24)",
-		"rgb(114, 43, 129)",
-		"rgb(126, 80, 8)",
-		"rgb(131, 73, 4)",
-		"rgb(135, 111, 33)",
-		"rgb(136, 61, 204)",
-		"rgb(137, 34, 6)",
-		"rgb(151, 16, 12)",
-		"rgb(156, 127, 182)",
-		"rgb(158, 42, 10)",
-		"rgb(162, 21, 179)",
-		"rgb(173, 49, 162)",
-		"rgb(184, 35, 118)"
+		"#0C465D",
+		"#608A0D",
+		"#760B48",
+		"#94530D",
+		"#181867",
+		"#450E63",
+		"#8A0D25",
+		"#503b22"
 	];
 
 	var func = {
-
 		color: function(value) {
+			var color = colour.concat(colour);
 			$(".free-wall .brick").each(function() {
 				$(this).css({
-					backgroundColor:  colour[colour.length * Math.random() << 0]
+					backgroundColor:  color.splice(color.length * Math.random() << 0, 1)
 					//backgroundColor: '#' + (16777216 * Math.random() << 0).toString(16)
 				});
 			});
@@ -49,7 +33,7 @@
 		layout: function() {
 			var lwidth = $(window).width();
 			wall = new freewall('.free-wall');
-			lwidth < 1100 ? wall.container.width('100%') : wall.container.width('80%'); 
+			wall.container.width('96%')
 			wall.reset({
 				selector: '.brick',
 				animate: true,
@@ -57,25 +41,46 @@
 					flex: true
 				},
 				cell: {
-					width: 150,
-					height: 150
+					width: 160,
+					height: 160
 				},
 				fillGap: false,
 				onResize: function() {
-					var lwidth = $(window).width();
-					lwidth < 1100 ? wall.container.width('100%') : wall.container.width('80%');
 					var cwidth = wall.container.width();
-					wall.container.find('.full-width').each(function(index, item){
+					wall.container.find('.full-width')
+					.each(function(index, item){
 						wall.fixSize({
 							block: item,
 							width: cwidth
 						});
 					});
-					this.fitWidth();
+					wall.fitWidth();
+					ewall.fitWidth(cwidth);
 				}
 			});
 			wall.fitWidth();
 			demo = wall.container.find('.example');
+
+			// for responsive demo;
+			$(".reponsive-block li>a").click(function() {
+				$(".reponsive-block li>a").removeClass("active");
+				var preWidth = $(this).data("width");
+				$(this).addClass("active");
+				wall.container.width(preWidth);
+				
+				var cwidth = wall.container.width();
+				wall.container.find('.full-width')
+				.each(function(index, item){
+					wall.fixSize({
+						block: item,
+						width: cwidth
+					});
+				});
+				wall.fitWidth();
+				ewall.fitWidth(cwidth);
+				
+			});
+
 		},
 		options: function() {
 			$('.free-wall .options').click(function() {
@@ -86,20 +91,22 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 1100
+						height: 1200
 					});
 					wall.setFilter('.options');
 					wall.fitWidth();
-				} else {
-					dna.removeClass('full-width');
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 300,
-						height: 300
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".options");
+				dna.removeClass('full-width');
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 320,
+					height: 320
+				});
+				wall.fitWidth();
 			});
 		},
 		events: function() {
@@ -115,16 +122,18 @@
 					});
 					wall.setFilter('.events');
 					wall.fitWidth();
-				} else {
-					dna.removeClass('full-width');
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 300,
-						height: 150
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".events");
+				dna.removeClass('full-width');
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		},
 		methods: function() {
@@ -136,20 +145,22 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 1300
+						height: 1500
 					});
 					wall.setFilter('.methods');
 					wall.fitWidth();
-				} else {
-					dna.removeClass('full-width');
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 300,
-						height: 300
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".methods");
+				dna.removeClass('full-width');
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 320,
+					height: 320
+				});
+				wall.fitWidth();
 			});
 		},
 		filter: function() {
@@ -160,20 +171,22 @@
 					wall.setFilter('.size22, .size11');
 					wall.fixSize({
 						block: dna,
-						width: 300,
-						height: 300
-					});
-					wall.fitWidth();
-				} else {
-					dna.removeClass('open');
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 150,
-						height: 150
+						width: 320,
+						height: 320
 					});
 					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".filter");
+				dna.removeClass('open');
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		},
 		fitHeight: function() {
@@ -183,20 +196,22 @@
 					dna.addClass('open');
 					wall.fixSize({
 						block: dna,
-						width: 300,
-						height: 150
+						width: 320,
+						height: 320
 					});
-					wall.fitHeight(320);
-				} else {
-					dna.removeClass('open');
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 150,
-						height: 150
-					});
-					wall.fitWidth();
+					wall.fitHeight(340);
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".fit-height");
+				dna.removeClass('open');
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		},
 		share: function() {
@@ -209,42 +224,43 @@
 				window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(location.href), 'sharer', windowFeatures);
 			});
 
-			 $(".free-wall .twitter-share").click(function() {
+			$(".free-wall .google-share").click(function() {
+				window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href), 'sharer', windowFeatures);
+			});
+
+			$(".free-wall .twitter-share").click(function() {
 				window.open("https://twitter.com/intent/tweet?original_referer=''&url=''&text=" + encodeURIComponent(location.href) , '_blank', windowFeatures);
 			});
 		},
 		layoutFlex: function() {
 			
-			var dheight = 450;
-			var dwidth = 300;
-
 			$(".free-wall .flex-layout").click(function() {
-				var cwidth = wall.container.width() - dwidth;
+				var cwidth = wall.container.width();
 				var dna = $(this);
-				if (!dna.hasClass('open')) {
+				if (!dna.hasClass('full-width')) {
 					wall.container.attr('data-layout', 'flex');
-					dna.addClass('open');
+					dna.addClass('full-width');
 					
 					wall.fixSize({
 						block: dna,
-						width: dwidth,
-						height: dheight
+						width: cwidth,
+						height: 480
 					});
 					wall.setFilter('.flex-layout, .example');
 					wall.fitWidth();
 
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'></div>";
-					var w = 1, h = 1, c ='', html = '', limitItem = 72;
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 1 + 3 * Math.random() << 0;
 						w = 1 + 3 * Math.random() << 0;
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
 						html += temp.replace(/\{height\}/g, h*150)
 								.replace(/\{width\}/g, w*150)
-								.replace("{color}", c);
+								.replace("{index}", i + 1);
 					}
 					demo.html(html);
-					var ewall = new freewall(demo);
+					ewall = new freewall(demo);
 				
 					ewall.reset({
 						selector: '.cell',
@@ -253,59 +269,58 @@
 							flex: 1
 						},
 						cell: {
-							width: 150,
-							height: 150
+							width: 160,
+							height: 160
 						},
 						fillGap: true
 					});
 					ewall.fitWidth(cwidth);
-				} else {
-					wall.container.removeAttr('data-layout');
-					dna.removeClass('open');
-					demo.html("");
-
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 150,
-						height: 150
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".flex-layout");
+				wall.container.removeAttr('data-layout');
+				dna.removeClass('full-width');
+				demo.html("");
+
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		},
 		layoutGrid: function() {
 			
-			var dheight = 450;
-			var dwidth = 300;
-
 			$(".free-wall .grid-layout").click(function() {
-				var cwidth = wall.container.width() - dwidth;
+				var cwidth = wall.container.width();
 				var dna = $(this);
-				if (!dna.hasClass('open')) {
+				if (!dna.hasClass('full-width')) {
 					wall.container.attr('data-layout', 'grid');
-					dna.addClass('open');
+					dna.addClass('full-width');
 					
 					wall.fixSize({
 						block: dna,
-						width: dwidth,
-						height: dheight
+						width: cwidth,
+						height: 480
 					});
 					wall.setFilter('.grid-layout, .example');
 					wall.fitWidth();
 					
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'></div>";
-					var w = 1, h = 1, c ='', html = '', limitItem = 72;
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 180;
 						w = 180;
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
 						html += temp.replace(/\{height\}/g, h)
 								.replace(/\{width\}/g, w)
-								.replace("{color}", c);
+								.replace("{index}", i + 1);
 					}
 					demo.html(html);
-					var ewall = new freewall(demo);
+					ewall = new freewall(demo);
 					ewall.reset({
 						selector: '.cell',
 						animate: false,
@@ -319,37 +334,36 @@
 						fillGap: false
 					});
 					ewall.fitWidth(cwidth);
-				} else {
-					wall.container.removeAttr('data-layout');
-					dna.removeClass('open');
-					demo.html("");
-
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 150,
-						height: 150
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".grid-layout");
+				wall.container.removeAttr('data-layout');
+				dna.removeClass('full-width');
+				demo.html("");
+
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		},
 		layoutImage: function() {
 			
-			var dheight = 450;
-			var dwidth = 300;
-
 			$(".free-wall .image-layout").click(function() {
-				var cwidth = wall.container.width() - dwidth;
+				var cwidth = wall.container.width();
 				var dna = $(this);
-				if (!dna.hasClass('open')) {
+				if (!dna.hasClass('full-width')) {
 					wall.container.attr('data-layout', 'image');
-					dna.addClass('open');
+					dna.addClass('full-width');
 
 					wall.fixSize({
 						block: dna,
-						width: dwidth,
-						height: dheight
+						width: cwidth,
+						height: 480
 					});
 					wall.fixSize({
 						block: demo,
@@ -359,19 +373,19 @@
 					wall.setFilter('.image-layout, .example');
 					wall.fitWidth();
 
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'></div>";
-					var w = 1, h = 1, c ='', html = '', limitItem = 72;
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 1;
 						w = 90 +  30 * (5 * Math.random() << 0);
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
 						html += temp.replace(/\{height\}/g, h*150)
 								.replace(/\{width\}/g, w)
-								.replace("{color}", c);
+								.replace("{index}", i + 1);
 					}
 					demo.html(html);
 
-					var ewall = new freewall(demo);
+					ewall = new freewall(demo);
 					ewall.reset({
 						selector: '.cell',
 						animate: false,
@@ -380,42 +394,41 @@
 						},
 						cell: {
 							width: 30,
-							height: 150
+							height: 160
 						},
 						fillGap: 1
 					});
 					ewall.fitWidth(cwidth);
-				} else {
-					wall.container.removeAttr('data-layout');
-					dna.removeClass('open');
-					demo.html("");
-
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 150,
-						height: 150
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".image-layout");
+				wall.container.removeAttr('data-layout');
+				dna.removeClass('full-width');
+				demo.html("");
+
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		},
 		layoutPinterest: function() {
 
-			var dheight = 450;
-			var dwidth = 300;
-
 			$(".free-wall .pinterest-layout").click(function() {
-				var cwidth = wall.container.width() - dwidth;
+				var cwidth = wall.container.width();
 				var dna = $(this);
-				if (!dna.hasClass('open')) {
+				if (!dna.hasClass('full-width')) {
 					wall.container.attr('data-layout', 'pinterest');
-					dna.addClass('open');
+					dna.addClass('full-width');
 
 					wall.fixSize({
 						block: dna,
-						width: dwidth,
-						height: dheight
+						width: cwidth,
+						height: 480
 					});
 					wall.fixSize({
 						block: demo,
@@ -425,19 +438,19 @@
 					wall.setFilter('.pinterest-layout, .example');
 					wall.fitWidth();
 
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'></div>";
-					var w = 1, h = 1, c ='', html = '', limitItem = 72;
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 200 + 200 * Math.random() << 0;
 						w = 2;
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
 						html += temp.replace(/\{height\}/g, h)
 								.replace(/\{width\}/g, w*120)
-								.replace("{color}", c);
+								.replace("{index}", i + 1);
 					}
 					demo.html(html);
 
-					var ewall = new freewall(demo);
+					ewall = new freewall(demo);
 					ewall.reset({
 						selector: '.cell',
 						animate: false,
@@ -448,27 +461,30 @@
 							width: 120,
 							height: 10
 						},
+						gutter: 'auto',
 						fillGap: false
 					});
 					ewall.fitWidth(cwidth);
-				} else {
-					wall.container.removeAttr('data-layout');
-					dna.removeClass('open');
-					demo.html("");
-
-					wall.unsetFilter();
-					wall.fixSize({
-						block: dna,
-						width: 150,
-						height: 150
-					});
-					wall.fitWidth();
 				}
+			}).find(".back-icon").click(function(evt) {
+				evt.stopPropagation();
+				var dna = $(this).parents(".pinterest-layout");
+				wall.container.removeAttr('data-layout');
+				dna.removeClass('full-width');
+				demo.html("");
+
+				wall.unsetFilter();
+				wall.fixSize({
+					block: dna,
+					width: 160,
+					height: 160
+				});
+				wall.fitWidth();
 			});
 		}
 	};
 	
-	window.vnjs = {
+	window.app = {
 		config: function(key, data) {
 			setting[key] = data;
 		},

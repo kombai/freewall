@@ -363,9 +363,9 @@
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
 				if (layout.filter) {
-					items = allBlock.filter(layout.filter);
+					items = allBlock.filter(layout.filter).addClass('fw-filter');
 				} else {
-					items = allBlock;
+					items = allBlock.removeClass('fw-filter');
 				}
 
 				var col = 123456;
@@ -425,9 +425,9 @@
 				var allBlock = container.find(setting.selector).removeAttr('id');
 				var items, block = null, activeBlock = [];
 				if (layout.filter) {
-					items = allBlock.filter(layout.filter);
+					items = allBlock.filter(layout.filter).addClass('fw-filter');
 				} else {
-					items = allBlock;
+					items = allBlock.removeClass('fw-filter');;
 				}
 				
 				var row = 123456;
@@ -490,9 +490,9 @@
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
 				if (layout.filter) {
-					items = allBlock.filter(layout.filter);
+					items = allBlock.filter(layout.filter).addClass('fw-filter');
 				} else {
-					items = allBlock;
+					items = allBlock.removeClass('fw-filter');;
 				}
 
 				layout.col = col;
