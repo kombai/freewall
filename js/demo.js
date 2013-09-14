@@ -55,7 +55,7 @@
 						});
 					});
 					wall.fitWidth();
-					ewall.fitWidth(cwidth);
+					ewall && ewall.fitWidth(cwidth);
 				}
 			});
 			wall.fitWidth();
@@ -77,7 +77,7 @@
 					});
 				});
 				wall.fitWidth();
-				ewall.fitWidth(cwidth);
+				ewall && ewall.fitWidth(cwidth);
 				
 			});
 
@@ -428,7 +428,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 480
+						height: 500
 					});
 					wall.fixSize({
 						block: demo,
