@@ -31,7 +31,7 @@
 			<div class="clearfix">
 				<div class="float-left">
 						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+						<div class='target'>Creating dynamic grid layout without gaps.</div>
 				</div>
 				<ul class="float-right reponsive-block">
 					<li><a class="desktop active" data-width="96%"></a></li> 
@@ -53,19 +53,19 @@
 					<ul class="img-demo">
 						<li>
 							<a href="javascript:void(0);" class="flex-image"></a>
-							<a href="javascript:void(0);">Flex layout</a>
+							<h3>Flex layout</h3>
 						</li>
 						<li>
 							<a href="javascript:void(0);" class="grid-image"></a>
-							<a href="javascript:void(0);">Grid layout</a>
+							<h3>Grid layout</h3>
 						</li>
 						<li>
 							<a href="javascript:void(0);" class="images-image"></a>
-							<a href="javascript:void(0);">Images layout</a>
+							<h3>Images layout</h3>
 						</li>
 						<li>
 							<a href="javascript:void(0);" class="pinterest-image"></a>
-							<a href="javascript:void(0);">Pinterest layout</a>
+							<h3>Pinterest layout</h3>
 						</li>
 					</ul>
 				</div>
@@ -76,8 +76,8 @@
 					<h2>Getting started</h2>
 					<div>
 						<p> Freewall requires jQuery framework.  It requires browsers whichs support CSS3 for some nice animation effects.</p>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    &lt;!DOCTYPE html&gt;
 							    &lt;html&gt;
 							    &lt;head&gt;
@@ -114,8 +114,8 @@
 							      &lt;/script&gt;
 							    &lt;/body&gt;
 							    &lt;/html&gt;
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -171,8 +171,8 @@
 							</li>
 							<li>
 								<h3> Example </h3>
-								<code>
 								<pre>
+								<code>
 								    var wall = new freewall('.free-wall');
 								    wall.reset({
 								      selector: '.brick',
@@ -186,8 +186,8 @@
 								      },
 								      fillGap: false
 								    });
-								</pre>
 								</code>
+								</pre>
 							</li>	
 						</ul>
 					</div>
@@ -217,8 +217,8 @@
 							</li>
 							<li>
 								<h3> Example </h3>
-								<code>
 								<pre>
+								<code>
 								    var wall = new freewall('.free-wall');
 								    wall.reset({
 								      selector: '.brick',
@@ -226,8 +226,8 @@
 								        this.fitWidth();
 								      }
 								    });
-								</pre>
 								</code>
+								</pre>
 							</li>
 							<li>
 								<h3> onSetBlock </h3>
@@ -274,8 +274,8 @@
 								<h3> fixSize(object) </h3>
 								<div> Set a block with special width or height</div>
 								<h5> Example </h5>
-								<code>
 								<pre>
+								<code>
 								    var wall = new freewall('.free-wall');
 								    var dna = $(".free-wall .flex-layout");
 								    wall.unsetFilter();
@@ -285,15 +285,15 @@
 								        height: 150
 									});
 								    wall.fitWidth();
-								</pre>
 								</code>
+								</pre>
 							</li>
 							<li>
 								<h3> reset(options) </h3>
 								<div> Config options for render layout.</div>
 								<h5> Example </h5>
-								<code>
 								<pre>
+								<code>
 								    var ewall = new freewall(demo);
 								    var demo = $(".example");
 								    ewall.reset({
@@ -309,8 +309,8 @@
 								      fillGap: true
 								    });
 								    ewall.fitWidth(cwidth);
-								</pre>
 								</code>
+								</pre>
 							</li>
 							<li>
 								<h3> setFilter(selector) </h3>
@@ -362,12 +362,12 @@
 							<span>Fit height</span>
 							<a href="javascript:void(0);" class="float-right back-icon"></a>
 						</h2>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    new freewall('.free-wall')
 							    .fitHeight(320);
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -383,13 +383,13 @@
 							<span>Filter</span>
 							<a href="javascript:void(0);" class="float-right back-icon"></a>
 						</h2>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    new freewall('.free-wall')
 							    .setFilter('.size22, .size11')
 							    .fitWidth();
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -405,8 +405,8 @@
 							<span>Flex layout</span>
 							<a href="javascript:void(0);" class="float-right back-icon"></a>
 						</h2>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    var ewall = new freewall(demo);
 							    ewall.reset({
 							      selector: '.cell',
@@ -421,8 +421,8 @@
 							      fillGap: true
 							    });
 							    ewall.fitWidth(cwidth);
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -438,8 +438,8 @@
 							<span>Grid layout</span>
 							<a href="javascript:void(0);" class="float-right back-icon"></a>
 						</h2>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    var ewall = new freewall(demo);
 							    ewall.reset({
 							      selector: '.cell',
@@ -454,8 +454,8 @@
 							      fillGap: false
 							    });
 							    ewall.fitWidth(cwidth);
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -471,8 +471,8 @@
 							<span>Image layout</span>
 							<a href="javascript:void(0);" class="float-right back-icon"></a>
 						</h2>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    var ewall = new freewall(demo);
 							    ewall.reset({
 							      selector: '.cell',
@@ -487,8 +487,8 @@
 							      fillGap: 1
 							    });
 							    ewall.fitWidth(cwidth);
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -504,8 +504,8 @@
 							<span>Like Pinterest layout</span>
 							<a href="javascript:void(0);" class="float-right back-icon"></a>
 						</h2>
-						<code>
-							<pre>
+						<pre>
+							<code>
 							    var ewall = new freewall(demo);
 							    ewall.reset({
 							      selector: '.cell',
@@ -521,8 +521,8 @@
 							      fillGap: false
 							    });
 							    ewall.fitWidth(cwidth);
-							</pre>
-						</code>
+							</code>
+						</pre>
 					</div>
 				</div>
 			</div>
@@ -537,6 +537,17 @@
 				</div>	
 			</div>
 		</div>
-		
+		<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-44036587-1']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+
+		</script>
 	</body>
 </html>
