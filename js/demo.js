@@ -24,10 +24,7 @@
 		color: function(value) {
 			var color = colour.concat(colour);
 			$(".free-wall .brick").each(function() {
-				$(this).css({
-					backgroundColor:  color.splice(color.length * Math.random() << 0, 1)
-					//backgroundColor: '#' + (16777216 * Math.random() << 0).toString(16)
-				});
+				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);
 			});
 		},
 		layout: function() {
@@ -60,7 +57,6 @@
 			});
 			wall.fitWidth();
 			demo = wall.container.find('.example');
-
 			// for responsive demo;
 			$(".reponsive-block li>a").click(function() {
 				$(".reponsive-block li>a").removeClass("active");
@@ -78,9 +74,7 @@
 				});
 				wall.fitWidth();
 				ewall && ewall.fitWidth(cwidth);
-				
 			});
-
 		},
 		options: function() {
 			$('.free-wall .options').click(function() {

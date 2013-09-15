@@ -90,7 +90,7 @@ table {
 	border-spacing: 0;
 }
 .header {
-	padding: 14px 0px;
+	padding: 14px 0;
 	background-color: rgb(19, 17, 17);
 	background-image:	
 					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
@@ -116,9 +116,10 @@ table {
 	height: 15px;
 	margin: 0 -20px;
 }
-.header > div {
-	margin: 0px 2%;
+.header div.float-left {
+	padding-left: 2%;
 }
+
 .header a {
 	font-size: 35px;
 	color: white;
@@ -137,12 +138,12 @@ table {
 .header .reponsive-block {
 	list-style: none;
 	margin: 0px;
-	padding: 0px;
-	padding-top: 50px;
+	padding: 50px 2% 0 0;
 }
 
 .header .reponsive-block li {
 	display: inline-block;
+	float:left;
 }
 
 .header .reponsive-block a {
@@ -319,8 +320,10 @@ table {
 .desc h2 {
 	border-bottom: 2px dotted rgb(255,255,222);
 	margin-bottom: 30px;
-	padding-bottom: 30px;
+	padding-bottom: 50px;
 }
+
+.desc h2 span {float: left;display: block;line-height: 50px;}
 
 .brick {
     background-color: #282828;
@@ -433,14 +436,11 @@ table {
 
 .back-icon:hover {
 	background: url(../i/back.png) no-repeat bottom center;
-	display: inline-block;
-	width: 45px;
-	height: 27px;
 }
 
 .full-width .back-icon,
 .open .back-icon {
-	display: inline-block;
+	display: block;
 }
 
 /*
