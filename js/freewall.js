@@ -41,6 +41,16 @@
 			minHeight: Number.MAX_VALUE
 		};
 
+		// setup resize event;
+		$(self).resize(function() {
+			if (layout.busy) return;
+			layout.busy = 1;
+			setTimeout(function() {
+				layout.busy = 0;
+				setting.onResize.call(klass, container);
+			}, 255);
+		});
+
 		function loadBlock(item, id) {
 
 			var $item = $(item), block = null;
@@ -125,17 +135,19 @@
 			}
 		}
 
-		// setup resize event;
-		$(window).resize(function() {
-			if (layout.busy) return;
-			layout.busy = 1;
-			setTimeout(function() {
-				layout.busy = 0;
-				setting.onResize.call(klass, container);
-			}, 255);
-		});
-		
-		
+		function setZoneSize (col, row) {
+			var cellHeight = layout.cell.height;
+			var cellWidth = layout.cell.width;
+			var gutter = setting.gutter;
+
+			container.attr({
+				"data-col": col,
+				"data-row": row,
+				"data-limit-width":  col ? cellWidth * col + gutter * (col - 1) : cellWidth * col,
+				"data-limit-height": row ? cellHeight * row + gutter * (row - 1) : cellHeight * row
+			});
+		}
+
 
 		var engine = {
 
@@ -240,14 +252,17 @@
 				var smallLoop = Math.min(col, row);
 				var bigLoop = Math.max(col, row);
 				var wall = {}, grid = {};
+				var maxX = 0, maxY = 0;
 				var check = col < row ? 1 : 0;
 				var block, next, x, y, rest, lastBook;
 
 				function fillGrid(x, y, w, h) {
-					for (var i = x; i < x + w; ++i) {
-						for (var j = y; j < y + h; ++j) {
+					for (var i = x; i < x + w;) {
+						for (var j = y; j < y + h;) {
 							grid[i + '-' + j] = true;
+							++j > maxY && (maxY = j);
 						}
+						++i > maxX && (maxX = i);
 					}
 				}
 
@@ -318,7 +333,9 @@
 				for (var i in wall) {
 					wall.hasOwnProperty(i) && setBlock(wall[i]);
 				}
-
+				
+				setZoneSize(maxX, maxY);
+				
 				return wall;
 			}
 		};
@@ -442,6 +459,7 @@
 				engine[setting.engine](activeBlock, col, row);
 				
 				container.attr('data-state', layout.init ? 'move' : 'start');
+				container.height(container.attr("data-limit-height") * 1 << 0);
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 					setting.onSetBlock.call(item);
