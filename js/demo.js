@@ -1,4 +1,4 @@
-
+﻿
 
 // demo for freewall layout;
 // created by Minh Nguyen;
@@ -238,7 +238,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 480
+						height: 640
 					});
 					wall.setFilter('.flex-layout, .example');
 					wall.fitWidth();
@@ -249,8 +249,8 @@
 						h = 1 + 3 * Math.random() << 0;
 						w = 1 + 3 * Math.random() << 0;
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
-						html += temp.replace(/\{height\}/g, h*150)
-								.replace(/\{width\}/g, w*150)
+						html += temp.replace(/\{height\}/g, h*160)
+								.replace(/\{width\}/g, w*160)
 								.replace("{index}", i + 1);
 					}
 					demo.html(html);
@@ -298,7 +298,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 480
+						height: 640
 					});
 					wall.setFilter('.grid-layout, .example');
 					wall.fitWidth();
@@ -306,8 +306,8 @@
 					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
 					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
-						h = 180;
-						w = 180;
+						h = 160;
+						w = 160;
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
 						html += temp.replace(/\{height\}/g, h)
 								.replace(/\{width\}/g, w)
@@ -322,8 +322,8 @@
 							flex: 1
 						},
 						cell: {
-							width: 180,
-							height: 180
+							width: 160,
+							height: 160
 						},
 						fillGap: false
 					});
@@ -357,7 +357,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 480
+						height: 640
 					});
 					wall.fixSize({
 						block: demo,
@@ -422,7 +422,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 500
+						height: 640
 					});
 					wall.fixSize({
 						block: demo,
@@ -436,10 +436,10 @@
 					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 200 + 200 * Math.random() << 0;
-						w = 2;
+						w = 1;
 						c = '#' + (16777216 * Math.random() << 0).toString(16);
 						html += temp.replace(/\{height\}/g, h)
-								.replace(/\{width\}/g, w*120)
+								.replace(/\{width\}/g, 160)
 								.replace("{index}", i + 1);
 					}
 					demo.html(html);
@@ -452,7 +452,7 @@
 							flex: 1
 						},
 						cell: {
-							width: 120,
+							width: 160,
 							height: 10
 						},
 						gutter: 'auto',
