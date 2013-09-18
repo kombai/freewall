@@ -139,7 +139,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 1500
+						height: 1700
 					});
 					wall.setFilter('.methods');
 					wall.fitWidth();
