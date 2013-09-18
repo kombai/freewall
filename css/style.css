@@ -58,7 +58,6 @@ h3 {
 }
 h4 {
 	font-size: 1.125em;
-	color: white;
 }
 h5 {
 	font-size: 1em;
@@ -120,7 +119,7 @@ table {
 				-webkit-linear-gradient(25deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px,
 				-webkit-linear-gradient(150deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px, transparent;
 
-	background-size: 60px 30px;
+	background-size: 60px 2px;
 	content: "";
 	position: absolute;
 	width: 100%;
@@ -271,29 +270,12 @@ table {
 	text-align: center;
 }	
 
-.img-demo a[class*="-image"] {
+.img-demo li img {
 	border: 1px solid #FFFFDE;
-	display: inline-block;
 	width: 100px;
 	height: 100px;
-	background-size: contain!important;
 }
 
-.img-demo a.flex-image {
-	background: url(../i/flex.png) no-repeat center;
-}
-
-.img-demo a.grid-image {
-	background: url(../i/grid.png) no-repeat center;
-}
-
-.img-demo a.images-image {
-	background: url(../i/images.png) no-repeat center;
-}
-
-.img-demo a.pinterest-image {
-	background: url(../i/pinterest.png) no-repeat center;
-}
 
 .float-left {
 	float: left;
@@ -338,14 +320,16 @@ table {
 
 .brick {
     background-color: #282828;
-    background-image: radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-				     radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-				     radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
-				     radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-	background-image: -webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-				      -webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-				      -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
-				      -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+    background-image:
+    				radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+   					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+    				radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+    				radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+    background-image:
+    				-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+   					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+    				-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+    				-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
     background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
     background-repeat: repeat, repeat, repeat, repeat;
     background-size: 8px 8px;
