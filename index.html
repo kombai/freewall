@@ -1,8 +1,12 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title> Freewall </title>
+		<title> Freewall - jQuery plugin for creating grid layouts. </title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Freewall - A responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, flex layout, grid layout, image layout, pinterest like layout"/>
+		<meta name="og:image" content="i/flex.png" />
+		<meta name="og:description" content="Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet." />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="js/freewall.js"></script>
@@ -31,7 +35,7 @@
 			<div class="clearfix">
 				<div class="float-left">
 						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-						<div class='target'>Creating dynamic grid layout without gaps.</div>
+						<div class='target'>Creating dynamic grid layouts without gaps.</div>
 				</div>
 				<ul class="float-right reponsive-block">
 					<li><a class="desktop active" data-width="96%"></a></li> 
@@ -43,39 +47,39 @@
 			</div>
 		</div>
 		<div id="freewall" class="free-wall">
-			<div class="brick size22 block-fixed"> 
+			<div class="brick size33 block-fixed"> 
 				<div class='cover'>
 					<h2>What is Freewall?</h2>
 					<p>
-					Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet. Freewall allows you to create many types of grid layout (flexible layout, images layout, pinterest-like layout, etc) with nice CSS3 animation effects and call back events.
+					Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet. Freewall allows you to create many types of grid layout (flexible layout, grid layout, images layout, pinterest-like layout, etc) with nice CSS3 animation effects and call back events.
 					</p>
+					<h4>Some example layouts:</h4>
+					<ul class="img-demo">
+						<li>
+							<img src="i/flex.png" width=100 height=100 />
+							<h3>Flex layout</h3>
+						</li>
+						<li>
+							<img src="i/grid.png" width=100 height=100 />
+							<h3>Grid layout</h3>
+						</li>
+						<li>
+							<img src="i/images.png" width=100 height=100 />
+							<h3>Images layout</h3>
+						</li>
+						<li>
+							<img src="i/pinterest.png" width=100 height=100 />
+							<h3>Pinterest layout</h3>
+						</li>
+					</ul>
 				</div>
 			</div>	
-			<div class="brick size33 block-fixed"> 
+			<div class="brick size22 block-fixed"> 
 				<div class='cover'>
 					<h2> How it works </h2>
 					<p>
 						Based on the width (or height) of a container and the width (height) of a cell unit, It will create a virtual matrix. Scaning the matrix at each cell will find a free cell around to made a free area, then try to fit a block element into it. In case no block can fit the gap, it will resize the block to fill the gap (that is one of the options).
 					</p>
-					<h3>Some example layouts:</h3>
-					<ul class="img-demo">
-						<li>
-							<a href="javascript:void(0);" class="flex-image"></a>
-							<h3>Flex layout</h3>
-						</li>
-						<li>
-							<a href="javascript:void(0);" class="grid-image"></a>
-							<h3>Grid layout</h3>
-						</li>
-						<li>
-							<a href="javascript:void(0);" class="images-image"></a>
-							<h3>Images layout</h3>
-						</li>
-						<li>
-							<a href="javascript:void(0);" class="pinterest-image"></a>
-							<h3>Pinterest layout</h3>
-						</li>
-					</ul>
 				</div>
 			</div>
 
@@ -83,7 +87,7 @@
 				<div class='cover'> 
 					<h2>Getting started</h2>
 					<div>
-						<p> Freewall requires jQuery framework.  It requires browsers whichs support CSS3 for some nice animation effects.</p>
+						<p> Freewall requires jQuery framework.  It requires browsers which support CSS3 for some nice animation effects.</p>
 						<pre>
 							<code>
 							    &lt;!DOCTYPE html&gt;
