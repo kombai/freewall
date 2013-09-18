@@ -56,8 +56,8 @@
 			var $item = $(item), block = null;
 			var gutter = setting.gutter;
 			// store original size;
-			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
-			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
+			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight(true));
+			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth(true));
 
 			var cellHeight = $item.hasClass('block-fixed') ? setting.cell.height : layout.cell.height;
 			var cellWidth = $item.hasClass('block-fixed') ? setting.cell.width : layout.cell.width;
