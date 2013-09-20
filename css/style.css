@@ -3,7 +3,12 @@
    License: none (public domain)
 */
 
-@import url(http://fonts.googleapis.com/css?family=Happy+Monkey);
+@font-face {
+  font-family: 'Happy Monkey';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Happy Monkey'), local('HappyMonkey-Regular'), url(c2o0ps8nkBmaOYctqBq1rXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
 
 html, body, div, span, applet, object, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -272,8 +277,8 @@ table {
 
 .img-demo li img {
 	border: 1px solid #FFFFDE;
-	width: 100px;
-	height: 100px;
+	width: 98px;
+	height: 98px;
 }
 
 
