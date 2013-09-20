@@ -41,6 +41,13 @@
 			minHeight: Number.MAX_VALUE
 		};
 
+		// style with css for dectect browser;
+		for (var i in $.browser) {
+			if ($.browser[i] === true) {
+				container.addClass(i);
+			}
+		}
+
 		// setup resize event;
 		$(self).resize(function() {
 			if (layout.busy) return;
@@ -50,6 +57,7 @@
 				setting.onResize.call(klass, container);
 			}, 255);
 		});
+
 
 		function loadBlock(item, id) {
 
