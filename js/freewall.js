@@ -64,14 +64,14 @@
 			var $item = $(item), block = null;
 			var gutter = setting.gutter;
 			// store original size;
-			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight(true));
-			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth(true));
+			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
+			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
 
 			var cellHeight = $item.hasClass('block-fixed') ? setting.cell.height : layout.cell.height;
 			var cellWidth = $item.hasClass('block-fixed') ? setting.cell.width : layout.cell.width;
 
-			var height = Math.round($item.attr('data-height') / (cellHeight + gutter));
-			var width = Math.round($item.attr('data-width') / (cellWidth + gutter));
+			var height = Math.ceil((1 * $item.attr('data-height') +  gutter) / (cellHeight + gutter));
+			var width = Math.ceil((1 * $item.attr('data-width') + gutter) / (cellWidth + gutter));
 			width * height == 0 && $item.addClass('block-point');
 			
 			var type = $item.hasClass('block-fixed') ? 'fixed' : width + '-' + height;
