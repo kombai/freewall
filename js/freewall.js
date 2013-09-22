@@ -37,8 +37,10 @@
 			col: 1,
 			row: 1,
 			filter: '',
-			minWidth: Number.MAX_VALUE,
-			minHeight: Number.MAX_VALUE
+			width: 0,
+			height: 0,
+			minCol: Number.MAX_VALUE,
+			minRow: Number.MAX_VALUE
 		};
 
 		// style with css for dectect browser;
@@ -48,6 +50,8 @@
 			}
 		}
 
+		container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
+
 		// setup resize event;
 		$(self).resize(function() {
 			if (layout.busy) return;
@@ -56,6 +60,7 @@
 				layout.busy = 0;
 				setting.onResize.call(klass, container);
 			}, 255);
+			container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
 		});
 
 
@@ -80,8 +85,8 @@
 				block = null;
 			} else {
 				// get min width and min height;
-				height < layout.minHeight && (layout.minHeight = height);
-				width < layout.minWidth && (layout.minWidth = width);
+				height < layout.minRow && (layout.minRow = height);
+				width < layout.minCol && (layout.minCol = width);
 
 				block = {
 					type: type,
@@ -148,12 +153,8 @@
 			var cellWidth = layout.cell.width;
 			var gutter = setting.gutter;
 
-			container.attr({
-				"data-col": col,
-				"data-row": row,
-				"data-limit-width":  col ? cellWidth * col + gutter * (col - 1) : cellWidth * col,
-				"data-limit-height": row ? cellHeight * row + gutter * (row - 1) : cellHeight * row
-			});
+			layout.width = col ? cellWidth * col + gutter * (col - 1) : cellWidth * col;
+			layout.height = row ? cellHeight * row + gutter * (row - 1) : cellHeight * row;
 		}
 
 
@@ -302,9 +303,9 @@
 						// trying resize the next block to fit gap;
 						if (block == null && setting.fillGap) {
 							// resize near block to fill gap;
-							if (layout.minHeight > rest && !check) {
+							if (layout.minRow > rest && !check) {
 								lastBook && (lastBook.height += rest);
-							} else if (layout.minWidth > rest && check) {
+							} else if (layout.minCol > rest && check) {
 								lastBook && (lastBook.width += rest);
 							} else {
 								// get othr block fill to gap;
@@ -466,8 +467,8 @@
 				});
 				engine[setting.engine](activeBlock, col, row);
 				
+				container.height(layout.height << 0);
 				container.attr('data-state', layout.init ? 'move' : 'start');
-				container.height(container.attr("data-limit-height") * 1 << 0);
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 					setting.onSetBlock.call(item);
