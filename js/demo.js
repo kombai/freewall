@@ -25,6 +25,7 @@
 			var color = colour.concat(colour);
 			$(".free-wall .brick").each(function() {
 				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);
+				this.setAttribute("data-bgcolor", this.style.backgroundColor);
 			});
 		},
 		layout: function() {
@@ -57,6 +58,15 @@
 			});
 			wall.fitWidth();
 			demo = wall.container.find('.example');
+
+			wall.container.find(".brick").each(function() {
+				var $item = $(this);
+				$item.attr({
+					"data-class": $item.attr("class"),
+					"data-style": $item.attr("style")
+				});
+			});
+
 			// for responsive demo;
 			$(".reponsive-block li>a").click(function() {
 				$(".reponsive-block li>a").removeClass("active");
@@ -92,8 +102,36 @@
 
 			function hashChanged(hash) {
 				if (!hash) {
+					wall.container.find(".brick").each(function() {
+						var $item = $(this).removeAttr("style");
+
+						$item.removeAttr("data-width");
+						$item.removeAttr("data-height");
+						
+						$item.attr({
+							"class": $item.attr("data-class")
+						});
+
+						$item.css({
+							backgroundColor: $item.attr("data-bgcolor")
+						});
+					});
+					
+					wall.unsetFilter();
+					wall.fitWidth();
+
+					demo.html("");
+					$(".back-button").hide();
+					$(".header")[0].scrollIntoView(true);
+				} else {
+					$(".back-button").show();
 				}
 			}
+
+			// for back-button;
+			$(".back-button .back-icon").click(function() {
+				window.history.back();
+			});
 		},
 		options: function() {
 			$('.free-wall .options').click(function() {
@@ -109,17 +147,7 @@
 					wall.setFilter('.options');
 					wall.fitWidth();
 				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".options");
-				dna.removeClass('full-width');
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 320,
-					height: 320
-				});
-				wall.fitWidth();
+				window.location.hash = "options";
 			});
 		},
 		events: function() {
@@ -136,18 +164,7 @@
 					wall.setFilter('.events');
 					wall.fitWidth();
 				}
-				
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".events");
-				dna.removeClass('full-width');
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
+				window.location.hash = "events";
 			});
 		},
 		methods: function() {
@@ -164,17 +181,7 @@
 					wall.setFilter('.methods');
 					wall.fitWidth();
 				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".methods");
-				dna.removeClass('full-width');
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 320,
-					height: 320
-				});
-				wall.fitWidth();
+				window.location.hash = "methods";
 			});
 		},
 		filter: function() {
@@ -190,17 +197,7 @@
 					});
 					wall.fitWidth();
 				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".filter");
-				dna.removeClass('open');
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
+				window.location.hash = "demo-filter";
 			});
 		},
 		fitHeight: function() {
@@ -215,17 +212,7 @@
 					});
 					wall.fitHeight(340);
 				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".fit-height");
-				dna.removeClass('open');
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
+				window.location.hash = "demo-fit-height";
 			});
 		},
 		share: function() {
@@ -289,21 +276,9 @@
 						fillGap: true
 					});
 					ewall.fitWidth(cwidth);
-				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".flex-layout");
-				wall.container.removeAttr('data-layout');
-				dna.removeClass('full-width');
-				demo.html("");
 
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
+					window.location.hash = "example-flex-layout";
+				}
 			});
 		},
 		layoutGrid: function() {
@@ -348,21 +323,9 @@
 						fillGap: false
 					});
 					ewall.fitWidth(cwidth);
+				
+					window.location.hash = "example-grid-layout";
 				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".grid-layout");
-				wall.container.removeAttr('data-layout');
-				dna.removeClass('full-width');
-				demo.html("");
-
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
 			});
 		},
 		layoutImage: function() {
@@ -413,21 +376,9 @@
 						fillGap: 1
 					});
 					ewall.fitWidth(cwidth);
-				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".image-layout");
-				wall.container.removeAttr('data-layout');
-				dna.removeClass('full-width');
-				demo.html("");
 
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
+					window.location.hash = "example-image-layout";
+				}
 			});
 		},
 		layoutPinterest: function() {
@@ -479,21 +430,9 @@
 						fillGap: false
 					});
 					ewall.fitWidth(cwidth);
-				}
-			}).find(".back-icon").click(function(evt) {
-				evt.stopPropagation();
-				var dna = $(this).parents(".pinterest-layout");
-				wall.container.removeAttr('data-layout');
-				dna.removeClass('full-width');
-				demo.html("");
 
-				wall.unsetFilter();
-				wall.fixSize({
-					block: dna,
-					width: 160,
-					height: 160
-				});
-				wall.fitWidth();
+					window.location.hash = "example-pinerest-layout";
+				}
 			});
 		}
 	};

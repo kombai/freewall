@@ -475,7 +475,7 @@
 				if (layout.filter) {
 					items = allBlock.filter(layout.filter).addClass('fw-filter');
 				} else {
-					items = allBlock.removeClass('fw-filter');;
+					items = allBlock.removeClass('fw-filter');
 				}
 				
 				var row = 123456;
@@ -539,7 +539,7 @@
 				if (layout.filter) {
 					items = allBlock.filter(layout.filter).addClass('fw-filter');
 				} else {
-					items = allBlock.removeClass('fw-filter');;
+					items = allBlock.removeClass('fw-filter');
 				}
 
 				layout.col = col;

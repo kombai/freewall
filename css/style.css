@@ -431,27 +431,17 @@ table {
 	display: block;
 }
 
-.back-icon {
-	background: url(../i/back.png) no-repeat top center;
-	display: none;
-	width: 45px;
-	height: 27px;
-}
-
-.back-icon:hover {
-	background: url(../i/back.png) no-repeat bottom center;
-}
-
-.full-width .back-icon,
-.open .back-icon {
-	display: block;
-}
-
 .back-button {
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 0px rgba(255, 255, 255, 0.2);
 	position: fixed;
-	bottom: 70px;
-	right: 70px;
 	z-index: 9999;
+	padding: 1%;
+	bottom: 2%;
+	right: 2%;
+	display: none;
+	background: black;
+	margin-right: 4px;
+	border-radius: 2px;
 }
 
 .back-button .back-icon {
