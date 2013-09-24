@@ -75,6 +75,25 @@
 				wall.fitWidth();
 				ewall && ewall.fitWidth(cwidth);
 			});
+
+			if ("onhashchange" in window) { // event supported?
+			    window.onhashchange = function () {
+			        hashChanged(window.location.hash);
+			    }
+			} else { // event not supported:
+			    var storedHash = window.location.hash;
+			   	setInterval(function () {
+			        if (window.location.hash != storedHash) {
+			            storedHash = window.location.hash;
+			            hashChanged(storedHash);
+			        }
+			    }, 100);
+			}
+
+			function hashChanged(hash) {
+				if (!hash) {
+				}
+			}
 		},
 		options: function() {
 			$('.free-wall .options').click(function() {
@@ -117,6 +136,7 @@
 					wall.setFilter('.events');
 					wall.fitWidth();
 				}
+				
 			}).find(".back-icon").click(function(evt) {
 				evt.stopPropagation();
 				var dna = $(this).parents(".events");

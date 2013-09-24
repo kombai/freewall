@@ -447,8 +447,25 @@ table {
 	display: block;
 }
 
-/*
+.back-button {
+	position: fixed;
+	bottom: 70px;
+	right: 70px;
+	z-index: 9999;
+}
 
+.back-button .back-icon {
+	background: url(../i/back.png) no-repeat top center;
+	width: 45px;
+	height: 27px;
+	display: block;
+}
+
+.back-button .back-icon:hover {
+	background: url(../i/back.png) no-repeat bottom center;
+}
+
+/*
 @-webkit-keyframes start {
 	from {
 		-webkit-transform:rotate(3600deg) scale(6);
