@@ -9,7 +9,6 @@
 		var container = $(selector).css({position: 'relative'});
 		var klass = this;
 
-
 		// default setting;
 		var setting = {
 			selector: '.item',
@@ -31,24 +30,28 @@
 		
 		var layout = {
 			block: {}, // store all items;
-			cell: {}, // unit adjust;
+			cell: {}, // un  it adjust;
 			busy: 0,
-			init: 0,
 			col: 1,
 			row: 1,
 			filter: '',
 			width: 0,
 			height: 0,
 			minCol: Number.MAX_VALUE,
-			minRow: Number.MAX_VALUE
+			minRow: Number.MAX_VALUE,
+			transition: false
 		};
 
-		// style with css for dectect browser;
-		for (var i in $.browser) {
-			if ($.browser[i] === true) {
-				container.addClass(i);
-			}
-		}
+		// check browser support transition;
+		var style = document.body.style;
+	    if (style.transition != null ||
+	    	style.oTransition != null ||
+	    	style.msTransition != null ||
+	    	style.MozTransition != null ||
+	    	style.webkitTransition != null)
+	    {
+	    	layout.transition = true;
+	    }
 
 		container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
 
@@ -66,35 +69,46 @@
 
 		function loadBlock(item, id) {
 
-			var $item = $(item), block = null;
-			var gutter = setting.gutter;
+			var $item = $(item), block = null, gutter = setting.gutter;
+			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
 
 			var cellHeight = $item.hasClass('block-fixed') ? setting.cell.height : layout.cell.height;
 			var cellWidth = $item.hasClass('block-fixed') ? setting.cell.width : layout.cell.width;
-
-			var height = Math.ceil((1 * $item.attr('data-height') +  gutter) / (cellHeight + gutter));
-			var width = Math.ceil((1 * $item.attr('data-width') + gutter) / (cellWidth + gutter));
-			width * height == 0 && $item.addClass('block-point');
 			
-			var type = $item.hasClass('block-fixed') ? 'fixed' : width + '-' + height;
+			var height = 1 * $item.attr('data-height');
+			var width = 1 * $item.attr('data-width');
 			
-			if ((type == 'fixed' || !setting.fillGap) && (width > layout.col || height > layout.row)) {
+			var row = Math.round(height / (cellHeight + gutter));
+			var col = Math.round(width / (cellWidth + gutter));
+			
+			var type = $item.hasClass('block-fixed') ? 'fixed' : col + '-' + row;
+			
+			if ((type == 'fixed' || !setting.fillGap) && (col > layout.col || row > layout.row)) {
 				block = null;
 			} else {
 				// get min width and min height;
-				height < layout.minRow && (layout.minRow = height);
-				width < layout.minCol && (layout.minCol = width);
+				row < layout.minRow && (layout.minRow = row);
+				col < layout.minCol && (layout.minCol = col);
+				width == 0 && (col = 0);
+				height == 0 && (row = 0);
 
 				block = {
 					type: type,
 					id: id,
-					width: width,
-					height: height
+					width: col,
+					height: row
 				};
 			}
+
+			if ($item.attr("data-state") == null) {
+				$item.attr("data-state", "start");
+			} else {
+				$item.attr("data-state", "move");
+			}
+
 			return block;
 		}
 
@@ -119,8 +133,24 @@
 
 		function showBlock(item, id) {
 			
-			var method = setting.animate ? 'animate' : 'css';
+			var method = setting.animate && !layout.transition ? 'animate' : 'css';
 			var $item = $(item);
+			var trans = "top 0.5s, left 0.5s, width 0.5s, height 0.5s";
+			
+			if (layout.transition) {
+				var browser = $.browser;
+				if (browser.webkit) {
+					item.style.WebkitTransition = trans;
+				} else if (browser.mozilla) {
+					item.style.MozTransition = trans;
+				} else if (browser.msie) {
+					item.style.msTransition = trans;
+				} else if (browser.opera) {
+					item.style.OTransition = trans;
+				} else {
+					item.style.transition = trans;
+				}
+			}
 
 			// for hidden block;
 			if (!layout.block[id]) {
@@ -130,14 +160,9 @@
 					height: 0
 				});
 			} else {
-				$item.css({
+				$item.stop()["css"]({
 					position: 'absolute',
-					opacity: 1
-				});
-				// with fit zone method, sometime some blocks out of container;
-				// because the container have been filled;
-				// so them won't appear on the wall;
-				$item.stop()['css']({
+					opacity: 1,
 					width: layout.block[id]['width'],
 					height: layout.block[id]['height']
 				});
@@ -406,13 +431,10 @@
 				
 				engine[setting.engine](activeBlock, col, row);
 				
-				container.attr('data-state', layout.init ? 'move' : 'start');
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 					setting.onSetBlock.call(item);
 				});
-				
-				layout.init == 0 && (layout.init = 1);
 			},
 
 			fitWidth: function(width) {
@@ -468,13 +490,11 @@
 				engine[setting.engine](activeBlock, col, row);
 				
 				container.height(layout.height << 0);
-				container.attr('data-state', layout.init ? 'move' : 'start');
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 					setting.onSetBlock.call(item);
 				});
 				
-				layout.init == 0 && (layout.init = 1);
 			},
 
 			fitZone: function(width, height) {
@@ -533,13 +553,11 @@
 
 				engine[setting.engine](activeBlock, col, row);
 				
-				container.attr('data-state', layout.init ? 'move' : 'start');
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 					setting.onSetBlock.call(item);
 				});
 				
-				layout.init == 0 && (layout.init = 1);
 			},
 			
 			fixSize: function(option) {
