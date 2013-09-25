@@ -147,8 +147,8 @@
 					});
 					wall.setFilter('.options');
 					wall.fitWidth();
+					window.location.hash = "options";
 				}
-				window.location.hash = "options";
 			});
 		},
 		events: function() {
@@ -164,8 +164,8 @@
 					});
 					wall.setFilter('.events');
 					wall.fitWidth();
+					window.location.hash = "events";
 				}
-				window.location.hash = "events";
 			});
 		},
 		methods: function() {
@@ -181,8 +181,8 @@
 					});
 					wall.setFilter('.methods');
 					wall.fitWidth();
+					window.location.hash = "methods";
 				}
-				window.location.hash = "methods";
 			});
 		},
 		filter: function() {
@@ -197,8 +197,8 @@
 						height: 320
 					});
 					wall.fitWidth();
+					window.location.hash = "demo-filter";
 				}
-				window.location.hash = "demo-filter";
 			});
 		},
 		fitHeight: function() {
@@ -212,8 +212,8 @@
 						height: 320
 					});
 					wall.fitHeight(340);
+					window.location.hash = "demo-fit-height";
 				}
-				window.location.hash = "demo-fit-height";
 			});
 		},
 		share: function() {
