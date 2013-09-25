@@ -160,7 +160,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 480
+						height: 720
 					});
 					wall.setFilter('.events');
 					wall.fitWidth();
