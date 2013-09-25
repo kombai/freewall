@@ -86,11 +86,11 @@
 				ewall && ewall.fitWidth(cwidth);
 			});
 
-			if ("onhashchange" in window) { // event supported?
+			if ("onhashchange" in window) {
 			    window.onhashchange = function () {
 			        hashChanged(window.location.hash);
 			    }
-			} else { // event not supported:
+			} else {
 			    var storedHash = window.location.hash;
 			   	setInterval(function () {
 			        if (window.location.hash != storedHash) {
@@ -124,13 +124,14 @@
 					$(".back-button").hide();
 					$(".header")[0].scrollIntoView(true);
 				} else {
+					$(hash).trigger("click");
 					$(".back-button").show();
 				}
 			}
 
 			// for back-button;
 			$(".back-button .back-icon").click(function() {
-				window.history.back();
+				window.location.hash = "";
 			});
 		},
 		options: function() {
@@ -245,7 +246,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 640
+						height: 420
 					});
 					wall.setFilter('.flex-layout, .example');
 					wall.fitWidth();
@@ -293,7 +294,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 640
+						height: 420
 					});
 					wall.setFilter('.grid-layout, .example');
 					wall.fitWidth();
@@ -340,7 +341,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 640
+						height: 420
 					});
 					wall.fixSize({
 						block: demo,
@@ -393,7 +394,7 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 640
+						height: 420
 					});
 					wall.fixSize({
 						block: demo,
@@ -431,9 +432,15 @@
 					});
 					ewall.fitWidth(cwidth);
 
-					window.location.hash = "example-pinerest-layout";
+					window.location.hash = "example-pinterest-layout";
 				}
 			});
+		},
+		finish: function() {
+			if (window.location.hash && $(window.location.hash).length) {
+				$(window.location.hash).trigger("click");
+				$('.back-button').show();
+			} 
 		}
 	};
 	
@@ -447,6 +454,7 @@
 					func[i](options[i]);
 				}
 			}
+			func['finish']();
 		}
 	};
 

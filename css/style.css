@@ -317,7 +317,8 @@ table {
 
 .desc h2 {
 	border-bottom: 2px dotted rgb(255,255,222);
-	margin-bottom: 30px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	padding-bottom: 50px;
 }
 
