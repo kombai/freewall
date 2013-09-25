@@ -371,6 +371,10 @@ table {
 	background: none !important;
 }
 
+.full-width.brick .cover { 
+	margin: 0px 20px;
+}
+
 .open .float-left {
 	display: none;
 }
@@ -459,7 +463,7 @@ table {
 /*
 @-webkit-keyframes start {
 	from {
-		-webkit-transform:rotate(3600deg) scale(6);
+		-webkit-transform:rotate(360deg) scale(6);
 		opacity: 0;
 	}
 	to {
@@ -470,7 +474,7 @@ table {
 
 @-moz-keyframes start {
 	from {
-		-moz-transform:rotate(3600deg) scale(6);
+		-moz-transform:rotate(360deg) scale(6);
 		opacity: 0;
 	}
 	to {
@@ -481,7 +485,7 @@ table {
 
 @-ms-keyframes start {
 	from {
-		-ms-transform:rotate(3600deg) scale(12);
+		-ms-transform:rotate(360deg) scale(12);
 		opacity: 0;
 	}
 	to {
@@ -490,18 +494,9 @@ table {
 	}
 }
 
-.free-wall[data-state="start"] .brick {
+.free-wall .brick[data-state="start"]  {
 	-webkit-animation: start 0.8s;
 	-moz-animation: start 0.8s;
 	-ms-animation: start 0.8s;
 }
-
-.free-wall[data-state="move"] .brick {
-    -webkit-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
-    -moz-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
-    -ms-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
-    -o-transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
-    transition: top 0.8s, left 0.8s, width 0.8s, height 0.8s, opacity 0.8s;
-}
-
 */
