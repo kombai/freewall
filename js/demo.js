@@ -101,7 +101,7 @@
 			}
 
 			function hashChanged(hash) {
-				if (!hash) {
+				if (!hash || hash == "#") {
 					wall.container.find(".brick").each(function() {
 						var $item = $(this).removeAttr("style");
 
