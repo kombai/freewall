@@ -311,7 +311,7 @@ table {
 .desc h3,
 .desc h4,
 .desc h5,
-.desc h6, {
+.desc h6 {
 	font-weight: bold;
 }
 
@@ -325,24 +325,25 @@ table {
 .desc h2 span {float: left;display: block;line-height: 50px;}
 
 .brick {
-    background-color: #282828;
-    background-image:
-    				radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-   					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-    				radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
-    				radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-    background-image:
-    				-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-   					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-    				-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
-    				-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-    background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
-    background-repeat: repeat, repeat, repeat, repeat;
-    background-size: 8px 8px;
+	background-color: #282828;
+	background-image:
+					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+	background-image:
+					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
+					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+	background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
+	background-repeat: repeat, repeat, repeat, repeat;
+	background-size: 8px 8px;
 	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 0px rgba(255, 255, 255, 0.2);
 	border-radius: 2px;
 	float: left;
 	color: #FFFFDE;
+	cursor: default;
 	overflow: hidden;
 }
 .brick:hover {
