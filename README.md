@@ -9,7 +9,7 @@ Flexible
 <br>
 <img src='https://raw.github.com/kombai/freewall/master/i/flex.png'>
 <br>
-Grid
+Normal grid
 <br>
 <img src='https://raw.github.com/kombai/freewall/master/i/grid.png'>
 <br>
