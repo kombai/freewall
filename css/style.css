@@ -2,7 +2,6 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
 @font-face {
   font-family: 'Happy Monkey';
   font-style: normal;
@@ -93,6 +92,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 .header {
 	padding: 14px 0;
 	background-color: rgb(19, 17, 17);
@@ -131,6 +131,7 @@ table {
 	height: 15px;
 	margin: 0 -20px;
 }
+
 .header div.float-left {
 	padding-left: 2%;
 }
@@ -224,22 +225,27 @@ table {
 	height: 160px;
 	width: 160px;
 }
+
 .size12 {
 	width: 160px;
 	height: 320px;
 }
+
 .size21 {
 	width: 320px;
 	height: 160px;
 }
+
 .size22 {
 	height: 320px;
 	width: 320px;
 }
+
 .size13 {
 	width: 160px;
 	height: 480px;
 }
+
 .size23 {
 	width: 320px;
 	height: 480px;
@@ -248,14 +254,17 @@ table {
 	width: 480px;
 	height: 320px;
 }
+
 .size33 {
 	width: 480px;
 	height: 480px;
 }
+
 .size34 {
 	width: 480px;
 	height: 640px;
 }
+
 .size35 {
 	width: 480px;
 	height: 800px;
@@ -281,7 +290,6 @@ table {
 	height: 98px;
 }
 
-
 .float-left {
 	float: left;
 }
@@ -294,10 +302,12 @@ table {
 .clearfix:after {
     content: "";
     display: table;
-} 
+}
+
 .clearfix:after {
     clear: both;
 }
+
 .clearfix {
     zoom: 1; /* For IE 6/7 (trigger hasLayout) */
 }
@@ -346,13 +356,29 @@ table {
 	cursor: default;
 	overflow: hidden;
 }
-.brick:hover {
-	box-shadow: 0px 0px 4px rgba(255,255,222,1);
-}
+
 .brick .cover {
 	overflow: hidden;
 	margin: 20px;
 }
+
+.brick .cover .read-more {
+	position: absolute;
+	display: none;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	padding: 12px;
+	border-radius: 2px;
+	background: rgb(0, 0, 0);
+	background: rgba(0, 0, 0, 0.45);
+}
+
+.brick:hover .cover .read-more {
+	display: block;
+	cursor: pointer;
+}
+
 .brick .desc {
 	display: none;
 }
@@ -389,6 +415,7 @@ table {
 	height: 0px;
 	overflow: visible !important; /* for ie7 */
 }
+
 .example .cell {
 	background-position: center center;
 	background-repeat: no-repeat;
