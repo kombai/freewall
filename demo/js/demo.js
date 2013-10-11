@@ -251,7 +251,7 @@
 					wall.setFilter('.flex-layout, .example');
 					wall.fitWidth();
 
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(demo/i/photo/{index}.jpg)'></div>";
 					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 1 + 3 * Math.random() << 0;
@@ -299,7 +299,7 @@
 					wall.setFilter('.grid-layout, .example');
 					wall.fitWidth();
 					
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(demo/i/photo/{index}.jpg)'></div>";
 					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 160;
@@ -351,7 +351,7 @@
 					wall.setFilter('.image-layout, .example');
 					wall.fitWidth();
 
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(demo/i/photo/{index}.jpg)'></div>";
 					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 1;
@@ -404,7 +404,7 @@
 					wall.setFilter('.pinterest-layout, .example');
 					wall.fitWidth();
 
-					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+					var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(demo/i/photo/{index}.jpg)'></div>";
 					var w = 1, h = 1, c ='', html = '', limitItem = 49;
 					for (var i = 0; i < limitItem; ++i) {
 						h = 200 + 200 * Math.random() << 0;
