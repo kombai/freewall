@@ -416,7 +416,7 @@ table {
 	overflow: visible !important; /* for ie7 */
 }
 
-.example .cell {
+.cell {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
