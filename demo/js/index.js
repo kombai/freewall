@@ -4,10 +4,7 @@
 // created by Minh Nguyen;
 (function($) {
 	
-	var setting = {},
-		wall,
-		demo,
-		ewall;
+	var setting = {}, wall;
 	
 	var colour = [
 		"#0C465D",
@@ -53,11 +50,9 @@
 						});
 					});
 					wall.fitWidth();
-					ewall && ewall.fitWidth(cwidth);
 				}
 			});
 			wall.fitWidth();
-			demo = wall.container.find('.example');
 
 			wall.container.find(".brick").each(function() {
 				var $item = $(this);
@@ -83,7 +78,6 @@
 					});
 				});
 				wall.fitWidth();
-				ewall && ewall.fitWidth(cwidth);
 			});
 
 			if ("onhashchange" in window) {
@@ -120,7 +114,6 @@
 					wall.unsetFilter();
 					wall.fitWidth();
 
-					demo.html("");
 					$(".back-button").hide();
 					$(".header")[0].scrollIntoView(true);
 				} else {
@@ -198,21 +191,6 @@
 					});
 					wall.fitWidth();
 					window.location.hash = "demo-filter";
-				}
-			});
-		},
-		fitHeight: function() {
-			$(".free-wall .fit-height").click(function() {
-				var dna = $(this);
-				if (!dna.hasClass('open')) {
-					dna.addClass('open');
-					wall.fixSize({
-						block: dna,
-						width: 320,
-						height: 320
-					});
-					wall.fitHeight(340);
-					window.location.hash = "demo-fit-height";
 				}
 			});
 		},
