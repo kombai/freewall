@@ -9,13 +9,14 @@
 		<meta name="og:description" content="Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet." />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/fix-height-style.css" />
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				var windowHeight = $(window).outerHeight();
 				var headHeight = $(".header").outerHeight(true);
-				var scrollHeight = 20;
+				var scrollHeight = 0;
 
 				var wall = new freewall("#freewall");
 				wall.reset({
@@ -30,10 +31,10 @@
 					fillGap: true,
 					onResize: function() {
 						var windowHeight = $(window).outerHeight();
-						wall.fitHeight(windowHeight - headHeight);
+						wall.fitHeight(windowHeight);
 					}
 				})
-				wall.fitHeight(windowHeight - headHeight - scrollHeight);
+				wall.fitHeight(windowHeight  - scrollHeight);
 			});
 		</script>
 	</head>
