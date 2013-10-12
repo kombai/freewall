@@ -13,10 +13,10 @@
 		<script type="text/javascript" src="../freewall.js"></script>
 		<script type="text/javascript">
 			$(function() {
-
 				var windowHeight = $(window).outerHeight();
-				var headHeight = $(".header").outerHeight();
-				
+				var headHeight = $(".header").outerHeight(true);
+				var scrollHeight = 20;
+
 				var wall = new freewall("#freewall");
 				wall.reset({
 					selector: '.brick',
@@ -30,10 +30,10 @@
 					fillGap: true,
 					onResize: function() {
 						var windowHeight = $(window).outerHeight();
-						wall.fitHeight(720);
+						wall.fitHeight(windowHeight - headHeight);
 					}
 				})
-				wall.fitHeight(720);
+				wall.fitHeight(windowHeight - headHeight - scrollHeight);
 			});
 		</script>
 	</head>
@@ -110,7 +110,7 @@
 				</div>
 			</div>
 
-			<div class="brick size11">
+			<div class="brick size12">
 				<div class='cover'>
 				</div>
 			</div>
@@ -120,12 +120,12 @@
 				</div>
 			</div>
 
-			<div class="brick size11"> 
+			<div class="brick size31"> 
 				<div class='cover'>
 				</div>
 			</div>
 
-			<div class="brick size11"> 
+			<div class="brick size13"> 
 				<div class='cover'> 
 				</div>
 			</div>
@@ -135,22 +135,30 @@
 				</div>
 			</div>
 			
-			
+			<div class="brick size13"> 
+				<div class='cover'>
+				</div>
+			</div>
 
 			
 		</div>
 		
 		<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-44036587-1']);
-			  _gaq.push(['_trackPageview']);
-
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-
+			var colour = [
+				"#0C465D",
+				"#608A0D",
+				"#760B48",
+				"#94530D",
+				"#181867",
+				"#450E63",
+				"#8A0D25",
+				"#503b22"
+			];
+			var color = colour.concat(colour);
+			$(".free-wall .brick").each(function() {
+				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);
+				this.setAttribute("data-bgcolor", this.style.backgroundColor);
+			});
 		</script>
 	</body>
 </html>
