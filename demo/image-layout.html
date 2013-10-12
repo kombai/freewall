@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Image layout with freewall</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Freewall demo for image layout" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, image layout"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
+	</head>
+	<body>
+		<div class='header'>
+			<div class="clearfix">
+				<div class="float-left">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+				</div>
+			</div>
+		</div>
+		<div id="freewall" class="free-wall"></div>
+		
+		<script type="text/javascript">
+			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+			var w = 1, h = 1, c ='', html = '', limitItem = 49;
+			for (var i = 0; i < limitItem; ++i) {
+				h = 1;
+				w = 90 +  30 * (5 * Math.random() << 0);
+				c = '#' + (16777216 * Math.random() << 0).toString(16);
+				html += temp.replace(/\{height\}/g, h*150)
+						.replace(/\{width\}/g, w)
+						.replace("{index}", i + 1);
+			}
+			$("#freewall").html(html);
+			
+			var ewall = new freewall("#freewall");
+			ewall.reset({
+				selector: '.cell',
+				animate: true,
+				block: {
+					flex: true
+				},
+				cell: {
+					width: 30,
+					height: 160
+				},
+				fillGap: 1,
+				onResize: function() {
+					ewall.fitWidth();
+				}
+			});
+			ewall.fitWidth();
+		</script>
+	</body>
+</html>
