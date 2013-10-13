@@ -327,12 +327,16 @@
 						// trying resize the next block to fit gap;
 						if (block == null && setting.fillGap) {
 							// resize near block to fill gap;
-							if (layout.minRow > rest && !check) {
-								lastBook && (lastBook.height += rest);
-							} else if (layout.minCol > rest && check) {
-								lastBook && (lastBook.width += rest);
+							if (layout.minRow > rest && !check && lastBook) {
+									lastBook.height += rest;
+									fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
+									continue;
+							} else if (layout.minCol > rest && check && lastBook) {
+									lastBook.width += rest;
+									fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
+									continue;
 							} else {
-								// get othr block fill to gap;
+								// get other block fill to gap;
 								for (var i = 0; i < items.length; ++i) {
 									if (items[i]['type'] == 'fixed') continue;
 									block = items.splice(i, 1)[0];
@@ -359,7 +363,7 @@
 								lastBook = wall[block.id];
 								fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
 							}
-						}
+						} 
 					}
 				}
 
