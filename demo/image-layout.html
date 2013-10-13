@@ -28,14 +28,10 @@
 		
 		<script type="text/javascript">
 			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
-			var w = 1, h = 1, c ='', html = '', limitItem = 49;
+			var w = 1, c ='', html = '', limitItem = 49;
 			for (var i = 0; i < limitItem; ++i) {
-				h = 1;
-				w = 150 +  30 * (5 * Math.random() << 0);
-				c = '#' + (16777216 * Math.random() << 0).toString(16);
-				html += temp.replace(/\{height\}/g, h*240)
-						.replace(/\{width\}/g, w)
-						.replace("{index}", i + 1);
+				w = 200 +  20 * (10 * Math.random() << 0);
+				html += temp.replace(/\{height\}/g, 240).replace(/\{width\}/g, w).replace("{index}", i + 1);
 			}
 			$("#freewall").html(html);
 			
@@ -47,7 +43,7 @@
 					flex: true
 				},
 				cell: {
-					width: 30,
+					width: 20,
 					height: 240
 				},
 				fillGap: 1,
