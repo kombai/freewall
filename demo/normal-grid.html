@@ -29,7 +29,7 @@
 		<script type="text/javascript">
 			
 			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
-			var w = 220, h = 220, html = '', limitItem = 49;
+			var w = 200, h = 200, html = '', limitItem = 49;
 			for (var i = 0; i < limitItem; ++i) {
 				html += temp.replace(/\{height\}/g, h).replace(/\{width\}/g, w).replace("{index}", i + 1);
 			}
@@ -43,8 +43,8 @@
 					flex: 1
 				},
 				cell: {
-					width: 220,
-					height: 220
+					width: 200,
+					height: 200
 				},
 				fillGap: true,
 				onResize: function() {
