@@ -31,9 +31,9 @@
 			var w = 1, h = 1, c ='', html = '', limitItem = 49;
 			for (var i = 0; i < limitItem; ++i) {
 				h = 1;
-				w = 90 +  30 * (5 * Math.random() << 0);
+				w = 150 +  30 * (5 * Math.random() << 0);
 				c = '#' + (16777216 * Math.random() << 0).toString(16);
-				html += temp.replace(/\{height\}/g, h*150)
+				html += temp.replace(/\{height\}/g, h*240)
 						.replace(/\{width\}/g, w)
 						.replace("{index}", i + 1);
 			}
@@ -48,7 +48,7 @@
 				},
 				cell: {
 					width: 30,
-					height: 160
+					height: 240
 				},
 				fillGap: 1,
 				onResize: function() {
