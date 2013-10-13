@@ -8,18 +8,14 @@ _Freewall is a responsive and cross-browser jQuery plugin for creating dynamic 
 Some example layouts can be created by Freewall:
 <br>
 ##### [Flexible layout](http://vnjs.net/www/project/freewall/demo/flex-layout.html)
-<br>
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/flex.png'>
 <br>
 ##### [Normal grid](http://vnjs.net/www/project/freewall/demo/normal-grid.html)
-<br>
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/grid.png'>
 <br>
 ##### [Images show](http://vnjs.net/www/project/freewall/demo/image-layout.html)
-<br>
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/images.png'>
 <br>
 ##### [Pinterest-like](http://vnjs.net/www/project/freewall/demo/pinterest-layout.html)
-<br>
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/pinterest.png'>
 
