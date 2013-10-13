@@ -29,7 +29,8 @@
 						wall.fitHeight($(window).outerHeight());
 					}
 				})
-				wall.fitHeight($(window).outerHeight() - 20);
+				wall.fitHeight($(window).outerHeight());
+				$(window).trigger("resize");
 			});
 		</script>
 	</head>
