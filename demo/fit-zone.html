@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Fit zone demo with freewall</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Fit zone demo with freewall" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, fit zone"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var wall = new freewall("#freewall");
+				wall.reset({
+					selector: '.brick',
+					block: {
+						flex: true
+					},
+					cell: {
+						width: 160,
+						height: 160
+					},
+					fillGap: true,
+					engine: 'slice',
+					onResize: function() {
+						wall.fitZone($(window).outerWidth(), $(window).outerHeight());
+					}
+				})
+				wall.fitZone($(window).outerWidth(), $(window).outerHeight());
+			});
+		</script>
+	</head>
+	<body>
+		<div id="freewall" class="free-wall">
+			<div class="brick size33"> 
+				<div class='cover'>
+					<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+				</div>
+			</div>	
+			<div class="brick size33"> 
+				<div class='cover'>
+					<h2>Demo fit zone with "slice" engine</h2>
+				</div>
+			</div>	
+			<div class="brick size21">
+				<div class='cover'>
+					<h2>Copyright</h2>
+					<p> © 2013 Minh Nguyen </p>
+					<p> Released under the MIT license</p>
+				</div>	
+			</div>
+			<div class="brick size22"> 
+				<div class='cover'>
+					<h2>Javascript flex layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size35">
+				<div class='cover'> 
+					<h2>Javascript grid layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size22">
+				<div class='cover'>
+					<h2>jQuery flex layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size22">
+				<div class='cover'>
+					<h2>jQuery grid layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size22">
+				<div class='cover'>
+					<h2>Dynamic grid layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size11">
+				<div class='cover'>
+					<h2>Flex layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size12">
+				<div class='cover'>
+					<h2>Grid layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size21">
+				<div class='cover'>
+					<h2>Dynamic grid</h2>
+				</div>
+			</div>
+
+			<div class="brick size11">
+				<div class='cover'>
+					<h2>Flex grid</h2>
+				</div>
+			</div>
+
+			<div class="brick size21">
+				<div class='cover'>
+					<h2>Responsive grid</h2>
+				</div>
+			</div>
+
+			<div class="brick size11"> 
+				<div class='cover'>
+					<h2>Responsive layout</h2>
+				</div>
+			</div>
+
+			<div class="brick size31"> 
+				<div class='cover'>
+				</div>
+			</div>
+
+			<div class="brick size13"> 
+				<div class='cover'> 
+				</div>
+			</div>
+
+			<div class="brick size11"> 
+				<div class='cover'>
+				</div>
+			</div>
+			
+			<div class="brick size13"> 
+				<div class='cover'>
+				</div>
+			</div>
+
+			
+		</div>
+		
+		<script type="text/javascript">
+			var colour = [
+				"#0C465D",
+				"#608A0D",
+				"#760B48",
+				"#94530D",
+				"#181867",
+				"#450E63",
+				"#8A0D25",
+				"#503b22"
+			];
+			var color = colour.concat(colour);
+			$(".free-wall .brick").each(function() {
+				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);
+				this.setAttribute("data-bgcolor", this.style.backgroundColor);
+			});
+		</script>
+	</body>
+</html>
