@@ -44,11 +44,11 @@
 
 		// check browser support transition;
 		var style = document.body.style;
-		style.webkitTransition != null ||
+		(style.webkitTransition != null ||
 		style.MozTransition != null ||
 		style.msTransition != null ||
-		style.oTransition != null ||
-		style.transition != null &&
+		style.OTransition != null ||
+		style.transition != null) &&
 		(layout.transition = true);
 	    
 
@@ -139,7 +139,7 @@
 			if (layout.transition) {
 				var browser = $.browser;
 				if (browser.webkit) {
-					item.style.WebkitTransition = trans;
+					item.style.webkitTransition = trans;
 				} else if (browser.mozilla) {
 					item.style.MozTransition = trans;
 				} else if (browser.msie) {
