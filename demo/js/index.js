@@ -129,7 +129,7 @@
 		},
 		options: function() {
 			$('.free-wall .options').click(function() {
-				var cwidth = wall.container.width();
+				var cwidth = wall.container.width() - 10;
 				var dna = $(this);
 				if (!dna.hasClass('full-width')) {
 					dna.addClass('full-width');
@@ -146,7 +146,7 @@
 		},
 		events: function() {
 			$('.free-wall .events').click(function() {
-				var cwidth = wall.container.width();
+				var cwidth = wall.container.width() - 10;
 				var dna = $(this);
 				if (!dna.hasClass('full-width')) {
 					dna.addClass('full-width');
@@ -163,7 +163,7 @@
 		},
 		methods: function() {
 			$('.free-wall .methods').click(function() {
-				var cwidth = wall.container.width();
+				var cwidth = wall.container.width() - 10;
 				var dna = $(this);
 				if (!dna.hasClass('full-width')) {
 					dna.addClass('full-width');
