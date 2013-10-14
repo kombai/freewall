@@ -80,8 +80,8 @@
 			var height = 1 * $item.attr('data-height');
 			var width = 1 * $item.attr('data-width');
 			
-			var row = Math.round(height / (cellHeight + gutter));
-			var col = Math.round(width / (cellWidth + gutter));
+			var row = !height ? 0 : Math.ceil((height + gutter) / (cellHeight + gutter));
+			var col = !width ? 0 : Math.ceil((width + gutter) / (cellWidth + gutter));
 			
 			var type = $item.hasClass('block-fixed') ? 'fixed' : col + '-' + row;
 			
