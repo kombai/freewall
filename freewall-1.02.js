@@ -1,6 +1,6 @@
 
 // created by Minh Nguyen;
-// version 1.01;
+// version 1.0.2;
 
 (function($) {
 
@@ -20,9 +20,9 @@
 				width: 150, // unit width;
 				height: 150
 			},
+			gutter: 10, // spacing between blocks;
 			engine: 'giot', //just a person name;
 			fillGap: false, 
-			gutter: 10, // spacing between blocks;
 			onResize: function() {},
 			onSetBlock: function() {}
 		};
@@ -40,6 +40,35 @@
 			minCol: Number.MAX_VALUE,
 			minRow: Number.MAX_VALUE,
 			transition: false
+		};
+
+		// css animation;
+		var moveTrans = "top 0.5s, left 0.5s, width 0.5s, height 0.5s";
+		var moveStyle = {
+			webkitTransition: moveTrans,
+			MozTransition: moveTrans,
+			msTransition: moveTrans,
+			OTransition: moveTrans,
+			transition: moveTrans
+		};
+		var initStyle = {
+			webkitTransform: "scale(0)",
+			MozTransform: "scale(0)",
+			msTransform: "scale(0)",
+			OTransform: "scale(0)",
+			transform: "scale(0)"
+		};
+		var startStyle = {
+			webkitTransition: "-webkit-transform 0.5s",
+			webkitTransform: "scale(1)",
+			MozTransition: "-moz-transform 0.5s",
+			MozTransform: "scale(1)",
+			msTransition: "-ms-transform 0.5s",
+			msTransform: "scale(1)",
+			OTransition: "-o-transform 0.5s",
+			OTransform: "scale(1)",
+			transition: "transform 0.5s",
+			transform: "scale(1)",
 		};
 
 		// check browser support transition;
@@ -66,13 +95,14 @@
 		});
 
 
-		function loadBlock(item, id) {
+		function loadBlock(item, index) {
 
-			var $item = $(item), block = null, gutter = setting.gutter;
+			var $item = $(item), block = null, gutter = setting.gutter, id = 'block-' + index;
 			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
+			$item.attr({ id: id, 'data-id': index });
 
 			var cellHeight = $item.hasClass('block-fixed') ? setting.cell.height : layout.cell.height;
 			var cellWidth = $item.hasClass('block-fixed') ? setting.cell.width : layout.cell.width;
@@ -133,42 +163,40 @@
 		function showBlock(item, id) {
 			
 			var method = setting.animate && !layout.transition ? 'animate' : 'css';
-			var $item = $(item);
-			var trans = "top 0.5s, left 0.5s, width 0.5s, height 0.5s";
-			
-			if (layout.transition) {
-				var browser = $.browser;
-				if (browser.webkit) {
-					item.style.webkitTransition = trans;
-				} else if (browser.mozilla) {
-					item.style.MozTransition = trans;
-				} else if (browser.msie) {
-					item.style.msTransition = trans;
-				} else if (browser.opera) {
-					item.style.OTransition = trans;
-				} else {
-					item.style.transition = trans;
-				}
-			}
+			var $item = $(item).stop();
+			var style = {};
+			var isMove = $item.attr('data-state') == 'move';
 
 			// for hidden block;
 			if (!layout.block[id]) {
-				$item.stop()[method]({
+				$item[method]({
 					opacity: 0,
 					width: 0,
 					height: 0
 				});
 			} else {
-				$item.stop()["css"]({
-					position: 'absolute',
-					opacity: 1,
-					width: layout.block[id]['width'],
-					height: layout.block[id]['height']
-				});
-				$item[method]({
-					top: layout.block[id]['top'],
-					left: layout.block[id]['left']
-				});
+
+				if (setting.animate && layout.transition) {
+					isMove ? $item.css(moveStyle) : $item.css(initStyle) && (style = startStyle);
+				}
+
+				function show() {
+					$item.css(
+						$.extend(style, {
+							position: 'absolute',
+							opacity: 1,
+							width: layout.block[id]['width'],
+							height: layout.block[id]['height']
+						})
+					);
+					// for animation with javascript;
+					$item[method]({
+						top: layout.block[id]['top'],
+						left: layout.block[id]['left']
+					});
+				}
+
+				isMove ? show() : setTimeout(show, 75 * $item.attr('data-id'));
 			}
 		}
 
@@ -427,8 +455,7 @@
 				layout.row = row;
 
 				items.each(function(index, item) {
-					item.id = 'block-' + ++index;
-					block = loadBlock(item, item.id);
+					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 				
@@ -486,8 +513,7 @@
 				layout.row = row;
 
 				items.each(function(index, item) {
-					item.id = 'block-' + ++index;
-					block = loadBlock(item, item.id);
+					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 				engine[setting.engine](activeBlock, col, row);
@@ -549,8 +575,7 @@
 				layout.row = row;
 
 				items.each(function(index, item) {
-					item.id = 'block-' + ++index;
-					block = loadBlock(item, item.id);
+					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 
