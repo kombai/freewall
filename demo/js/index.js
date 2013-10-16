@@ -7,14 +7,14 @@
 	var setting = {}, wall;
 	
 	var colour = [
-		"#0C465D",
-		"#608A0D",
-		"#760B48",
-		"#94530D",
-		"#181867",
-		"#450E63",
-		"#8A0D25",
-		"#503b22"
+		"#16A085",
+		"#27AE60",
+		"#2980B9",
+		"#8E44AD",
+		"#2C3E50",
+		"#F39C12",
+		"#D35400",
+		"#C0392B"
 	];
 
 	var func = {
@@ -69,7 +69,7 @@
 				$(this).addClass("active");
 				wall.container.width(preWidth);
 				
-				var cwidth = wall.container.width();
+				var cwidth = wall.container.width() - 10;
 				wall.container.find('.full-width')
 				.each(function(index, item){
 					wall.fixSize({

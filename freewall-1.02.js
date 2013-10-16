@@ -1,6 +1,6 @@
 
 // created by Minh Nguyen;
-// version 1.0.2;
+// version 1.02;
 
 (function($) {
 

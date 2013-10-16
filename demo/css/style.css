@@ -2,13 +2,16 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+
 @font-face {
-  font-family: 'Happy Monkey';
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: local('Happy Monkey'), local('HappyMonkey-Regular'), url(c2o0ps8nkBmaOYctqBq1rXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+  src: local('Lato Regular'), local('Lato-Regular'), url(9k-RPmcnxYEPm8CNFsH2gg.woff) format('woff');
 }
-
+/*
+@import url(http://fonts.googleapis.com/css?family=Happy+Monkey);
+*/
 html, body, div, span, applet, object, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -37,7 +40,7 @@ body {
 	line-height: 1.125em;
 	color: white;
 	position: relative;
-	font-family: 'Happy Monkey', Helvetica, Arial, Tahoma;
+	font-family: 'Lato', Helvetica, Arial, Tahoma;
 	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
 ol, ul {
@@ -47,8 +50,8 @@ ol, ul {
 }
 h1, h2, h3, h4, h5, h6 {
 	text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-	font-family: 'Happy Monkey', Georgia, "MS Sans Serif", Helvetica, Arial, verdana;
-	margin: 20px 0;
+	font-family: 'Lato', Georgia, Helvetica, Tahoma;
+	margin: 10px 0;
 	font-weight: normal;
 }
 h1 {
@@ -84,11 +87,13 @@ a:visited {
 h2 {
 	cursor: pointer;
 }
-pre {
-	color: #FFFFFF;
-	margin-left: -600px;
-	font-size: 1.2em;
+code, pre {
+	font-family: Monaco, Menlo, Consolas;
+	font-size: 1em;
+	color: white;
+	padding: 0 3px 2px;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -165,8 +170,8 @@ table {
 
 .header .reponsive-block a {
 	display: inline-block;
-	background: url(../i/reponsive.png) no-repeat;
 	margin: 0 5px;
+	background: url(../i/reponsive.png) no-repeat;
 }	
 
 .header .reponsive-block a.desktop {
@@ -176,22 +181,26 @@ table {
 
 .header .reponsive-block a.tablet-landscape {
 	background-position: -49px 0;
-	width: 22px; height: 22px;
+	width: 22px;
+	height: 22px;
 }	
 
 .header .reponsive-block a.tablet-portrait {
 	background-position: -90px 0;
-	width: 18px; height: 24px;
+	width: 18px;
+	height: 24px;
 }	
 
 .header .reponsive-block a.iphone-landscape {
 	background-position: -129px 0;
-	width: 20px; height: 20px;
+	width: 20px;
+	height: 20px;
 }	
 
 .header .reponsive-block a.iphone-portrait {
 	background-position: -166px 0;
-	width: 16px; height: 26px;
+	width: 16px;
+	height: 26px;
 }	
 
 .header .reponsive-block a.desktop:hover,
@@ -286,7 +295,7 @@ table {
 }	
 
 .img-demo li img {
-	border: 1px solid #FFFFDE;
+	border: 2px solid #FFFFDE;
 	width: 98px;
 	height: 98px;
 }
@@ -333,25 +342,14 @@ table {
 	padding-bottom: 50px;
 }
 
-.desc h2 span {float: left;display: block;line-height: 50px;}
+.desc h2 span {
+	float: left;
+	display: block;
+	line-height: 50px;
+}
 
 .brick {
-	background-color: #282828;
-	background-image:
-					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
-					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-	background-image:
-					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
-					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-	background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
-	background-repeat: repeat, repeat, repeat, repeat;
-	background-size: 8px 8px;
-	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 0px rgba(255, 255, 255, 0.2);
-	border-radius: 2px;
+	background-color: #2c3e50;
 	float: left;
 	color: #FFFFDE;
 	cursor: default;
@@ -370,7 +368,6 @@ table {
 	left: 0px;
 	right: 0px;
 	padding: 12px;
-	border-radius: 2px;
 	background: rgb(0, 0, 0);
 	background: rgba(0, 0, 0, 0.45);
 }
@@ -426,9 +423,9 @@ table {
 
 [class*="-share"] {
 	cursor: pointer;
-	padding-left: 30px;
-	line-height: 30px;
 	margin: 20px 0;
+	line-height: 30px;
+	padding-left: 30px;
 }
 
 .facebook-share {
@@ -452,17 +449,17 @@ table {
 
 .download-icon {
 	background: url(../i/download.png) no-repeat left center;
-	padding-left: 30px;
-	line-height: 30px;
 	display: block;
 	margin: 0 0 10px 0;
+	line-height: 30px;
+	padding-left: 30px;
 }
 
 .js-icon {
 	background: url(../i/js.png) no-repeat left center;
-	padding-left: 30px;
-	line-height: 30px;
 	display: block;
+	line-height: 30px;
+	padding-left: 30px;
 }
 
 .back-button {
@@ -488,43 +485,3 @@ table {
 .back-button .back-icon:hover {
 	background: url(../i/back.png) no-repeat bottom center;
 }
-/*
-@-webkit-keyframes start {
-	from {
-		-webkit-transform:rotate(360deg) scale(6);
-		opacity: 0;
-	}
-	to {
-		-webkit-transform:rotate(0deg) scale(1);
-		opacity: 1;
-	}
-}
-
-@-moz-keyframes start {
-	from {
-		-moz-transform:rotate(360deg) scale(6);
-		opacity: 0;
-	}
-	to {
-		-moz-transform:rotate(0deg) scale(1);
-		opacity: 1;
-	}
-}
-
-@-ms-keyframes start {
-	from {
-		-ms-transform:rotate(360deg) scale(12);
-		opacity: 0;
-	}
-	to {
-		-ms-transform:rotate(0deg) scale(1);
-		opacity: 1;
-	}
-}
-
-.free-wall .brick[data-state="start"]  {
-	-webkit-animation: start 0.8s;
-	-moz-animation: start 0.8s;
-	-ms-animation: start 0.8s;
-}
-*/

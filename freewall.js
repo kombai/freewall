@@ -20,9 +20,9 @@
 				width: 150, // unit width;
 				height: 150
 			},
+			gutter: 10, // spacing between blocks;
 			engine: 'giot', //just a person name;
 			fillGap: false, 
-			gutter: 10, // spacing between blocks;
 			onResize: function() {},
 			onSetBlock: function() {}
 		};
@@ -133,10 +133,11 @@
 		function showBlock(item, id) {
 			
 			var method = setting.animate && !layout.transition ? 'animate' : 'css';
-			var $item = $(item);
-			var trans = "top 0.5s, left 0.5s, width 0.5s, height 0.5s";
+			var $item = $(item).stop();
+			var start = $item.attr("data-state") != "move";
+			var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s";
 			
-			if (layout.transition) {
+			if (setting.animate && layout.transition) {
 				var browser = $.browser;
 				if (browser.webkit) {
 					item.style.webkitTransition = trans;
@@ -153,18 +154,20 @@
 
 			// for hidden block;
 			if (!layout.block[id]) {
-				$item.stop()[method]({
+				$item[method]({
 					opacity: 0,
 					width: 0,
 					height: 0
 				});
 			} else {
-				$item.stop()["css"]({
+				$item["css"]({
 					position: 'absolute',
 					opacity: 1,
 					width: layout.block[id]['width'],
 					height: layout.block[id]['height']
 				});
+
+				// for animating by javascript;
 				$item[method]({
 					top: layout.block[id]['top'],
 					left: layout.block[id]['left']

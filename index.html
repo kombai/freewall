@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Freewall - jQuery plugin for creating grid layouts. </title>
+		<title>Freewall - jQuery plugin for creating grid layout</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
-		<meta name="description" content="Freewall - A responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet" />
+		<meta name="description" content="Freewall - A responsive and cross-browser jQuery plugin for creating dynamic grid layout for desktop, mobile and tablet" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, flex layout, grid layout, image layout, pinterest like layout"/>
-		<meta name="og:image" content="http://vnjs.net/www/project/freewall/i/flex.png" />
-		<meta name="og:description" content="Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet." />
+		<meta name="og:image" content="http://vnjs.net/www/project/freewall/demo/i/flex.png" />
+		<meta name="og:description" content="Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layout for desktop, mobile and tablet." />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="demo/css/style.css" />
 		<script type="text/javascript" src="demo/js/jquery-1.7.min.js"></script>
@@ -15,13 +15,13 @@
 		<script type="text/javascript">
 			$(function() {
 				app.setup({
+					share: 1,
 					color: 1,
 					layout: 1,
-					options: 1,
+					filter: 1,
 					events: 1,
 					methods: 1,
-					filter: 1,
-					share: 1
+					options: 1
 				});
 			});
 		</script>
@@ -31,7 +31,7 @@
 			<div class="clearfix">
 				<div class="float-left">
 						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+						<div class='target'>Creating dynamic grid layout without gaps.</div>
 				</div>
 				<ul class="float-right reponsive-block">
 					<li><a class="desktop active" data-width="96%"></a></li> 
@@ -47,7 +47,7 @@
 				<div class='cover'>
 					<h2>What is Freewall?</h2>
 					<p>
-						Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet. Freewall is all-in-one solution help you to create many types of grid layout (flexible layout, grid layout, images layout, pinterest-like layout, etc) with nice CSS3 animation effects and call back events.
+						Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layout for desktop, mobile and tablet. Freewall is all-in-one solution help you to create many types of grid layout (flexible layout, grid layout, images layout, pinterest-like layout, etc) with nice CSS3 animation effects and call back events.
 					</p>
 					<h4>Some example layouts:</h4>
 					<ul class="img-demo">
@@ -86,42 +86,42 @@
 						<p> Freewall requires jQuery framework.  It requires browsers which support CSS3 for some nice animation effects.</p>
 						<pre>
 							<code>
-							    &lt;!DOCTYPE html&gt;
-							    &lt;html&gt;
-							    &lt;head&gt;
-							      &lt;title&gt; freewall demo getting started&lt;/title&gt;
-							      &lt;script src="js/jquery-1.7.min.js"&gt;&lt;/script&gt;
-							      &lt;script src="js/freewall.js"&gt;&lt;/script&gt;
-							      &lt;style type="text/css"&gt;
-							        #container {
-							          width: 80%;
-							          margin: auto;
-							        }
-							        .item {
-							          background: rgb(135, 199, 135);
-							          width: 320px;
-							          height: 320px;
-							        }
-							      &lt;/style&gt;
-							    &lt;/head&gt;
-							    &lt;body&gt;
-							      &lt;ul id="container"&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							        &lt;li class="item"&gt;&lt;/li&gt;
-							      &lt;/ul&gt;
-							      &lt;script&gt;
-							        $(function() {
-							          var wall = new freewall("#container");
-							          wall.fitWidth();
-							        });
-							      &lt;/script&gt;
-							    &lt;/body&gt;
-							    &lt;/html&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt; freewall demo getting started&lt;/title&gt;
+  &lt;script src="js/jquery-1.7.min.js"&gt;&lt;/script&gt;
+  &lt;script src="js/freewall.js"&gt;&lt;/script&gt;
+  &lt;style type="text/css"&gt;
+    #container {
+      width: 80%;
+      margin: auto;
+    }
+    .item {
+      background: rgb(135, 199, 135);
+      width: 320px;
+      height: 320px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;ul id="container"&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+    &lt;li class="item"&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;script&gt;
+    $(function() {
+      var wall = new freewall("#container");
+      wall.fitWidth();
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 							</code>
 						</pre>
 					</div>
@@ -181,19 +181,19 @@
 								<h3> Example </h3>
 								<pre>
 								<code>
-								    var wall = new freewall('.free-wall');
-								    wall.reset({
-								      selector: '.brick',
-								      animate: true,
-								      block: {
-								        flex: true
-								      },
-								      cell: {
-								        width: 150,
-								        height: 150
-								      },
-								      fillGap: false
-								    });
+var wall = new freewall('.free-wall');
+wall.reset({
+  selector: '.brick',
+  animate: true,
+  block: {
+    flex: true
+  },
+  cell: {
+    width: 150,
+    height: 150
+  },
+  fillGap: false
+});
 								</code>
 								</pre>
 							</li>	
@@ -226,15 +226,15 @@
 							<li>
 								<h3> Example </h3>
 								<pre>
-								<code>
-								    var wall = new freewall('.free-wall');
-								    wall.reset({
-								      selector: '.brick',
-								      onResize: function() {
-								        this.fitWidth();
-								      }
-								    });
-								</code>
+									<code>
+var wall = new freewall('.free-wall');
+wall.reset({
+  selector: '.brick',
+  onResize: function() {
+    this.fitWidth();
+  }
+});
+									</code>
 								</pre>
 							</li>
 							<li>
@@ -283,17 +283,17 @@
 								<div> Set a block with special width or height</div>
 								<h5> Example </h5>
 								<pre>
-								<code>
-								    var wall = new freewall('.free-wall');
-								    var dna = $(".free-wall .flex-layout");
-								    wall.unsetFilter();
-								    wall.fixSize({
-								        block: dna,
-								        width: 150,
-								        height: 150
-									});
-								    wall.fitWidth();
-								</code>
+									<code>
+var wall = new freewall('.free-wall');
+var dna = $(".free-wall .flex-layout");
+wall.unsetFilter();
+wall.fixSize({
+  block: dna,
+  width: 150,
+  height: 150
+});
+wall.fitWidth();
+									</code>
 								</pre>
 							</li>
 							<li>
@@ -301,23 +301,23 @@
 								<div> Config options for render layout.</div>
 								<h5> Example </h5>
 								<pre>
-								<code>
-								    var ewall = new freewall(demo);
-								    var demo = $(".example");
-								    ewall.reset({
-								      selector: '.cell',
-								      animate: false,
-								      block: {
-								        flex: 1
-								      },
-								      cell: {
-								        width: 150,
-								        height: 150
-								      },
-								      fillGap: true
-								    });
-								    ewall.fitWidth(cwidth);
-								</code>
+									<code>
+var ewall = new freewall(demo);
+var demo = $(".example");
+ewall.reset({
+  selector: '.cell',
+  animate: false,
+  block: {
+    flex: 1
+  },
+  cell: {
+    width: 150,
+    height: 150
+  },
+  fillGap: true
+});
+ewall.fitWidth(cwidth);
+									</code>
 								</pre>
 							</li>
 							<li>
@@ -352,7 +352,7 @@
 				</div>
 			</div>
 
-			<div class="brick size22">
+			<div class="brick size11">
 				<div class='cover'>
 					<h2>Download</h2>
 					<a href='https://github.com/kombai/freewall/archive/master.zip' target='_blank' class="download-icon">Project</a>
@@ -373,9 +373,9 @@
 						</h2>
 						<pre>
 							<code>
-							    new freewall('.free-wall')
-							    .setFilter('.size22, .size11')
-							    .fitWidth();
+new freewall('.free-wall')
+.setFilter('.size22, .size11')
+.fitWidth();
 							</code>
 						</pre>
 					</div>
@@ -456,16 +456,15 @@
 			<a href="javascript:void(0)" class="back-icon"></a>
 		</div>
 		<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-44036587-1']);
-			  _gaq.push(['_trackPageview']);
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-44036587-1']);
+			_gaq.push(['_trackPageview']);
 
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
 		</script>
 	</body>
 </html>
