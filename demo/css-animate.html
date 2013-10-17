@@ -30,31 +30,37 @@
 			
 			@-ms-keyframes start {
 				from {
-					-ms-transform: rotate(720deg) scale(0);
+					-ms-transform: scale(0);
 				}
 				to {
-					-ms-transform: rotate(0deg) scale(1);
+					-ms-transform: scale(1);
 				}
 			}
 
 			@-moz-keyframes start {
 				from {
-					-moz-transform: rotate(720deg) scale(0);
+					-moz-transform: scale(0);
 				}
 				to {
-					-moz-transform: rotate(0deg) scale(1);
+					-moz-transform: scale(1);
 				}
 			}
 
 			@-webkit-keyframes start {
 				from {
-					-webkit-transform: rotate(720deg) scale(0);
+					-webkit-transform: scale(0);
 				}
 				to {
-					-webkit-transform: rotate(0deg) scale(1);
+					-webkit-transform: scale(1);
 				}
 			}
+
+			.free-wall .cell[data-state="init"] {
+				display: none;
+			}
+
 			.free-wall .cell[data-state="start"]  {
+				display: block;
 				-ms-animation: start 0.5s;
 				-moz-animation: start 0.5s;
 				-webkit-animation: start 0.5s;
@@ -99,6 +105,7 @@
 					width: 200,
 					height: 200
 				},
+				delay: 50,
 				fillGap: true,
 				onResize: function() {
 					ewall.fitWidth();

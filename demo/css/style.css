@@ -82,7 +82,7 @@ a:hover {
 	opacity: 0.9;
 }
 a:visited {
-	color: #FFFFDE;
+	color: white;
 }
 h2 {
 	cursor: pointer;
@@ -151,6 +151,7 @@ table {
 .header .reponsive-block a {
 	display: inline-block;
 	margin: 0 5px;
+	cursor: pointer;
 	background: url(../i/reponsive.png) no-repeat;
 }	
 

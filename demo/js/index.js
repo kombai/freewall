@@ -66,6 +66,14 @@
 
 			// for responsive demo;
 			$(".reponsive-block li>a").click(function() {
+				var viewWidth = $(window).width();
+				var preWidth = $(this).data("width");
+				
+				if (preWidth != "auto" && (preWidth - viewWidth) > 0) {
+					alert('The screen width not enought to test this size');
+					return;
+				}
+
 				$(".reponsive-block li>a").removeClass("active");
 				var preWidth = $(this).data("width");
 				var margin = "10px auto";
@@ -81,7 +89,7 @@
 				.each(function(index, item){
 					wall.fixSize({
 						block: item,
-						width: cwidth * 0.9
+						width: cwidth * 0.88
 					});
 				});
 				wall.fitWidth();
