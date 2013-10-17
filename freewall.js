@@ -279,6 +279,8 @@
 					wall.hasOwnProperty(i) && setBlock(wall[i]);
 				}
 
+				setZoneSize(col, row);
+
 				return wall;
 			},
 			// just a person name;
@@ -400,8 +402,8 @@
 				// adjust size unit for fit height;
 				if (!$.isNumeric(gutter)) {
 					gutter = (height - row * cellHeight) / Math.max(1, (row - 1));
-					gutter = Math.max(0, gutter << 0);
-					setting.gutter = gutter;
+					gutter = Math.max(0, gutter);
+					setting.gutter = gutter.toFixed(2);
 				} else {
 					row = Math.max(1, height / (cellHeight + gutter) << 0);
 				}
@@ -409,7 +411,7 @@
 				var deltaXY = 0;
 				if (setting.block.flex) {
 					deltaXY = (height + gutter) / row - (cellHeight + gutter);
-					deltaXY = Math.max(0, deltaXY << 0);
+					deltaXY = Math.max(0, deltaXY.toFixed(2));
 					layout.cell.height = cellHeight + deltaXY;
 					layout.cell.width = cellWidth + deltaXY;
 				} else {
@@ -458,8 +460,8 @@
 				// adjust size unit for fit width;
 				if (!$.isNumeric(gutter)) {
 					gutter = (width - col * cellWidth) / Math.max(1, (col - 1));
-					gutter = Math.max(0, gutter << 0);
-					setting.gutter = gutter;
+					gutter = Math.max(0, gutter);
+					setting.gutter = gutter.toFixed(2);
 				} else {
 					// correct total column with gutter;
 					col = Math.max(1, width / (cellWidth + gutter) << 0);
@@ -468,7 +470,7 @@
 				var deltaXY = 0;
 				if (setting.block.flex) {
 					deltaXY = (width + gutter) / col - (cellWidth + gutter);
-					deltaXY = Math.max(0, deltaXY << 0);
+					deltaXY = Math.max(0, deltaXY.toFixed(2));
 					layout.cell.height = cellHeight + deltaXY;
 					layout.cell.width = cellWidth + deltaXY;
 				} else {
@@ -516,12 +518,12 @@
 				var col = Math.max(1, width / cellWidth << 0);
 				var row = Math.max(1, height / cellHeight << 0);
 
-				// adjust size unit for fit height;
+				// adjust size unit for fit zone;
 				if (!$.isNumeric(gutter)) {
 					var gutterX = (width - col * cellWidth) / Math.max(1, (col - 1));
 					var gutterY = (height - row * cellHeight) / Math.max(1, (row - 1));
-					gutter = Math.max(0, (gutterX + gutterY) / 2 << 0);
-					setting.gutter = gutter;
+					gutter = Math.max(0, (gutterX + gutterY) / 2);
+					setting.gutter = gutter.toFixed(2);
 				} else {
 					col = Math.max(1, width / (cellWidth + gutter) << 0);
 					row = Math.max(1, height / (cellHeight + gutter) << 0);
@@ -530,9 +532,9 @@
 				var deltaX = 0, deltaY = 0;
 				if (setting.block.flex) {
 					deltaY = (height + gutter) / row - (cellHeight + gutter);
-					deltaY = Math.max(0, deltaY);
+					deltaY = Math.max(0, deltaY.toFixed(2));
 					deltaX = (width + gutter) / col - (cellWidth + gutter);
-					deltaX = Math.max(0, deltaX);
+					deltaX = Math.max(0, deltaX.toFixed(2));
 					layout.cell.width = cellWidth + deltaX;
 					layout.cell.height = cellHeight + deltaY;
 				} else {

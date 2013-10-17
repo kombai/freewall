@@ -8,58 +8,64 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
-		<script type="text/javascript" src="../freewall-1.02.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
+			html {
+				height: 100%;
+			}
+
 			body {
+				height: 100%;
 				background-color: rgb(32, 27, 27);
 			}
+			
 			.free-wall {
-				width: 96%;
+				height: 102%;
+				margin: 10px;
+			}
+
+			.free-wall .cell {
+				background-color: white;
 			}
 			
-			.free-wall .cell {
-				background-color: rgb(96, 138, 13);
-			}
-			/*
-			@-webkit-keyframes start {
+			@-ms-keyframes start {
 				from {
-					-webkit-transform:rotate(720deg) scale(0);
-					opacity: 0;
+					-ms-transform: rotate(720deg) scale(0);
 				}
 				to {
-					-webkit-transform:rotate(0deg) scale(1);
-					opacity: 1;
+					-ms-transform: rotate(0deg) scale(1);
 				}
 			}
 
 			@-moz-keyframes start {
 				from {
-					-moz-transform:rotate(720deg) scale(0);
-					opacity: 0;
+					-moz-transform: rotate(720deg) scale(0);
 				}
 				to {
-					-moz-transform:rotate(0deg) scale(1);
-					opacity: 1;
+					-moz-transform: rotate(0deg) scale(1);
 				}
 			}
 
-			@-ms-keyframes start {
+			@-webkit-keyframes start {
 				from {
-					-ms-transform:rotate(720deg) scale(0);
-					opacity: 0;
+					-webkit-transform: rotate(720deg) scale(0);
 				}
 				to {
-					-ms-transform:rotate(0deg) scale(1);
-					opacity: 1;
+					-webkit-transform: rotate(0deg) scale(1);
 				}
 			}
-
 			.free-wall .cell[data-state="start"]  {
-				-webkit-animation: start 1.8s;
-				-moz-animation: start 1.8s;
-				-ms-animation: start 1.8s;
+				-ms-animation: start 0.5s;
+				-moz-animation: start 0.5s;
+				-webkit-animation: start 0.5s;
 			}
-			*/
+
+			.free-wall .cell[data-state="move"]  {
+				-ms-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+				-moz-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+				-webkit-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -85,7 +91,7 @@
 			var ewall = new freewall("#freewall");
 			ewall.reset({
 				selector: '.cell',
-				animate: true,
+				animate: false,
 				block: {
 					flex: 1
 				},

@@ -14,7 +14,7 @@
 				background-color: rgb(32, 27, 27);
 			}
 			.free-wall {
-				width: 96%;
+				margin: 10px;
 			}
 		</style>
 	</head>
@@ -50,12 +50,13 @@
 					width: 200,
 					height: 20
 				},
-				fillGap: true,
 				onResize: function() {
 					ewall.fitWidth();
 				}
 			});
 			ewall.fitWidth();
+			// for scroll bar appear;
+			$(window).trigger("resize");
 		</script>
 	</body>
 </html>

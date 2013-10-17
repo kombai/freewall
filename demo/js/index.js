@@ -29,7 +29,7 @@
 		layout: function() {
 			var lwidth = $(window).width();
 			wall = new freewall('.free-wall');
-			wall.container.width('96%')
+			//wall.container.width('auto')
 			wall.reset({
 				selector: '.brick',
 				animate: true,
@@ -54,6 +54,7 @@
 				}
 			});
 			wall.fitWidth();
+			$(window).trigger("resize");
 
 			wall.container.find(".brick").each(function() {
 				var $item = $(this);
@@ -67,15 +68,20 @@
 			$(".reponsive-block li>a").click(function() {
 				$(".reponsive-block li>a").removeClass("active");
 				var preWidth = $(this).data("width");
+				var margin = "10px auto";
+				preWidth == "auto" && (margin = "10px");
+				wall.container.css({
+					margin: margin,
+					width: preWidth
+				});
+
 				$(this).addClass("active");
-				wall.container.width(preWidth);
-				
-				var cwidth = wall.container.width() - 10;
+				var cwidth = wall.container.width();
 				wall.container.find('.full-width')
 				.each(function(index, item){
 					wall.fixSize({
 						block: item,
-						width: cwidth
+						width: cwidth * 0.9
 					});
 				});
 				wall.fitWidth();

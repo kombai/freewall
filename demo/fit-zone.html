@@ -3,6 +3,7 @@
 	<head>
 		<title>Fit zone demo with freewall</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 		<meta name="description" content="Fit zone demo with freewall" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, fit zone"/>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -24,15 +25,21 @@
 					fillGap: true,
 					engine: 'slice',
 					onResize: function() {
-						wall.fitZone($(window).outerWidth(), $(window).outerHeight());
+						wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
 					}
 				})
-				wall.fitZone($(window).outerWidth(), $(window).outerHeight());
+				wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
+				// for scroll bar appear;
+				$(window).trigger("resize");
 			});
 		</script>
 		<style type="text/css">
 			body {
-				background-color: rgb(32, 27, 27);
+				height: 100%;
+				overflow: hidden;
+			}
+			.free-wall {
+				margin: 10px
 			}
 		</style>
 	</head>
