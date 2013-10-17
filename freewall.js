@@ -20,6 +20,7 @@
 				width: 150, // unit width;
 				height: 150
 			},
+			delay: 0, // slowdown active block;
 			gutter: 10, // spacing between blocks;
 			engine: 'giot', //just a person name;
 			fillGap: false, 
@@ -66,13 +67,14 @@
 		});
 
 
-		function loadBlock(item, id) {
+		function loadBlock(item, index) {
 
-			var $item = $(item), block = null, gutter = setting.gutter;
+			var $item = $(item), block = null, gutter = setting.gutter, id = 'block-' + index;
 			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
+			$item.attr({ id: id, 'data-id': index });
 
 			var cellHeight = $item.hasClass('block-fixed') ? setting.cell.height : layout.cell.height;
 			var cellWidth = $item.hasClass('block-fixed') ? setting.cell.width : layout.cell.width;
@@ -103,7 +105,7 @@
 			}
 
 			if ($item.attr("data-state") == null) {
-				$item.attr("data-state", "start");
+				$item.attr("data-state", "init");
 			} else {
 				$item.attr("data-state", "move");
 			}
@@ -151,28 +153,37 @@
 					item.style.transition = trans;
 				}
 			}
+			// only allow the last transition;
+			item.delay && clearTimeout(item.delay);
 
-			// for hidden block;
-			if (!layout.block[id]) {
-				$item[method]({
-					opacity: 0,
-					width: 0,
-					height: 0
-				});
-			} else {
-				$item["css"]({
-					position: 'absolute',
-					opacity: 1,
-					width: layout.block[id]['width'],
-					height: layout.block[id]['height']
-				});
+			function action() {
+				// start to arrange;
+				start && $item.attr("data-state", "start");
+				
+				// for hidden block;
+				if (!layout.block[id]) {
+					$item[method]({
+						opacity: 0,
+						width: 0,
+						height: 0
+					});
+				} else {
+					$item["css"]({
+						position: 'absolute',
+						opacity: 1,
+						width: layout.block[id]['width'],
+						height: layout.block[id]['height']
+					});
 
-				// for animating by javascript;
-				$item[method]({
-					top: layout.block[id]['top'],
-					left: layout.block[id]['left']
-				});
+					// for animating by javascript;
+					$item[method]({
+						top: layout.block[id]['top'],
+						left: layout.block[id]['left']
+					});
+				}
 			}
+
+			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-id"))) : action(); 
 		}
 
 		function setZoneSize (col, row) {
@@ -432,8 +443,7 @@
 				layout.row = row;
 
 				items.each(function(index, item) {
-					item.id = 'block-' + ++index;
-					block = loadBlock(item, item.id);
+					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 				
@@ -491,8 +501,7 @@
 				layout.row = row;
 
 				items.each(function(index, item) {
-					item.id = 'block-' + ++index;
-					block = loadBlock(item, item.id);
+					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 				engine[setting.engine](activeBlock, col, row);
@@ -554,8 +563,7 @@
 				layout.row = row;
 
 				items.each(function(index, item) {
-					item.id = 'block-' + ++index;
-					block = loadBlock(item, item.id);
+					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 
