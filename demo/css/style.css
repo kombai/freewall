@@ -36,7 +36,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	background: rgb(32, 27, 27);
+	/*background: rgb(32, 27, 27);*/
 	line-height: 1.125em;
 	color: white;
 	position: relative;
@@ -75,10 +75,10 @@ h6 {
 }
 a {
 	text-decoration: none;
-	color: #FFFFDE;
+	color: white;
 }
 a:hover {
-	color: #FFFFFF;
+	color: white;
 	opacity: 0.9;
 }
 a:visited {
@@ -90,7 +90,7 @@ h2 {
 code, pre {
 	font-family: Monaco, Menlo, Consolas;
 	font-size: 1em;
-	color: white;
+	color: #FFFFDE;
 	padding: 0 3px 2px;
 }
 
@@ -102,6 +102,7 @@ table {
 .header {
 	padding: 14px 0;
 	background-color: rgb(19, 17, 17);
+	background-color: #006a3f;
 	background-image:	
 					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
 					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
@@ -116,26 +117,6 @@ table {
     background-size: 8px 8px;
 	margin-bottom: 30px;
 	border-bottom: 1px solid rgb(41, 41, 41);
-}
-.header:after {
-	background: rgb(19, 17, 17);
-	background: 
-				linear-gradient(115deg, transparent 75%, rgba(32, 27, 27,1) 75%) 0 0,
-				linear-gradient(245deg, transparent 75%, rgba(32, 27, 27,1) 75%) 0 0,
-				linear-gradient(115deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px,
-				linear-gradient(245deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px, transparent;
-	background: 
-				-webkit-linear-gradient(25deg, transparent 75%, rgba(32, 27, 27,1) 75%) 0 0,
-				-webkit-linear-gradient(150deg, transparent 75%, rgba(32, 27, 27,1) 75%) 0 0,
-				-webkit-linear-gradient(25deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px,
-				-webkit-linear-gradient(150deg, transparent 75%, rgba(32, 27, 27,1) 75%) 7px -15px, transparent;
-
-	background-size: 60px 2px;
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 15px;
-	margin: 0 -20px;
 }
 
 .header div.float-left {
@@ -289,13 +270,12 @@ table {
 
 .img-demo li {
 	float: left;
-	width: 100px;
-	margin: 4px;
+	width: 25%;
 	text-align: center;
 }	
 
 .img-demo li img {
-	border: 2px solid #FFFFDE;
+	border: 2px solid white;
 	width: 98px;
 	height: 98px;
 }
@@ -336,7 +316,7 @@ table {
 }
 
 .desc h2 {
-	border-bottom: 2px dotted rgb(255,255,222);
+	border-bottom: 1px solid rgba(0,0,0,0.1);
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-bottom: 50px;
@@ -351,7 +331,6 @@ table {
 .brick {
 	background-color: #2c3e50;
 	float: left;
-	color: #FFFFDE;
 	cursor: default;
 	overflow: hidden;
 }
@@ -398,6 +377,15 @@ table {
 
 .full-width.brick .cover { 
 	margin: 0px 20px;
+	color: #333;
+}
+
+.full-width.brick .cover * {
+	text-shadow: none;
+}
+
+.full-width.brick .cover code {
+	color: #666;
 }
 
 .open .float-left {
@@ -463,7 +451,6 @@ table {
 }
 
 .back-button {
-	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 0px rgba(255, 255, 255, 0.2);
 	position: fixed;
 	z-index: 9999;
 	padding: 1%;
@@ -471,8 +458,6 @@ table {
 	right: 2%;
 	display: none;
 	background: black;
-	margin-right: 4px;
-	border-radius: 2px;
 }
 
 .back-button .back-icon {
