@@ -28,24 +28,16 @@
 				background-color: white;
 			}
 			
-			@-ms-keyframes start {
+			@keyframes start {
 				from {
-					-ms-transform: scale(0);
+					transform: scale(0);
 				}
 				to {
-					-ms-transform: scale(1);
+					transform: scale(1);
 				}
 			}
 
-			@-moz-keyframes start {
-				from {
-					-moz-transform: scale(0);
-				}
-				to {
-					-moz-transform: scale(1);
-				}
-			}
-
+			
 			@-webkit-keyframes start {
 				from {
 					-webkit-transform: scale(0);
@@ -61,14 +53,12 @@
 
 			.free-wall .cell[data-state="start"]  {
 				display: block;
-				-ms-animation: start 0.5s;
-				-moz-animation: start 0.5s;
+				animation: start 0.5s;
 				-webkit-animation: start 0.5s;
 			}
 
 			.free-wall .cell[data-state="move"]  {
-				-ms-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
-				-moz-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+				transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
 				-webkit-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
 			}
 			

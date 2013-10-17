@@ -14,6 +14,7 @@
 				var wall = new freewall("#freewall");
 				wall.reset({
 					selector: '.brick',
+					animate: false,
 					block: {
 						flex: true
 					},
@@ -21,6 +22,7 @@
 						width: 160,
 						height: 160
 					},
+					delay: 50,
 					fillGap: true,
 					engine: 'slice',
 					onResize: function() {
@@ -28,8 +30,6 @@
 					}
 				})
 				wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
-				// for scroll bar appear;
-				$(window).trigger("resize");
 			});
 		</script>
 		<style type="text/css">
@@ -37,8 +37,42 @@
 				height: 100%;
 				overflow: hidden;
 			}
+	
 			.free-wall {
 				margin: 10px
+			}
+
+			@keyframes start {
+				from {
+					transform: scale(0);
+				}
+				to {
+					transform: scale(1);
+				}
+			}
+
+			@-webkit-keyframes start {
+				from {
+					-webkit-transform: scale(0);
+				}
+				to {
+					-webkit-transform: scale(1);
+				}
+			}
+
+			.free-wall .brick[data-state="init"] {
+				display: none;
+			}
+
+			.free-wall .brick[data-state="start"]  {
+				display: block;
+				animation: start 0.5s;
+				-webkit-animation: start 0.5s;
+			}
+
+			.free-wall .brick[data-state="move"]  {
+				transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+				-webkit-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
 			}
 		</style>
 	</head>

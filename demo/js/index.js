@@ -70,7 +70,7 @@
 				var preWidth = $(this).data("width");
 				
 				if (preWidth != "auto" && (preWidth - viewWidth) > 0) {
-					alert('The screen width not enought to test this size');
+					alert('The screen\'s width not enought to test this size');
 					return;
 				}
 
