@@ -4,10 +4,13 @@
 
 (function($) {
 
+	var gi = 0;
+
 	self.freewall = function(selector) {
 
 		var container = $(selector).css({position: 'relative'});
 		var klass = this;
+		++ gi;
 
 		// default setting;
 		var setting = {
@@ -69,7 +72,7 @@
 
 		function loadBlock(item, index) {
 
-			var $item = $(item), block = null, gutter = setting.gutter, id = 'block-' + index;
+			var $item = $(item), block = null, gutter = setting.gutter, id = gi + '-' + index;
 			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
@@ -181,6 +184,8 @@
 						left: layout.block[id]['left']
 					});
 				}
+
+				setting.onSetBlock.call(item);
 			}
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-id"))) : action(); 
@@ -202,7 +207,7 @@
 
 				var block = items.shift();
 				var wall = {};
-				
+				console.log(items)
 				wall[block.id] = {
 					id: block.id,
 					x: 0,
@@ -451,7 +456,6 @@
 				
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
-					setting.onSetBlock.call(item);
 				});
 			},
 
@@ -509,7 +513,6 @@
 				container.height(layout.height << 0);
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
-					setting.onSetBlock.call(item);
 				});
 				
 			},
@@ -571,7 +574,6 @@
 				
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
-					setting.onSetBlock.call(item);
 				});
 				
 			},
