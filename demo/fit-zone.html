@@ -15,15 +15,11 @@
 				wall.reset({
 					selector: '.brick',
 					animate: false,
-					block: {
-						flex: true
-					},
 					cell: {
 						width: 160,
 						height: 160
 					},
 					delay: 50,
-					fillGap: true,
 					engine: 'slice',
 					onResize: function() {
 						wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
@@ -39,7 +35,7 @@
 			}
 	
 			.free-wall {
-				margin: 10px
+				margin: 10px;
 			}
 
 			@keyframes start {

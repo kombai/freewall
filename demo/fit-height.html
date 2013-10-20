@@ -16,14 +16,10 @@
 				var wall = new freewall("#freewall");
 				wall.reset({
 					selector: '.brick',
-					block: {
-						flex: true
-					},
 					cell: {
 						width: 160,
 						height: 160
 					},
-					fillGap: true,
 					onResize: function() {
 						wall.fitHeight($(window).outerHeight());
 					}

@@ -15,10 +15,11 @@
 				height: 100%;
 			}
 			.free-wall {
+				background: white;
 				margin: 6em;
 			}
 			.brick {
-				
+				background: white;
 			}
 			.brick .cover {
 				margin: 0px;
@@ -26,54 +27,57 @@
 				height: 100%;
 			}
 			.tag {
-				float: left;
+				display: inline-block;
 				text-align: center;
 				line-height: 28px;
 				background-color: black;
+			}
+			.item {
+				display: inline-block;
 			}
 		</style>
 	</head>
 	<body>
 		
 		<div id="freewall" class="free-wall">
-			<div class="brick size22">
+			<div class="brick size22" >
 				<div class='cover'>
-					<div class="cell size12"></div>
-					<div class="cell size12"></div>
+					<div class="item size12"></div>
+					<div class="item size12"></div>
 				</div>
 			</div>	
 			<div class="brick size22">
 				<div class='cover'>
-					<div class="cell size21"></div>
-					<div class="cell size21"></div>
+					<div class="item size21"></div>
+					<div class="item size21"></div>
 				</div>	
 			</div>
-			<div class="brick size22 fix-block"> 
+			<div class="brick size22"> 
 				<div class='cover'>
-					<div class="cell size21"></div>
-					<div class="cell size11"></div>
-					<div class="cell size11"></div>
+					<div class="item size21"></div>
+					<div class="item size11"></div>
+					<div class="item size11"></div>
 				</div>
 			</div>
 
-			<div class="brick size22 fix-block">
+			<div class="brick size22">
 				<div class='cover'> 
-					<div class="cell size12"></div>
-					<div class="cell size11"></div>
-					<div class="cell size11"></div>
+					<div class="item size12"></div>
+					<div class="item size11"></div>
+					<div class="item size11"></div>
 				</div>
 			</div>
 
-			<div class="brick size22 fix-block">
+			<div class="brick size22">
 				<div class='cover'>
-					<div class="cell size11"></div>
-					<div class="cell size11"></div>
-					<div class="cell size11"></div>
-					<div class="cell size11"></div>
+					<div class="item size11"></div>
+					<div class="item size11"></div>
+					<div class="item size11"></div>
+					<div class="item size11"></div>
 				</div>
 			</div>
 
-			<div class="brick size22 fix-block">
+			<div class="brick size22">
 				<div class='cover'>
 					<div class='tag'>Actionscript</div>
 					<div class='tag'>AI</div>
@@ -130,17 +134,15 @@
 		<script type="text/javascript">
 			
 			var colour = [
-				"#0C465D",
-				"#608A0D",
-				"#760B48",
-				"#94530D",
-				"#181867",
-				"#450E63",
-				"#8A0D25",
-				"#503b22"
+				"rgb(243, 156, 18)",
+				"rgb(192, 57, 43)",
+				"rgb(211, 84, 0)",
+				"rgb(41, 128, 185)",
+				"rgb(142, 68, 173)",
+				"#006a3f"
 			];
 			
-			$(".free-wall .cell").each(function() {
+			$(".free-wall .item").each(function() {
 				this.style.backgroundColor =  "" + colour[colour.length * Math.random() << 0];
 				this.setAttribute("data-bgcolor", this.style.backgroundColor);
 			});
@@ -149,51 +151,45 @@
 				var wall = new freewall("#freewall");
 				wall.reset({
 					selector: '.brick',
-					block: {
-						flex: 0
-					},
 					cell: {
-						width: 160,
-						height: 160
+						width: 320,
+						height: 320
 					},
-					gutter: 1,
-					fillGap: 0,
-					onSetBlock: function() {
+					fixSize: 0,
+					gutterY: 10,
+					gutterX: 10,
+					onSetBlock: function(target) {
+						console.log("target", target);
 						var $block = $(this);
 						var cover = $block.find(".cover");
 						
-						if (cover.find(".cell").length) {
+						if (cover.find(".item").length) {
 							var iWall = new freewall(cover);
 							iWall.reset({
-								selector: '.cell',
-								block: {
-									flex: 1
-								},
 								cell: {
 									width: 150,
 									height: 150
 								},
-								gutter: 10
+								gutterX: 10,
+								gutterY: 10,
+								selector: '.item'
 							});
-							iWall.fitWidth($block.width());
+							iWall.fitWidth(target.width);
 						} else {
 							var iWall = new freewall(cover);
 							
 							iWall.reset({
-								selector: '.tag',
-								block: {
-									flex: 1
-								},
 								cell: {
-									width: 40,
-									height: 28
+									width: 60,
+									height: 30
 								},
-								gutter: 2,
-								fillGap: true,
-								engine: 'slice'
+								gutterX: 2,
+								gutterY: 2,
+								selector: '.tag'
 							});
-							iWall.fitZone();
+							iWall.fitWidth(target.width, target.height);
 						}
+						
 					},
 					onResize: function() {
 						wall.fitWidth();

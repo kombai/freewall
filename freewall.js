@@ -4,50 +4,62 @@
 
 (function($) {
 
-	var gi = 0;
+	
 
 	self.freewall = function(selector) {
 
 		var container = $(selector).css({position: 'relative'});
+		var flexIndex = Number.fw ? ++Number.fw : Number.fw = 1;
 		var klass = this;
-		++ gi;
+		var MAX = Number.MAX_VALUE;
 
 		// default setting;
 		var setting = {
-			selector: '.item',
 			animate: true,
-			block: {
-				flex: false
-			},
 			cell: {
-				width: 150, // unit width;
-				height: 150
+				width: 100,
+				height: 100
 			},
 			delay: 0, // slowdown active block;
-			gutter: 10, // spacing between blocks;
 			engine: 'giot', //just a person name;
-			fillGap: false, 
+			fixSize: null, // resize + adjust = fill gap;
+			//fixSize: 0, adjust block size = no fill gap;
+			//fixSize: 1, no resize + no adjust = no fill gap;
+			gutterX: 10, // spacing between blocks;
+			gutterY: 10, // spacing between blocks;
+			onFinish: function() {},
+			onGotGap: function() {},
 			onResize: function() {},
-			onSetBlock: function() {}
+			onSetBlock: function() {},
+			selector: '.item'
 		};
 
-		
 		var layout = {
 			block: {}, // store all items;
-			cell: {}, // unit adjust;
+			cellH: 0, // unit adjust;
+			cellW: 0,
 			busy: 0,
-			col: 1,
-			row: 1,
-			width: 0,
-			height: 0,
-			filter: '',
-			minCol: Number.MAX_VALUE,
-			minRow: Number.MAX_VALUE,
-			transition: false
+			filter: '', // filter selector;
+			
+			gutterX: 10, 
+			gutterY: 10,
+			
+			length: 0,
+			
+			minCol: MAX,
+			minRow: MAX,
+			
+			totalCol: 1,
+			totalRow: 1,
+			
+			transition: 0,
+			
+			totalWidth: 0,
+			totalHeight: 0
 		};
 
 		// check browser support transition;
-		var style = document.body.style;
+		var	style = document.body.style;
 		(style.webkitTransition != null ||
 		style.MozTransition != null ||
 		style.msTransition != null ||
@@ -64,7 +76,7 @@
 			layout.busy = 1;
 			setTimeout(function() {
 				layout.busy = 0;
-				setting.onResize.call(klass, container);
+				setting.onResize["call"](klass, container);
 			}, 255);
 			container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
 		});
@@ -72,25 +84,26 @@
 
 		function loadBlock(item, index) {
 
-			var $item = $(item), block = null, gutter = setting.gutter, id = gi + '-' + index;
+			var $item = $(item), block = null, id = index + '-' + flexIndex;
+			var	gutterX = layout.gutterX, gutterY = layout.gutterY;
 			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
 			$item.attr({ id: id, 'data-id': index });
+			var	fixSize = eval($item.attr('data-fixsize'));
+				fixSize == null && (fixSize = setting.fixSize);
 
-			var cellHeight = $item.hasClass('block-fixed') ? setting.cell.height : layout.cell.height;
-			var cellWidth = $item.hasClass('block-fixed') ? setting.cell.width : layout.cell.width;
-			
-			var height = 1 * $item.attr('data-height');
 			var width = 1 * $item.attr('data-width');
+			var height = 1 * $item.attr('data-height');
+			var cellWidth = layout.cellW;
+			var cellHeight = layout.cellH;
 			
-			var row = !height ? 0 : Math.ceil((height + gutter) / (cellHeight + gutter));
-			var col = !width ? 0 : Math.ceil((width + gutter) / (cellWidth + gutter));
+			var col = !width ? 0 : Math.ceil((width + gutterX) / (cellWidth + gutterX));
+			var row = !height ? 0 : Math.ceil((height + gutterY) / (cellHeight + gutterY));
 			
-			var type = $item.hasClass('block-fixed') ? 'fixed' : col + '-' + row;
-			
-			if ((type == 'fixed' || !setting.fillGap) && (col > layout.col || row > layout.row)) {
+			// for none resize block;
+			if ((fixSize != null) && (col > layout.totalCol || row > layout.totalRow)) {
 				block = null;
 			} else {
 				// get min width and min height;
@@ -100,10 +113,10 @@
 				height == 0 && (row = 0);
 
 				block = {
-					type: type,
 					id: id,
 					width: col,
-					height: row
+					height: row,
+					fixSize: fixSize
 				};
 			}
 
@@ -120,19 +133,29 @@
 			
 			var x = block.x;
 			var y = block.y;
-			var w = block.width;
-			var h = block.height;
-			var gutter = setting.gutter;
-			var cellWidth = layout.cell.width;
-			var cellHeight = layout.cell.height;
+			var width = block.width;
+			var height = block.height;
+			var gutterX = layout.gutterX;
+			var gutterY = layout.gutterY;
+			var cellWidth = layout.cellW;
+			var cellHeight = layout.cellH;
+
 			
-			layout.block[block.id] = {
-				left: x * (cellWidth + gutter),
-				top: y * (cellHeight + gutter),
-				width: setting.block.flex && w ? cellWidth * w + gutter * (w - 1) : cellWidth * w,
-				height: setting.block.flex && h ? cellHeight * h + gutter * (h - 1) : cellHeight * h
+			var realBlock = {
+				fixSize: block.fixSize,
+				top: y * (cellHeight + gutterY),
+				left: x * (cellWidth + gutterX),
+				width: width ? cellWidth * width + gutterX * (width - 1) : cellWidth * width,
+				height: height ? cellHeight * height + gutterY * (height - 1) : cellHeight * height
 			};
 			
+			realBlock.top = 1 * realBlock.top.toFixed(2);
+			realBlock.left = 1 * realBlock.left.toFixed(2);
+			realBlock.width = 1 * realBlock.width.toFixed(2);
+			realBlock.height = 1 * realBlock.height.toFixed(2);
+
+			block.id && ++layout.length && (layout.block[block.id] = realBlock);
+			return realBlock;
 		}
 
 		function showBlock(item, id) {
@@ -171,33 +194,43 @@
 						height: 0
 					});
 				} else {
+					var block = layout.block[id];
+					layout.length -= 1;
+					if (block.fixSize) {
+						block.height = 1 * $item.attr("data-height");
+						block.width = 1 * $item.attr("data-width");
+					}
 					$item["css"]({
 						position: 'absolute',
 						opacity: 1,
-						width: layout.block[id]['width'],
-						height: layout.block[id]['height']
+						width: block.width,
+						height: block.height
 					});
 
 					// for animating by javascript;
 					$item[method]({
-						top: layout.block[id]['top'],
-						left: layout.block[id]['left']
+						top: block.top,
+						left: block.left
 					});
 				}
 
-				setting.onSetBlock.call(item);
+				setting.onSetBlock["call"](item, block);
+
+				layout.length == 0 && setting.onFinish["call"](this, layout, setting);
 			}
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-id"))) : action(); 
 		}
 
-		function setZoneSize (col, row) {
-			var cellHeight = layout.cell.height;
-			var cellWidth = layout.cell.width;
-			var gutter = setting.gutter;
+		function setZoneSize (totalCol, totalRow) {
+			
+			var gutterX = layout.gutterX;
+			var gutterY = layout.gutterY;
+			var cellH = layout.cellH;
+			var cellW = layout.cellW;
 
-			layout.width = col ? cellWidth * col + gutter * (col - 1) : cellWidth * col;
-			layout.height = row ? cellHeight * row + gutter * (row - 1) : cellHeight * row;
+			layout.totalWidth = totalCol ? cellW * totalCol + gutterX * (totalCol - 1) : cellW * totalCol;
+			layout.totalHeight = totalRow ? cellH * totalRow + gutterY * (totalRow - 1) : cellH * totalRow;
 		}
 
 
@@ -207,14 +240,13 @@
 
 				var block = items.shift();
 				var wall = {};
-				console.log(items)
+				
 				wall[block.id] = {
 					id: block.id,
 					x: 0,
 					y: 0,
 					width: col,
 					height: row,
-					type: col + '-' + row,
 					originWidth: block.width,
 					originHeight: block.height
 				};
@@ -263,7 +295,6 @@
 						};
 
 					}
-					newBlock.type = newBlock.width + '-' + newBlock.height;
 
 					block = null;
 					for (var i = 0; i < items.length; ++i) {
@@ -302,13 +333,12 @@
 			// just a person name;
 			// full name is Phan Dinh Giot;
 			giot: function(items, col, row) {
-
 				var smallLoop = Math.min(col, row);
 				var bigLoop = Math.max(col, row);
 				var wall = {}, grid = {};
 				var maxX = 0, maxY = 0;
 				var check = col < row ? 1 : 0;
-				var block, next, x, y, rest, lastBook;
+				var block, next, x, y, rest, lastBlock, misBlock;
 
 				function fillGrid(x, y, w, h) {
 					for (var i = x; i < x + w;) {
@@ -323,7 +353,7 @@
 				for (var b = 0; b < bigLoop; ++b) {
 					if (!items.length) break;
 					check ? (y = b) : (x = b);
-					lastBook = null;
+					lastBlock = null;
 
 					for (var s = 0; s < smallLoop; ++s) {
 						if (!items.length) break;
@@ -346,20 +376,20 @@
 						}
 						
 						// trying resize the next block to fit gap;
-						if (block == null && setting.fillGap) {
+						if (block == null && setting.fixSize == null) {
 							// resize near block to fill gap;
-							if (layout.minRow > rest && !check && lastBook) {
-									lastBook.height += rest;
-									fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
+							if (layout.minRow > rest && !check && lastBlock) {
+									lastBlock.height += rest;
+									fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
 									continue;
-							} else if (layout.minCol > rest && check && lastBook) {
-									lastBook.width += rest;
-									fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
+							} else if (layout.minCol > rest && check && lastBlock) {
+									lastBlock.width += rest;
+									fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
 									continue;
 							} else {
 								// get other block fill to gap;
 								for (var i = 0; i < items.length; ++i) {
-									if (items[i]['type'] == 'fixed') continue;
+									if (items[i]['fixSize'] != null) continue;
 									block = items.splice(i, 1)[0];
 									check ? (block.width = rest) : (block.height = rest);
 									break;
@@ -373,7 +403,8 @@
 								x: x,
 								y: y,
 								width: block.width,
-								height: block.height
+								height: block.height,
+								fixSize: block.fixSize
 							};
 							
 							// don't fill block-point on grid;
@@ -381,10 +412,41 @@
 								s -= 1;
 							} else {
 								// keep success block for next round;
-								lastBook = wall[block.id];
-								fillGrid(lastBook.x, lastBook.y, lastBook.width, lastBook.height);
+								lastBlock = wall[block.id];
+								fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
 							}
-						} 
+						} else {
+							// get expect area;
+							var misBlock = {
+								fixSize: 0,
+								x: x,
+								y: y
+							};
+							if (check) {
+								misBlock.width = rest;
+								misBlock.height = 0;
+								var lastX = x - 1;
+								var lastY = y;
+								
+								while (grid[lastX + '-' + lastY]) {
+									grid[x + '-' + lastY] = true;
+									misBlock.height += 1;
+									lastY += 1;
+								}
+							} else {
+								misBlock.height = rest;
+								misBlock.width = 0;
+								var lastY = y - 1;
+								var lastX = x;
+								
+								while (grid[lastX + '-' + lastY]) {
+									grid[lastX + '-' + y] = true;
+									misBlock.width += 1;
+									lastX += 1;
+								}
+							}
+							setting.onGotGap(setBlock(misBlock));
+						}
 					}
 				}
 
@@ -406,35 +468,39 @@
 			fitHeight: function(height) {
 
 				height = height ? height : container.height() || $(window).height();
-				
+				layout.length = 0;
 				layout.block = {};
-				layout.cell = {};
-				
+				layout.cellH = 0;
+				layout.cellW = 0;
+
 				var cellHeight = setting.cell.height;
 				var cellWidth = setting.cell.width;
-				var gutter = setting.gutter;
-				var row = Math.max(1, height / cellHeight << 0);
+				var gutterX = setting.gutterX;
+				var gutterY = setting.gutterY;
+				layout.gutterX = gutterX;
+				layout.gutterY = gutterY;
+				// estimate total rows;
+				var totalRow = Math.max(1, height / cellHeight << 0);
 
 				// adjust size unit for fit height;
-				if (!$.isNumeric(gutter)) {
-					gutter = (height - row * cellHeight) / Math.max(1, (row - 1));
-					gutter = Math.max(0, gutter);
-					setting.gutter = gutter.toFixed(2);
+				if (!$.isNumeric(gutterY)) {
+					gutterY = (height - totalRow * cellHeight) / Math.max(1, (totalRow - 1));
+					gutterY = layout.gutterY = Math.max(0, gutterY);
 				} else {
-					row = Math.max(1, height / (cellHeight + gutter) << 0);
-				}
-				
-				var deltaXY = 0;
-				if (setting.block.flex) {
-					deltaXY = (height + gutter) / row - (cellHeight + gutter);
-					deltaXY = Math.max(0, deltaXY.toFixed(2));
-					layout.cell.height = cellHeight + deltaXY;
-					layout.cell.width = cellWidth + deltaXY;
-				} else {
-					layout.cell.height = cellHeight;
-					layout.cell.width = cellWidth;
+					totalRow = Math.max(1, height / (cellHeight + gutterY) << 0);
 				}
 
+				if (!$.isNumeric(gutterX)) {
+					gutterX = layout.gutterX = layout.gutterY;
+				}
+				
+				var deltaY = 0;
+				// adjust cell unit for fit height;
+				deltaY = (height + gutterY) / totalRow - (cellHeight + gutterY);
+				deltaY = Math.max(0, deltaY);
+				layout.cellH = cellHeight + deltaY;
+				layout.cellW = cellWidth + (deltaY * cellWidth / cellHeight);
+				
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
 				if (layout.filter) {
@@ -443,16 +509,16 @@
 					items = allBlock.removeClass('fw-filter');
 				}
 
-				var col = 123456;
-				layout.col = col;
-				layout.row = row;
+				var totalCol = 666666;
+				layout.totalCol = totalCol;
+				layout.totalRow = totalRow;
 
 				items.each(function(index, item) {
 					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 				
-				engine[setting.engine](activeBlock, col, row);
+				engine[setting.engine](activeBlock, totalCol, totalRow);
 				
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
@@ -462,36 +528,41 @@
 			fitWidth: function(width) {
 				
 				width = width ? width : container.width() || $(window).width();
-				
+				layout.length = 0;
 				layout.block = {};
-				layout.cell = {};
+				layout.cellH = 0;
+				layout.cellW = 0;
 
 				var cellHeight = setting.cell.height;
 				var cellWidth = setting.cell.width;
-				var gutter = setting.gutter;
-				var col = Math.max(1, width / cellWidth << 0);
+				var gutterX = setting.gutterX;
+				var gutterY = setting.gutterY;
+				layout.gutterX = gutterX;
+				layout.gutterY = gutterY;
+				
+				// estimate total columns;
+				var totalCol = Math.max(1, width / cellWidth << 0);
 
-				// adjust size unit for fit width;
-				if (!$.isNumeric(gutter)) {
-					gutter = (width - col * cellWidth) / Math.max(1, (col - 1));
-					gutter = Math.max(0, gutter);
-					setting.gutter = gutter.toFixed(2);
+				// adjust unit size for fit width;
+				if (!$.isNumeric(gutterX)) {
+					gutterX = (width - totalCol * cellWidth) / Math.max(1, (totalCol - 1));
+					gutterX = layout.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
-					col = Math.max(1, width / (cellWidth + gutter) << 0);
-				}
-				
-				var deltaXY = 0;
-				if (setting.block.flex) {
-					deltaXY = (width + gutter) / col - (cellWidth + gutter);
-					deltaXY = Math.max(0, deltaXY.toFixed(2));
-					layout.cell.height = cellHeight + deltaXY;
-					layout.cell.width = cellWidth + deltaXY;
-				} else {
-					layout.cell.height = cellHeight;
-					layout.cell.width = cellWidth;
+					totalCol = Math.max(1, width / (cellWidth + gutterX) << 0);
 				}
 
+				if (!$.isNumeric(gutterY)) {
+					gutterY = layout.gutterY = layout.gutterX;
+				}
+
+				var deltaX = 0;
+				// adjust cell unit for fit width;
+				deltaX = (width + gutterX) / totalCol - (cellWidth + gutterX);
+				deltaX = Math.max(0, deltaX);
+				layout.cellW = cellWidth + deltaX;
+				layout.cellH = cellHeight + (deltaX * cellHeight / cellWidth);
+				
 				var allBlock = container.find(setting.selector).removeAttr('id');
 				var items, block = null, activeBlock = [];
 				if (layout.filter) {
@@ -500,59 +571,70 @@
 					items = allBlock.removeClass('fw-filter');
 				}
 				
-				var row = 123456;
-				layout.col = col;
-				layout.row = row;
+				var totalRow = 666666;
+				layout.totalCol = totalCol;
+				layout.totalRow = totalRow;
 
 				items.each(function(index, item) {
 					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
-				engine[setting.engine](activeBlock, col, row);
+				engine[setting.engine](activeBlock, totalCol, totalRow);
 				
-				container.height(layout.height << 0);
+				container.height(layout.totalHeight << 0);
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 				});
-				
 			},
 
 			fitZone: function(width, height) {
+				
 				height = height ? height : container.height() || $(window).height();
 				width = width ? width : container.width() || $(window).width();
-				
+				layout.length = 0;
 				layout.block = {};
-				layout.cell = {};
+				layout.cellH = 0;
+				layout.cellW = 0;
 
 				var cellHeight = setting.cell.height;
 				var cellWidth = setting.cell.width;
-				var gutter = setting.gutter;
-				var col = Math.max(1, width / cellWidth << 0);
-				var row = Math.max(1, height / cellHeight << 0);
+				var gutterX = setting.gutterX;
+				var gutterY = setting.gutterY;
+				layout.gutterX = gutterX;
+				layout.gutterY = gutterY;
 
-				// adjust size unit for fit zone;
-				if (!$.isNumeric(gutter)) {
-					var gutterX = (width - col * cellWidth) / Math.max(1, (col - 1));
-					var gutterY = (height - row * cellHeight) / Math.max(1, (row - 1));
-					gutter = Math.max(0, (gutterX + gutterY) / 2);
-					setting.gutter = gutter.toFixed(2);
+				// estimate total columns;
+				var totalCol = Math.max(1, width / cellWidth << 0);
+				// estimate total rows;
+				var totalRow = Math.max(1, height / cellHeight << 0);
+				
+				// adjust unit size for fit width;
+				if (!$.isNumeric(gutterX)) {
+					gutterX = (width - totalCol * cellWidth) / Math.max(1, (totalCol - 1));
+					gutterX = layout.gutterX = Math.max(0, gutterX);
 				} else {
-					col = Math.max(1, width / (cellWidth + gutter) << 0);
-					row = Math.max(1, height / (cellHeight + gutter) << 0);
+					// correct total column with gutter;
+					totalCol = Math.max(1, width / (cellWidth + gutterX) << 0);
+				}
+
+				// adjust size unit for fit height;
+				if (!$.isNumeric(gutterY)) {
+					gutterY = (height - totalRow * cellHeight) / Math.max(1, (totalRow - 1));
+					gutterY = layout.gutterY = Math.max(0, gutterY);
+				} else {
+					totalRow = Math.max(1, height / (cellHeight + gutterY) << 0);
 				}
 
 				var deltaX = 0, deltaY = 0;
-				if (setting.block.flex) {
-					deltaY = (height + gutter) / row - (cellHeight + gutter);
-					deltaY = Math.max(0, deltaY.toFixed(2));
-					deltaX = (width + gutter) / col - (cellWidth + gutter);
-					deltaX = Math.max(0, deltaX.toFixed(2));
-					layout.cell.width = cellWidth + deltaX;
-					layout.cell.height = cellHeight + deltaY;
-				} else {
-					layout.cell.width = cellWidth;
-					layout.cell.height = cellHeight;
-				}
+				// adjust cell unit for fit width;
+				deltaX = (width + gutterX) / totalCol - (cellWidth + gutterX);
+				deltaX = Math.max(0, deltaX);
+				layout.cellW = cellWidth + deltaX;
+
+				// adjust cell unit for fit height;
+				deltaY = (height + gutterY) / totalRow - (cellHeight + gutterY);
+				deltaY = Math.max(0, deltaY);
+				layout.cellH = cellHeight + deltaY;
 
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
@@ -562,23 +644,23 @@
 					items = allBlock.removeClass('fw-filter');
 				}
 
-				layout.col = col;
-				layout.row = row;
+				layout.totalCol = totalCol;
+				layout.totalRow = totalRow;
 
 				items.each(function(index, item) {
 					block = loadBlock(item, ++index);
 					block && activeBlock.push(block);
 				});
 
-				engine[setting.engine](activeBlock, col, row);
+				engine[setting.engine](activeBlock, totalCol, totalRow);
 				
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 				});
-				
 			},
 			
 			fixSize: function(option) {
+				
 				var config = {
 					block: null,
 					width: null,

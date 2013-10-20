@@ -44,16 +44,15 @@
 			ewall.reset({
 				selector: '.cell',
 				animate: true,
-				block: {
-					flex: 1
-				},
 				cell: {
 					width: 100,
 					height: 100
 				},
-				fillGap: true,
 				onResize: function() {
 					ewall.fitWidth();
+				},
+				onFinish: function(layout, setting) {
+					console.log(layout);
 				}
 			});
 			ewall.fitWidth();
