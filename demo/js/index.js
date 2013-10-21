@@ -19,6 +19,16 @@
 	];
 
 	var func = {
+		preload: function() {
+			var images = []
+			for (var i = 1 ; i < 50 ; ++i) {
+				images[i] = new Image();
+				images[i].src = "demo/i/photo/" + i + ".jpg";
+				images[i].onload = function() {
+					window["console"] && console.log(this.src);
+				}
+			}
+		},
 		color: function(value) {
 			var color = colour.concat(colour);
 			$(".free-wall .brick").each(function() {

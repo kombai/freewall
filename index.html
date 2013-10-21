@@ -15,6 +15,7 @@
 		<script type="text/javascript">
 			$(function() {
 				app.setup({
+					preload: 1,
 					share: 1,
 					color: 1,
 					layout: 1,
@@ -140,11 +141,16 @@
 						<h2>Options</h2>
 						<ul>
 							<li> animate </li>
-							<li> block </li>
-							<li> cell </li>
+							<li> cell 
+								<ul>
+									<li>width</li>
+									<li>height</li>
+								</ul>
+							</li>
 							<li> delay </li>
-							<li> gutter </li>
-							<li> fillGap </li>
+							<li> fixSize </li>
+							<li> gutterX </li>
+							<li> gutterY </li>
 							<li> selector </li>
 						</ul>
 						<div class="read-more">View detail ..</div>
@@ -160,29 +166,79 @@
 								<div> True to make block move with animation</div>
 							</li>
 							<li>
-								<h3> block.flex : boolean </h3>
-								<div> True to made block can resize a bit to fit</div>
-								<div> False of block has class 'fixed' to keep size of block can't change</div>
-							</li>
-							<li>
-								<h3> cell.width : number </h3>
-								<div> The width of unit, base on it will build grid container.</div>
-							</li>
-							<li>
-								<h3> cell.height : number </h3>
-								<div> The height of unit, base on it will build grid container.</div>
+								<h3> cell: object </h3>
+								<ul>
+									<li>
+										<h3> width : number </h3>
+										<div>
+											Default: 100 <br/>
+											The width of unit, base on it will build grid container.
+										</div>
+									</li>
+									<li>
+										<h3> height : number </h3>
+										<div>
+											Default: 100 <br/>
+											The height of unit, base on it will build grid container.
+										</div>
+									</li>
+								</ul>
+								<h3> Example </h3>
+									<pre>
+										<code>
+var wall = new freewall('.free-wall');
+wall.reset({
+  selector: '.brick',
+  cell: {
+    width: 160,
+    height: 160
+  }
+});											
+										</code>
+									</pre>	
 							</li>
 							<li>
 								<h3> delay : number </h3>
-								<div> The time delay for show block. It will increase by each block.</div>
+								<div>
+									Default: 0 <br/>
+									The time delay for show block. It will increase by each block.
+								</div>
 							</li>
 							<li>
-								<h3> gutter : mixed </h3>
-								<div> The spacing between the blocks. Default is number, but can set it with 'auto' value.</div>
+								<h3> fixSize : boolean </h3>
+								<div>
+									Default: null <br/>
+									value is null or not set let blocks can adjust and resize to fill gap<br/>
+									value is 0 or false let blocks can adjust size but can't resize to fill gap.<br/>
+									value is 1 or true let blocks keep the size as init, can't resize to fill gap.<br/>
+
+									Can override the fixSize option by set data-fixsize attribute in the block.
+									<h3> Example </h3>
+									<pre>
+										<code>
+&lt;div class="brick size22" data-fixsize=true&gt;
+  &lt;div class='cover'&gt;
+    &lt;div class="item size12"&gt;&lt;/div&gt;
+    &lt;div class="item size12"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;											
+										</code>
+									</pre>
+								</div>
 							</li>
 							<li>
-								<h3> fillGap : boolean </h3>
-								<div> True will made layout without gap.</div>
+								<h3> gutterX : mixed </h3>
+								<div>
+									Default: 10 <br/>
+									The horizon spacing between the column. Default is number, but can set it with 'auto' value.
+								</div>
+							</li>
+							<li>
+								<h3> gutterY : mixed </h3>
+								<div>
+									Default: 10 <br/>
+									The vertical spacing between the row. Default is number, but can set it with 'auto' value.
+								</div>
 							</li>
 							<li>
 								<h3> selector : string </h3>
@@ -191,21 +247,19 @@
 							<li>
 								<h3> Example </h3>
 								<pre>
-								<code>
+									<code>
 var wall = new freewall('.free-wall');
 wall.reset({
   selector: '.brick',
   animate: true,
-  block: {
-    flex: true
-  },
   cell: {
     width: 150,
     height: 150
   },
-  fillGap: false
+  gutterY: 10,
+  gutterX: 'auto'
 });
-								</code>
+									</code>
 								</pre>
 							</li>	
 						</ul>
@@ -219,7 +273,9 @@ wall.reset({
 						<h2>Events</h2>
 						<div class='float-left'>
 							<ul>
+								<li> onFinish </li>
 								<li> onResize </li>
+								<li> onGotGap </li>
 								<li> onSetBlock </li>
 							</ul>
 						</div>
@@ -230,6 +286,10 @@ wall.reset({
 							<span>Events</span>
 						</h2>
 						<ul>
+							<li>
+								<h3> onFinish </h3>
+								<div> Registry callback when all block arrange.</div>
+							</li>
 							<li>
 								<h3> onResize </h3>
 								<div> Registry callback when browser resize.</div>
@@ -247,6 +307,10 @@ wall.reset({
 });
 									</code>
 								</pre>
+							</li>
+							<li>
+								<h3> onGotGap </h3>
+								<div> Registry callback when a gap found.</div>
 							</li>
 							<li>
 								<h3> onSetBlock </h3>
@@ -438,6 +502,16 @@ new freewall('.free-wall')
 					<a class="float-left" href="demo/normal-grid.html" target="_blank">
 						<h2>Example </h2>
 						<div>Grid layout</div>
+						<div class="read-more">View detail ..</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="brick size11"> 
+				<div class='cover'>
+					<a class="float-left" href="demo/nested-grid.html" target="_blank">
+						<h2>Example </h2>
+						<div>Metro layout</div>
 						<div class="read-more">View detail ..</div>
 					</a>
 				</div>

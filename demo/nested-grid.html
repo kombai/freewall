@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title>Fit height demo with freewall</title>
+		<title>Metro layout with freewall</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-		<meta name="description" content="Fit height demo with freewall" />
+		<meta name="description" content="Metro layout with freewall" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, fit height"/>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -12,11 +12,10 @@
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
 			body {
-				height: 100%;
+				padding: 6em;
 			}
 			.free-wall {
 				background: white;
-				margin: 6em;
 			}
 			.brick {
 				background: white;
@@ -39,6 +38,7 @@
 	</head>
 	<body>
 		
+		<h1>Nested grid</h1> 
 		<div id="freewall" class="free-wall">
 			<div class="brick size22" >
 				<div class='cover'>
@@ -59,7 +59,13 @@
 					<div class="item size11"></div>
 				</div>
 			</div>
-
+			<div class="brick size22"> 
+				<div class='cover'>
+					<div class="item size11"></div>
+					<div class="item size11"></div>
+					<div class="item size21"></div>
+				</div>
+			</div>
 			<div class="brick size22">
 				<div class='cover'> 
 					<div class="item size12"></div>
@@ -67,7 +73,7 @@
 					<div class="item size11"></div>
 				</div>
 			</div>
-
+			
 			<div class="brick size22">
 				<div class='cover'>
 					<div class="item size11"></div>
@@ -77,57 +83,17 @@
 				</div>
 			</div>
 
+			<div class="brick size22" >
+				<div class='cover'>
+					<div class="item size12"></div>
+					<div class="item size12"></div>
+				</div>
+			</div>
 			<div class="brick size22">
 				<div class='cover'>
-					<div class='tag'>Actionscript</div>
-					<div class='tag'>AI</div>
-					<div class='tag'>Ajax</div>
-					<div class='tag'>Android</div>
-					<div class='tag'>Animation</div>
-					<div class='tag'>Canvas</div>
-					<div class='tag'>CMS</div>
-					<div class='tag'>CSS</div>
-					<div class='tag'>CSS3</div>
-					<div class='tag'>Firefox</div>
-					<div class='tag'>Flash</div>
-					<div class='tag'>Framework</div>
-					<div class='tag'>Freebies</div>
-					<div class='tag'>Gallery</div>
-					<div class='tag'>Google</div>
-					<div class='tag'>Grid</div>
-					<div class='tag'>Html</div>
-					<div class='tag'>HTML5</div>
-					<div class='tag'>Icon</div>
-					<div class='tag'>Icons</div>
-					<div class='tag'>Images</div>
-					<div class='tag'>iOS</div>
-					<div class='tag'>Javascript</div>
-					<div class='tag'>jQuery</div>
-					<div class='tag'>Library</div>
-					<div class='tag'>Mootools</div>
-					<div class='tag'>MYSQL</div>
-					<div class='tag'>Navigation</div>
-					<div class='tag'>Open</div>
-					<div class='tag'>Source</div>
-					<div class='tag'>Photoshop</div>
-					<div class='tag'>PHP</div>
-					<div class='tag'>Plugin</div>
-					<div class='tag'>PNG</div>
-					<div class='tag'>PSD</div>
-					<div class='tag'>Responsive</div>
-					<div class='tag'>Script</div>
-					<div class='tag'>Software</div>
-					<div class='tag'>Theme</div>
-					<div class='tag'>Tool</div>
-					<div class='tag'>Tools</div>
-					<div class='tag'>Twitter</div>
-					<div class='tag'>Vector</div>
-					<div class='tag'>Web</div>
-					<div class='tag'>Application</div>
-					<div class='tag'>Web</div>
-					<div class='tag'>Design</div>
-					<div class='tag'>Wordpress</div>
-				</div>
+					<div class="item size21"></div>
+					<div class="item size21"></div>
+				</div>	
 			</div>
 		</div>
 		
@@ -159,44 +125,27 @@
 					gutterY: 10,
 					gutterX: 10,
 					onSetBlock: function(target) {
-						console.log("target", target);
-						var $block = $(this);
-						var cover = $block.find(".cover");
 						
-						if (cover.find(".item").length) {
-							var iWall = new freewall(cover);
-							iWall.reset({
-								cell: {
-									width: 150,
-									height: 150
-								},
-								gutterX: 10,
-								gutterY: 10,
-								selector: '.item'
-							});
-							iWall.fitWidth(target.width);
-						} else {
-							var iWall = new freewall(cover);
-							
-							iWall.reset({
-								cell: {
-									width: 60,
-									height: 30
-								},
-								gutterX: 2,
-								gutterY: 2,
-								selector: '.tag'
-							});
-							iWall.fitWidth(target.width, target.height);
-						}
-						
+						var cover = $(this).find(".cover");
+						var iWall = new freewall(cover);
+						iWall.reset({
+							cell: {
+								width: 150,
+								height: 150
+							},
+							gutterX: 10,
+							gutterY: 10,
+							selector: '.item'
+						});
+						iWall.fitWidth(target.width);
+
 					},
 					onResize: function() {
 						wall.fitWidth();
 					}
 				})
 				wall.fitWidth();
-				//$(window).trigger("resize");
+				$(window).trigger("resize");
 			});
 
 		</script>
