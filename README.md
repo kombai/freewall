@@ -11,7 +11,7 @@ Some example layouts can be created by Freewall:
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/flex.png'>
 <br>
 ##### [Normal grid](http://vnjs.net/www/project/freewall/demo/normal-grid.html)
-<img src='https://raw.github.com/kombai/freewall/master/demo/i/grid.png'>
+<img src='https://raw.github.com/kombai/freewall/master/demo/i/metro.png'>
 <br>
 ##### [Images show](http://vnjs.net/www/project/freewall/demo/image-layout.html)
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/images.png'>
