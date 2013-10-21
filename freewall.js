@@ -166,17 +166,17 @@
 			var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s";
 			
 			if (setting.animate && layout.transition) {
-				var browser = $.browser;
-				if (browser.webkit) {
-					item.style.webkitTransition = trans;
-				} else if (browser.mozilla) {
-					item.style.MozTransition = trans;
-				} else if (browser.msie) {
-					item.style.msTransition = trans;
-				} else if (browser.opera) {
-					item.style.OTransition = trans;
+				var style = item.style;
+				if (style.webkitTransition != null) {
+					style.webkitTransition = trans;
+				} else if (style.MozTransition != null) {
+					style.MozTransition = trans;
+				} else if (style.msTransition) {
+					style.msTransition = trans;
+				} else if (style.OTransition) {
+					style.OTransition = trans;
 				} else {
-					item.style.transition = trans;
+					style.transition = trans;
 				}
 			}
 			// only allow the last transition;
