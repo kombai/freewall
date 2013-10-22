@@ -7,11 +7,14 @@
 	
 
 	self.freewall = function(selector) {
-
-		var container = $(selector).css({position: 'relative'});
+		
 		var flexIndex = Number.fw ? ++Number.fw : Number.fw = 1;
 		var klass = this;
 		var MAX = Number.MAX_VALUE;
+		var container = $(selector);
+		if (container.css('position') == 'static') {
+			container.css('position', 'relative');
+		}
 
 		// default setting;
 		var setting = {
@@ -214,12 +217,39 @@
 					});
 				}
 
+				if ($item.attr('data-nested') != null) {
+					nestedBlock($item, id);
+				}
+
 				setting.onSetBlock["call"](item, block);
 
 				layout.length == 0 && setting.onFinish["call"](this, layout, setting);
 			}
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-id"))) : action(); 
+		}
+
+		function nestedBlock($item, id) {
+			
+			var cellHeight = $item.attr("data-cellHeight") || 100;
+			var cellWidth = $item.attr("data-cellWidth") || 100;
+			var method = $item.attr("data-method") || "fitWidth";
+			var gutterX = $item.attr("data-guterX") || layout.gutterX;
+			var gutterY = $item.attr("data-guterY") || layout.gutterY;
+			var selector = $item.attr('data-nested') || ":only-child";
+
+			var block = layout.block[id];
+			var eWall= new freewall($item);
+			eWall.reset({
+				cell: {
+					width: 1* cellWidth,
+					height: 1 * cellHeight
+				},
+				gutterX: gutterX,
+				gutterY: gutterY,
+				selector: selector
+			});
+			eWall[method](block.width);
 		}
 
 		function setZoneSize (totalCol, totalRow) {
