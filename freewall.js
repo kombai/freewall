@@ -102,8 +102,8 @@
 			var cellWidth = layout.cellW;
 			var cellHeight = layout.cellH;
 			
-			var col = !width ? 0 : Math.ceil((width + gutterX) / (cellWidth + gutterX));
-			var row = !height ? 0 : Math.ceil((height + gutterY) / (cellHeight + gutterY));
+			var col = !width ? 0 : Math.round((width + gutterX) / (cellWidth + gutterX));
+			var row = !height ? 0 : Math.round((height + gutterY) / (cellHeight + gutterY));
 			
 			// for none resize block;
 			if ((fixSize != null) && (col > layout.totalCol || row > layout.totalRow)) {
@@ -510,14 +510,14 @@
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
 				// estimate total rows;
-				var totalRow = Math.max(1, height / cellHeight << 0);
+				var totalRow = Math.max(1, Math.floor(height / cellHeight));
 
 				// adjust size unit for fit height;
 				if (!$.isNumeric(gutterY)) {
 					gutterY = (height - totalRow * cellHeight) / Math.max(1, (totalRow - 1));
 					gutterY = layout.gutterY = Math.max(0, gutterY);
 				} else {
-					totalRow = Math.max(1, height / (cellHeight + gutterY) << 0);
+					totalRow = Math.max(1, Math.round(height / (cellHeight + gutterY)));
 				}
 
 				if (!$.isNumeric(gutterX)) {
@@ -527,7 +527,6 @@
 				var deltaY = 0;
 				// adjust cell unit for fit height;
 				deltaY = (height + gutterY) / totalRow - (cellHeight + gutterY);
-				deltaY = Math.max(0, deltaY);
 				layout.cellH = cellHeight + deltaY;
 				layout.cellW = cellWidth + (deltaY * cellWidth / cellHeight);
 				
@@ -571,7 +570,7 @@
 				layout.gutterY = gutterY;
 				
 				// estimate total columns;
-				var totalCol = Math.max(1, width / cellWidth << 0);
+				var totalCol = Math.max(1, Math.floor(width / cellWidth));
 
 				// adjust unit size for fit width;
 				if (!$.isNumeric(gutterX)) {
@@ -579,7 +578,7 @@
 					gutterX = layout.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
-					totalCol = Math.max(1, width / (cellWidth + gutterX) << 0);
+					totalCol = Math.max(1, Math.round(width / (cellWidth + gutterX)));
 				}
 
 				if (!$.isNumeric(gutterY)) {
@@ -589,10 +588,9 @@
 				var deltaX = 0;
 				// adjust cell unit for fit width;
 				deltaX = (width + gutterX) / totalCol - (cellWidth + gutterX);
-				deltaX = Math.max(0, deltaX);
 				layout.cellW = cellWidth + deltaX;
 				layout.cellH = cellHeight + (deltaX * cellHeight / cellWidth);
-				
+
 				var allBlock = container.find(setting.selector).removeAttr('id');
 				var items, block = null, activeBlock = [];
 				if (layout.filter) {
@@ -634,9 +632,9 @@
 				layout.gutterY = gutterY;
 
 				// estimate total columns;
-				var totalCol = Math.max(1, width / cellWidth << 0);
+				var totalCol = Math.max(1, Math.floor(width / cellWidth));
 				// estimate total rows;
-				var totalRow = Math.max(1, height / cellHeight << 0);
+				var totalRow = Math.max(1, Math.floor(height / cellHeight));
 				
 				// adjust unit size for fit width;
 				if (!$.isNumeric(gutterX)) {
@@ -644,7 +642,7 @@
 					gutterX = layout.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
-					totalCol = Math.max(1, width / (cellWidth + gutterX) << 0);
+					totalCol = Math.max(1, Math.round(width / (cellWidth + gutterX)));
 				}
 
 				// adjust size unit for fit height;
@@ -652,18 +650,16 @@
 					gutterY = (height - totalRow * cellHeight) / Math.max(1, (totalRow - 1));
 					gutterY = layout.gutterY = Math.max(0, gutterY);
 				} else {
-					totalRow = Math.max(1, height / (cellHeight + gutterY) << 0);
+					totalRow = Math.max(1, Math.round(height / (cellHeight + gutterY)));
 				}
 
 				var deltaX = 0, deltaY = 0;
 				// adjust cell unit for fit width;
 				deltaX = (width + gutterX) / totalCol - (cellWidth + gutterX);
-				deltaX = Math.max(0, deltaX);
 				layout.cellW = cellWidth + deltaX;
 
 				// adjust cell unit for fit height;
 				deltaY = (height + gutterY) / totalRow - (cellHeight + gutterY);
-				deltaY = Math.max(0, deltaY);
 				layout.cellH = cellHeight + deltaY;
 
 				var allBlock = container.find(setting.selector).attr('id', '');
