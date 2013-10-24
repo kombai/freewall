@@ -36,7 +36,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	/*background: rgb(32, 27, 27);*/
+	background: rgba(231, 231, 231, 0.43);
 	line-height: 1.125em;
 	color: white;
 	position: relative;
@@ -333,6 +333,8 @@ table {
 	float: left;
 	cursor: default;
 	overflow: hidden;
+	box-shadow: -1px -1px 0 rgba(255,255,255,0.2) inset, 0px 0px 1px rgba(0,0,0,0.2);
+	border-radius: 2px;
 }
 
 .brick .cover {
