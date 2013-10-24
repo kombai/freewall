@@ -24,12 +24,12 @@
 				height: 100
 			},
 			delay: 0, // slowdown active block;
-			engine: 'giot', //just a person name;
+			engine: 'giot', // 'giot' is a person name;
 			fixSize: null, // resize + adjust = fill gap;
-			//fixSize: 0, adjust block size = no fill gap;
+			//fixSize: 0, allow adjust size = no fill gap;
 			//fixSize: 1, no resize + no adjust = no fill gap;
-			gutterX: 10, // spacing between blocks;
-			gutterY: 10, // spacing between blocks;
+			gutterX: 10, // width spacing between blocks;
+			gutterY: 10, // height spacing between blocks;
 			onFinish: function() {},
 			onGotGap: function() {},
 			onResize: function() {},
@@ -70,6 +70,10 @@
 		style.transition != null) &&
 		(layout.transition = true);
 	    
+	    // for zeptojs;
+		$.isNumeric == null && ($.isNumeric = function(src) {
+			return src != null && src.constructor === Number;
+		});
 
 		container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
 
@@ -91,8 +95,8 @@
 			var	gutterX = layout.gutterX, gutterY = layout.gutterY;
 			
 			// store original size;
-			$item.attr('data-height') == null && $item.attr('data-height', $item.outerHeight());
-			$item.attr('data-width') == null && $item.attr('data-width', $item.outerWidth());
+			$item.attr('data-height') == null && $item.attr('data-height', $item.height());
+			$item.attr('data-width') == null && $item.attr('data-width', $item.width());
 			$item.attr({ id: id, 'data-id': index });
 			var	fixSize = eval($item.attr('data-fixsize'));
 				fixSize == null && (fixSize = setting.fixSize);
@@ -164,7 +168,7 @@
 		function showBlock(item, id) {
 			
 			var method = setting.animate && !layout.transition ? 'animate' : 'css';
-			var $item = $(item).stop();
+			var $item = $(item);
 			var start = $item.attr("data-state") != "move";
 			var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s";
 			
@@ -182,8 +186,11 @@
 					style.transition = trans;
 				}
 			}
-			// only allow the last transition;
+			
+			// kill the old transition;
+			$item.stop && $item.stop();
 			item.delay && clearTimeout(item.delay);
+			
 
 			function action() {
 				// start to arrange;
@@ -718,4 +725,4 @@
 
 	};
  
-})(jQuery);
+})(window.Zepto || window.jQuery);

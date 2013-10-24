@@ -25,7 +25,7 @@
 				images[i] = new Image();
 				images[i].src = "demo/i/photo/" + i + ".jpg";
 				images[i].onload = function() {
-					window["console"] && console.log(this.src);
+					//window["console"] && console.log(this.src);
 				}
 			}
 		},
@@ -256,4 +256,4 @@
 	};
 
 
-})(jQuery);
+})(window.Zepto || window.jQuery);
