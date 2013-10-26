@@ -273,9 +273,9 @@ wall.reset({
 						<h2>Events</h2>
 						<div class='float-left'>
 							<ul>
-								<li> onFinish </li>
+								<li> onComplete </li>
+								<li> onGapFound </li>
 								<li> onResize </li>
-								<li> onGotGap </li>
 								<li> onSetBlock </li>
 							</ul>
 						</div>
@@ -287,8 +287,12 @@ wall.reset({
 						</h2>
 						<ul>
 							<li>
-								<h3> onFinish </h3>
+								<h3> onComplete </h3>
 								<div> Registry callback when all block arrange.</div>
+							</li>
+							<li>
+								<h3> onGapFound </h3>
+								<div> Registry callback when a gap found.</div>
 							</li>
 							<li>
 								<h3> onResize </h3>
@@ -309,12 +313,8 @@ wall.reset({
 								</pre>
 							</li>
 							<li>
-								<h3> onGotGap </h3>
-								<div> Registry callback when a gap found.</div>
-							</li>
-							<li>
 								<h3> onSetBlock </h3>
-								<div> Registry callback when arrange block.</div>
+								<div> Registry callback when arrange each block.</div>
 							</li>
 						</ul>
 					</div>
@@ -326,6 +326,7 @@ wall.reset({
 					<div class='float-left'>
 						<h2>Methods</h2>
 						<ul>
+							<li> appendMore </li>
 							<li> fitHeight </li>
 							<li> fitWidth </li>
 							<li> fitZone </li>
@@ -341,6 +342,10 @@ wall.reset({
 							<span>Methods</span>
 						</h2>
 						<ul>
+							<li>
+								<h3> appendMore(elements) </h3>
+								<div> Append one or more elements in to the wall</div>
+							</li>
 							<li>
 								<h3> fitHeight(height) </h3>
 								<div> Made the layout fit with limit height</div>
@@ -413,7 +418,6 @@ ewall.fitWidth(cwidth);
 					<a href='https://github.com/kombai/freewall' target="_blank">
 						<img style="position: absolute; top: 0; right: 0; border: 0;"
 						 src="demo/i/forkme_right_gray.png" alt="Fork me on GitHub" />
-						<span class="githud">&nbsp;</span>
 					</a>
 				</div>
 			</div>
@@ -489,9 +493,9 @@ new freewall('.free-wall')
 
 			<div class="brick size11"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/flex-layout.html" target="_blank">
+					<a class="float-left" href="demo/flex-grid.html" target="_blank">
 						<h2>Example</h2>
-						<div> Flexible layout </div>
+						<div> Flexible grid </div>
 						<div class="read-more">View detail ..</div>
 					</a>
 				</div>
@@ -509,9 +513,9 @@ new freewall('.free-wall')
 
 			<div class="brick size11"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/nested-layout.html" target="_blank">
+					<a class="float-left" href="demo/nested-grid.html" target="_blank">
 						<h2>Example </h2>
-						<div>Nested layout</div>
+						<div>Nested grid</div>
 						<div class="read-more">View detail ..</div>
 					</a>
 				</div>

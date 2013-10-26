@@ -59,7 +59,7 @@ h1 {
 }
 h2 {
 	font-size: 1.6em;
-	line-height: 1.6em;
+	line-height: 1em;
 }
 h3 {
 	font-size: 1.25em;
@@ -428,13 +428,6 @@ table {
 
 .google-share {
 	background: url(../i/gp.png) no-repeat left center;
-}
-
-.githud {
-	background: url(../i/git.png) no-repeat left center;
-	padding-left: 30px;
-	line-height: 30px;
-	display: inline-block;
 }
 
 .download-icon {

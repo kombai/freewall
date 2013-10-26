@@ -1,6 +1,6 @@
 
 // created by Minh Nguyen;
-// version 1.01;
+// version 1.02;
 
 (function($) {
 
@@ -30,8 +30,8 @@
 			//fixSize: 1, no resize + no adjust = no fill gap;
 			gutterX: 10, // width spacing between blocks;
 			gutterY: 10, // height spacing between blocks;
-			onFinish: function() {},
-			onGotGap: function() {},
+			onComplete: function() {},
+			onGapFound: function() {},
 			onResize: function() {},
 			onSetBlock: function() {},
 			selector: '.item'
@@ -39,19 +39,23 @@
 
 		var layout = {
 			block: {}, // store all items;
+			grid: {},
+			busy: 0,
+
 			cellH: 0, // unit adjust;
 			cellW: 0,
-			busy: 0,
+			
 			filter: '', // filter selector;
 			
 			gutterX: 10, 
 			gutterY: 10,
 			
+			lastId: 0,
 			length: 0,
 			
 			minCol: MAX,
 			minRow: MAX,
-			
+
 			totalCol: 1,
 			totalRow: 1,
 			
@@ -70,12 +74,12 @@
 		style.transition != null) &&
 		(layout.transition = true);
 	    
-	    // for zeptojs;
+		container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
+		
+		// for zeptojs;
 		$.isNumeric == null && ($.isNumeric = function(src) {
 			return src != null && src.constructor === Number;
 		});
-
-		container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
 
 		// setup resize event;
 		$(self).resize(function() {
@@ -91,13 +95,13 @@
 
 		function loadBlock(item, index) {
 
-			var $item = $(item), block = null, id = index + '-' + flexIndex;
+			var $item = $(item), block = null, id = layout.lastId++ + '-' + flexIndex;
 			var	gutterX = layout.gutterX, gutterY = layout.gutterY;
 			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.height());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.width());
-			$item.attr({ id: id, 'data-id': index });
+			$item.attr({ id: id, 'data-delay': index });
 			var	fixSize = eval($item.attr('data-fixsize'));
 				fixSize == null && (fixSize = setting.fixSize);
 
@@ -127,6 +131,7 @@
 				};
 			}
 
+			// for css animation;
 			if ($item.attr("data-state") == null) {
 				$item.attr("data-state", "init");
 			} else {
@@ -230,23 +235,23 @@
 
 				setting.onSetBlock["call"](item, block);
 
-				layout.length == 0 && setting.onFinish["call"](this, layout, setting);
+				layout.length == 0 && setting.onComplete["call"](klass, setting);
 			}
 
-			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-id"))) : action(); 
+			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
 		}
 
 		function nestedBlock($item, id) {
 			
-			var cellHeight = $item.attr("data-cellHeight") || 100;
-			var cellWidth = $item.attr("data-cellWidth") || 100;
 			var method = $item.attr("data-method") || "fitWidth";
 			var gutterX = $item.attr("data-guterX") || layout.gutterX;
 			var gutterY = $item.attr("data-guterY") || layout.gutterY;
 			var selector = $item.attr('data-nested') || ":only-child";
+			var cellWidth = $item.attr("data-cell-width") || 100;
+			var cellHeight = $item.attr("data-cell-height") || 100;
 
 			var block = layout.block[id];
-			var eWall= new freewall($item);
+			var eWall = new freewall($item);
 			eWall.reset({
 				cell: {
 					width: 1* cellWidth,
@@ -372,11 +377,11 @@
 			giot: function(items, col, row) {
 				var smallLoop = Math.min(col, row);
 				var bigLoop = Math.max(col, row);
-				var wall = {}, grid = {};
+				var wall = {}, grid = layout.grid;
 				var maxX = 0, maxY = 0;
 				var check = col < row ? 1 : 0;
 				var block, next, x, y, rest, lastBlock, misBlock;
-
+				
 				function fillGrid(x, y, w, h) {
 					for (var i = x; i < x + w;) {
 						for (var j = y; j < y + h;) {
@@ -482,9 +487,10 @@
 									lastX += 1;
 								}
 							}
-							setting.onGotGap(setBlock(misBlock));
+							setting.onGapFound(setBlock(misBlock));
 						}
 					}
+
 				}
 
 				for (var i in wall) {
@@ -502,13 +508,32 @@
 			
 			container: container,
 			
+			appendMore: function(items) {
+				var allBlock = $(items);
+				var activeBlock = [];
+
+				allBlock.each(function(index, item) {
+					container.append(item);
+					block = loadBlock(item, ++index);
+					block && activeBlock.push(block);
+				});
+				engine[setting.engine](activeBlock, layout.totalCol, layout.totalRow);
+				
+				layout.totalCol < layout.totalRow && container.height(layout.totalHeight << 0);
+				
+				allBlock.each(function(index, item) {
+					showBlock(item, item.id);
+				});
+			},
 			fitHeight: function(height) {
 
 				height = height ? height : container.height() || $(window).height();
 				layout.length = 0;
 				layout.block = {};
+				layout.grid = {};
 				layout.cellH = 0;
 				layout.cellW = 0;
+				layout.lastId = 1;
 
 				var cellHeight = setting.cell.height;
 				var cellWidth = setting.cell.width;
@@ -566,8 +591,10 @@
 				width = width ? width : container.width() || $(window).width();
 				layout.length = 0;
 				layout.block = {};
+				layout.grid = {};
 				layout.cellH = 0;
 				layout.cellW = 0;
+				layout.lastId = 1;
 
 				var cellHeight = setting.cell.height;
 				var cellWidth = setting.cell.width;
@@ -628,8 +655,10 @@
 				width = width ? width : container.width() || $(window).width();
 				layout.length = 0;
 				layout.block = {};
+				layout.grid = {};
 				layout.cellH = 0;
 				layout.cellW = 0;
+				layout.lastId = 1;
 
 				var cellHeight = setting.cell.height;
 				var cellWidth = setting.cell.width;

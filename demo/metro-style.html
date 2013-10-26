@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title>Nested grid for Metro style</title>
+		<title>Metro style</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
-		<meta name="description" content="Nested grid for Metro style" />
+		<meta name="description" content="Metro style" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, nested grid, metro style"/>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -11,13 +11,10 @@
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
 			.free-wall {
-				background: white;
 				width: 700px;
 				margin: auto;
 			}
-			.brick {
-				background: white;
-			}
+			
 			.f1-1 {
 				width: 160px;
 				height: 160px;
@@ -47,12 +44,12 @@
 	</head>
 	<body>
 		
-		<h1>Nested grid for Metro style</h1> 
+		<h1>Metro style</h1> 
 		<div id="freewall" class="free-wall">
 			<div class="brick size22"></div>
 			
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=150 >
-				<div class="item size12" data-nested=".tiny"  data-cellWidth=70 data-cellHeight=70>
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
+				<div class="item size12" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f2-1"></div>
 					<div class="brick tiny f2-1"></div>
 					<div class="brick tiny f2-1"></div>
@@ -61,8 +58,8 @@
 				<div class="brick item size12"></div>
 			</div>	
 			
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=150 >
-				<div class="item size11" data-nested=".tiny"  data-cellWidth=70 data-cellHeight=70>
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
+				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f2-1"></div>
 					<div class="brick tiny f2-2"></div>
 					<div class="brick tiny f2-2"></div>
@@ -71,9 +68,9 @@
 				<div class="brick item size11"></div>
 			</div>
 			
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=70 >
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=70 >
 				<div class="brick item size21"></div>
-				<div class="item f2-4" data-nested=".tiny" data-cellWidth=70 data-cellHeight=70>
+				<div class="item f2-4" data-nested=".tiny" data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f2-2"></div>
 					<div class="brick tiny f2-2"></div>
 					<div class="brick tiny f2-2"></div>
@@ -82,21 +79,21 @@
 				<div class="brick item f2-4"></div>
 			</div>
 			
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=150 > 
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 > 
 				<div class="brick item size21"></div>
-				<div class="item size11" data-nested=".tiny"  data-cellWidth=70 data-cellHeight=70>
+				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f1-2"></div>
 					<div class="brick tiny f1-2"></div>
 				</div>
-				<div class="item size11" data-nested=".tiny"  data-cellWidth=70 data-cellHeight=70>
+				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f2-1"></div>
 					<div class="brick tiny f2-1"></div>
 				</div>
 			</div>
 
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=150 > 
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 > 
 				<div class="brick item size11"></div>
-				<div class="item size11" data-nested=".tiny"  data-cellWidth=70 data-cellHeight=70>
+				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f2-2"></div>
 					<div class="brick tiny f1-2"></div>
 					<div class="brick tiny f2-2"></div>
@@ -104,13 +101,13 @@
 				<div class="brick item size21"></div>
 			</div>
 			
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=150 >
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
 				<div class="brick item size11"></div>
 				<div class="brick item size12"></div>
 				<div class="brick item size11"></div>
 			</div>
-			<div class="size22" data-nested=".item" data-cellWidth=150 data-cellHeight=150 >
-				<div class="item size11" data-nested=".tiny"  data-cellWidth=70 data-cellHeight=70>
+			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
+				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
 					<div class="brick tiny f2-2"></div>
 					<div class="brick tiny f2-2"></div>
 					<div class="brick tiny f2-2"></div>
@@ -157,9 +154,6 @@
 					gutterX: 10,
 					onResize: function() {
 						wall.fitWidth();
-					},
-					onFinish: function(layout, setting) {
-						console.log(layout);
 					}
 				})
 				wall.fitWidth();
