@@ -18,9 +18,7 @@ Some example layouts can be created by Freewall:
 ##### [Pinterest-like](http://vnjs.net/www/project/freewall/demo/pinterest-layout.html)
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/pinterest.png'>
 
-
 ### Features:
-<br>
 ##### - [Responsive grid](http://vnjs.net/www/project/freewall/)
 ##### - [Css3 Animation](http://vnjs.net/www/project/freewall/demo/css-animate.html)
 ##### - [Cross browser](http://vnjs.net/www/project/freewall/)
