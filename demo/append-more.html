@@ -16,8 +16,6 @@
 			.add-item {
 				display: inline-block;
 				margin: 10px;
-				width: 100px;
-				height: 100px;
 				cursor: pointer;
 				text-align: center;
 				line-height: 100px;
@@ -34,8 +32,21 @@
 				</div>
 			</div>
 		</div>
-		<div id="freewall" class="free-wall"></div>
-		<div class="add-item">More ++</div>
+		<div id="freewall" class="free-wall">
+			<div class="brick size32"> 
+				<div class='cover'>
+					<h3>Click on 'Add more ++' block to see this demo</h3>
+				</div>
+			</div>	
+			<div class="brick size21">
+				<div class='cover'>
+					<h2>Copyright</h2>
+					<p> © 2013 Minh Nguyen </p>
+					<p> Released under the MIT license</p>
+				</div>	
+			</div>
+		</div>
+		<div class="size11 add-item">Add more ++</div>
 		<script type="text/javascript">
 			
 			var colour = [
@@ -49,50 +60,37 @@
 				"rgb(39, 174, 96)"
 			];
 
-			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'></div>";
-			var w = 1, h = 1, html = '', color, limitItem = 12;
-			for (var i = 0; i < limitItem; ++i) {
-				color = colour[colour.length * Math.random() << 0];
-				h = 1 + 2 * Math.random() << 0;
-				w = 1 + 2 * Math.random() << 0;
-				html += temp.replace(/\{height\}/g, h*150).replace(/\{width\}/g, w*150).replace("{color}", color);
-			}
-			$("#freewall").html(html);
-			
-			var ewall = new freewall("#freewall");
-			ewall.reset({
-				selector: '.cell',
-				animate: true,
-				cell: {
-					width: 150,
-					height: 150
-				},
-				onResize: function() {
-					ewall.reset({
-						delay: 0
-					});
-					ewall.fitWidth();
-				}
+			$(".free-wall .brick").each(function() {
+				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
 			});
-			ewall.fitWidth();
-			// for scroll bar appear;
-			$(window).trigger("resize");
 
-			
-			$(".add-item").click(function() {
-				ewall.reset({
-					delay: 100
+			$(function() {
+				var wall = new freewall("#freewall");
+				wall.reset({
+					selector: '.brick',
+					animate: true,
+					cell: {
+						width: 160,
+						height: 160
+					},
+					delay: 50,
+					onResize: function() {
+						wall.fitWidth();
+					}
 				});
-				var html = "";
-				for (var i = 0; i < 3; ++i) {
-					color = colour[colour.length * Math.random() << 0];
-					h = 2 + 3 * Math.random() << 0;
-					w = 2 + 3 * Math.random() << 0;
-					html += temp.replace(/\{height\}/g, h*100).replace(/\{width\}/g, w*100).replace("{color}", color);
-				}
-				ewall.appendMore(html);
-			});
+				wall.fitWidth();
 
+				var temp = '<div class="brick {size}" style="background-color: {color}"><div class="cover"></div></div>';
+				var size = "size33 size32 size31 size23 size22 size21 size13 size12 size11".split(" ");
+				$(".add-item").click(function() {
+					var html = "";
+					for (var i = 0; i < 3; ++i) {
+						html += temp.replace('{size}', size[size.length * Math.random() << 0])
+									.replace('{color}', colour[colour.length * Math.random() << 0]);
+					}
+					wall.appendMore(html);
+				});
+			});
 		</script>
 	</body>
 </html>

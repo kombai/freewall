@@ -10,9 +10,10 @@
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
-			.free-wall {
-				width: 700px;
-				margin: auto;
+
+			.layout {
+				margin: 3em 1em;
+				color: #333;
 			}
 			
 			.f1-1 {
@@ -35,90 +36,137 @@
 				width: 320px;
 				height: 80px;
 			}
-			h1 {
-				color: #333;
-				width: 700px;
-				margin: 1em auto;
-			}
+			
 		</style>
 	</head>
 	<body>
 		
-		<h1>Nested grid</h1> 
-		<div id="freewall" class="free-wall">
-			<div class="brick size22"></div>
-			
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
-				<div class="item size12" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f2-1"></div>
-					<div class="brick tiny f2-1"></div>
-					<div class="brick tiny f2-1"></div>
-					<div class="brick tiny f2-1"></div>
+		<div class='header'>
+			<div class="clearfix">
+				<div class="float-left">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layout without gaps.</div>
 				</div>
-				<div class="brick item size12"></div>
-			</div>	
-			
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
-				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f2-1"></div>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-				</div>
-				<div class="brick item size12"></div>
-				<div class="brick item size11"></div>
-			</div>
-			
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=70 >
-				<div class="brick item size21"></div>
-				<div class="item f2-4" data-nested=".tiny" data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-				</div>
-				<div class="brick item f2-4"></div>
-			</div>
-			
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 > 
-				<div class="brick item size21"></div>
-				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f1-2"></div>
-					<div class="brick tiny f1-2"></div>
-				</div>
-				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f2-1"></div>
-					<div class="brick tiny f2-1"></div>
-				</div>
-			</div>
-
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 > 
-				<div class="brick item size11"></div>
-				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f1-2"></div>
-					<div class="brick tiny f2-2"></div>
-				</div>
-				<div class="brick item size21"></div>
-			</div>
-			
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
-				<div class="brick item size11"></div>
-				<div class="brick item size12"></div>
-				<div class="brick item size11"></div>
-			</div>
-			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
-				<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-					<div class="brick tiny f2-2"></div>
-				</div>
-				<div class="brick item size11"></div>
-				<div class="brick item size11"></div>
-				<div class="brick item size11"></div>
 			</div>
 		</div>
-		
+		<div class="layout">
+			<h2>Grid layout</h2>
+			<div class="free-wall">
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+			</div>
+		</div>
+		<div class="layout">
+			<h2>Nested level 1</h2>
+			<div class="free-wall">
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size12"></div>
+					<div class="brick item size12"></div>
+				</div>
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size21"></div>
+					<div class="brick item size21"></div>
+				</div>
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size12"></div>
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+				</div>
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size21"></div>
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+				</div>
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+					<div class="brick item size21"></div>
+				</div>
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+				</div>
+			</div>
+		</div>
+		<div class="layout">
+			<h2>Nested level 2</h2>
+			<div class="free-wall">
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="item size12" data-nested=".tiny"  data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f2-1"></div>
+						<div class="brick tiny f2-1"></div>
+						<div class="brick tiny f2-1"></div>
+						<div class="brick tiny f2-1"></div>
+					</div>
+					<div class="brick item size12"></div>
+				</div>	
+				
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f2-1"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+					</div>
+					<div class="brick item size12"></div>
+					<div class="brick item size11"></div>
+				</div>
+				
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=70 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size21"></div>
+					<div class="item f2-4" data-nested=".tiny" data-cell-width=70 data-cell-height=70 >
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+					</div>
+					<div class="brick item f2-4"></div>
+				</div>
+				
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size21"></div>
+					<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f1-2"></div>
+						<div class="brick tiny f1-2"></div>
+					</div>
+					<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f2-1"></div>
+						<div class="brick tiny f2-1"></div>
+					</div>
+				</div>
+
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="brick item size11"></div>
+					<div class="item size11" data-nested=".tiny"  data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f1-2"></div>
+						<div class="brick tiny f2-2"></div>
+					</div>
+					<div class="brick item size21"></div>
+				</div>
+				<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 data-gutterX=10 data-gutterY=10 >
+					<div class="item size11" data-nested=".tiny" data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+					</div>
+					<div class="brick item size11"></div>
+					<div class="brick item size11"></div>
+					<div class="item size11" data-nested=".tiny" data-cell-width=70 data-cell-height=70 data-gutterX=5 data-gutterY=5 >
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+						<div class="brick tiny f2-2"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script type="text/javascript">
 			
 			var colour = [
@@ -133,7 +181,7 @@
 			];
 			
 			$(".free-wall .size22").each(function() {
-				var backgroundColor = colour.shift();
+				var backgroundColor = colour[colour.length * Math.random() << 0];
 				var bricks = $(this).find(".brick");
 				!bricks.length && (bricks = $(this));
 				bricks.css({
@@ -142,21 +190,23 @@
 			});
 
 			$(function() {
-				var wall = new freewall("#freewall");
-				wall.reset({
-					selector: '.size22',
-					cell: {
-						width: 320,
-						height: 320
-					},
-					fixSize: 0,
-					gutterY: 10,
-					gutterX: 10,
-					onResize: function() {
-						wall.fitWidth();
-					}
-				})
-				wall.fitWidth();
+				$(".free-wall").each(function() {
+					var wall = new freewall(this);
+					wall.reset({
+						selector: '.size22',
+						cell: {
+							width: 320,
+							height: 320
+						},
+						fixSize: 0,
+						gutterY: 20,
+						gutterX: 20,
+						onResize: function() {
+							wall.fitWidth();
+						}
+					})
+					wall.fitWidth();
+				});
 				$(window).trigger("resize");
 			});
 

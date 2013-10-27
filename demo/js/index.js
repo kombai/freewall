@@ -30,10 +30,8 @@
 			}
 		},
 		color: function(value) {
-			var color = colour.concat(colour);
 			$(".free-wall .brick").each(function() {
-				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);
-				this.setAttribute("data-bgcolor", this.style.backgroundColor);
+				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
 			});
 		},
 		layout: function() {

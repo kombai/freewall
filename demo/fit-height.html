@@ -44,7 +44,7 @@
 			</div>
 		</div>
 		<div id="freewall" class="free-wall">
-			<div class="brick size23"> 
+			<div class="brick size32"> 
 				<div class='cover'>
 					<h2>Demo fitHeight</h2>
 				</div>
@@ -56,25 +56,25 @@
 					<p> Released under the MIT license</p>
 				</div>	
 			</div>
-			<div class="brick size22"> 
+			<div class="brick siz22"> 
 				<div class='cover'>
 					<h2>Javascript flex layout</h2>
 				</div>
 			</div>
 
-			<div class="brick size23">
+			<div class="brick size21">
 				<div class='cover'> 
 					<h2>Javascript grid layout</h2>
 				</div>
 			</div>
 
-			<div class="brick size22">
+			<div class="brick size32">
 				<div class='cover'>
 					<h2>jQuery flex layout</h2>
 				</div>
 			</div>
 
-			<div class="brick size22">
+			<div class="brick size21">
 				<div class='cover'>
 					<h2>jQuery grid layout</h2>
 				</div>
@@ -104,31 +104,31 @@
 				</div>
 			</div>
 
-			<div class="brick size12">
+			<div class="brick size22">
 				<div class='cover'>
 					<h2>Nested grid</h2>
 				</div>
 			</div>
 
-			<div class="brick size12">
+			<div class="brick size22">
 				<div class='cover'>
 					<h2>Dynamic grid</h2>
 				</div>
 			</div>
 
-			<div class="brick size21">
+			<div class="brick size31">
 				<div class='cover'>
 					<h2>Metro style</h2>
 				</div>
 			</div>
 
-			<div class="brick size11">
+			<div class="brick size21">
 				<div class='cover'>
 					<h2>Flex grid</h2>
 				</div>
 			</div>
 
-			<div class="brick size12">
+			<div class="brick size32">
 				<div class='cover'>
 					<h2>Responsive grid</h2>
 				</div>
@@ -152,7 +152,7 @@
 				</div>
 			</div>
 
-			<div class="brick size11"> 
+			<div class="brick size21"> 
 				<div class='cover'>
 					<h2>Flexiable layout</h2>
 				</div>
@@ -169,15 +169,16 @@
 		
 		<script type="text/javascript">
 			var colour = [
-				"#0C465D",
-				"#608A0D",
-				"#760B48",
-				"#94530D",
-				"#181867",
-				"#450E63",
-				"#8A0D25",
-				"#503b22"
+				"rgb(142, 68, 173)",
+				"rgb(243, 156, 18)",
+				"rgb(211, 84, 0)",
+				"rgb(0, 106, 63)",
+				"rgb(41, 128, 185)",
+				"rgb(192, 57, 43)",
+				"rgb(135, 0, 0)",
+				"rgb(39, 174, 96)"
 			];
+
 			var color = colour.concat(colour);
 			$(".free-wall .brick").each(function() {
 				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);

@@ -55,6 +55,8 @@
 			
 			minCol: MAX,
 			minRow: MAX,
+			
+			refesh: 0, // refresh layout after append new item;
 
 			totalCol: 1,
 			totalRow: 1,
@@ -244,8 +246,8 @@
 		function nestedBlock($item, id) {
 			
 			var method = $item.attr("data-method") || "fitWidth";
-			var gutterX = $item.attr("data-guterX") || layout.gutterX;
-			var gutterY = $item.attr("data-guterY") || layout.gutterY;
+			var gutterX = $item.attr("data-gutterX") || layout.gutterX;
+			var gutterY = $item.attr("data-gutterY") || layout.gutterY;
 			var selector = $item.attr('data-nested') || ":only-child";
 			var cellWidth = $item.attr("data-cell-width") || 100;
 			var cellHeight = $item.attr("data-cell-height") || 100;
@@ -257,8 +259,8 @@
 					width: 1* cellWidth,
 					height: 1 * cellHeight
 				},
-				gutterX: gutterX,
-				gutterY: gutterY,
+				gutterX: 1 * gutterX,
+				gutterY: 1 * gutterY,
 				selector: selector
 			});
 			eWall[method](block.width);
@@ -280,18 +282,22 @@
 
 			slice: function(items, col, row) {
 
-				var block = items.shift();
-				var wall = {};
-				
-				wall[block.id] = {
-					id: block.id,
-					x: 0,
-					y: 0,
-					width: col,
-					height: row,
-					originWidth: block.width,
-					originHeight: block.height
-				};
+				if (layout.grid == null) {
+					var block = items.shift(),
+						wall = {};
+
+					wall[block.id] = {
+						id: block.id,
+						x: 0,
+						y: 0,
+						width: col,
+						height: row,
+						originWidth: block.width,
+						originHeight: block.height
+					};
+				} else {
+					var block, wall = layout.grid;
+				}
 
 				function getBigBlock() {
 					var brick, idx, max = 0, less = false;
@@ -335,7 +341,6 @@
 							width: bigBlock.width - bigBlock.originWidth,
 							height: bigBlock.height 
 						};
-
 					}
 
 					block = null;
@@ -370,17 +375,21 @@
 
 				setZoneSize(col, row);
 
-				return wall;
+				layout.grid = wall;
+				// let layout refesh;
+				layout.refresh = true;
 			},
 			// just a person name;
 			// full name is Phan Dinh Giot;
 			giot: function(items, col, row) {
-				var smallLoop = Math.min(col, row);
-				var bigLoop = Math.max(col, row);
-				var wall = {}, grid = layout.grid;
-				var maxX = 0, maxY = 0;
-				var check = col < row ? 1 : 0;
-				var block, next, x, y, rest, lastBlock, misBlock;
+				var smallLoop = Math.min(col, row),
+					bigLoop = Math.max(col, row),
+					wall = {},
+					grid = layout.grid || {},
+					maxX = 0,
+					maxY = 0,
+					fitWidth = col < row ? 1 : 0,
+					block, next, x, y, rest, lastBlock, misBlock;
 				
 				function fillGrid(x, y, w, h) {
 					for (var i = x; i < x + w;) {
@@ -394,25 +403,27 @@
 
 				for (var b = 0; b < bigLoop; ++b) {
 					if (!items.length) break;
-					check ? (y = b) : (x = b);
+					fitWidth ? (y = b) : (x = b);
 					lastBlock = null;
 
 					for (var s = 0; s < smallLoop; ++s) {
 						if (!items.length) break;
-						check ? (x = s) : (y = s);
+						fitWidth ? (x = s) : (y = s);
 						if (grid[x + '-' + y]) continue;
 						
 						for (var n = s; n < smallLoop; ++n) {
-							next = check ? (n + '-' + b) : (b + '-' + n);
+							next = fitWidth ? (n + '-' + b) : (b + '-' + n);
 							if (grid[next] == true) break;
 						}
 						
 						rest = n - s;
 						block = null;
-						// find item fit into gap;
+						// find item fit in to gap;
 						for (var i = 0; i < items.length; ++i) {
-							if (items[i].height > rest && !check) continue;
-							if (items[i].width > rest && check) continue;
+							if (items[i].height > (bigLoop - b) && fitWidth) continue;
+							if (items[i].height > rest && !fitWidth ) continue;
+							if (items[i].width > rest && fitWidth) continue;
+							if (items[i].width > (bigLoop - b) && !fitWidth) continue;
 							block = items.splice(i, 1)[0];
 							break;
 						}
@@ -420,11 +431,11 @@
 						// trying resize the next block to fit gap;
 						if (block == null && setting.fixSize == null) {
 							// resize near block to fill gap;
-							if (layout.minRow > rest && !check && lastBlock) {
+							if (layout.minRow > rest && !fitWidth && lastBlock) {
 									lastBlock.height += rest;
 									fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
 									continue;
-							} else if (layout.minCol > rest && check && lastBlock) {
+							} else if (layout.minCol > rest && fitWidth && lastBlock) {
 									lastBlock.width += rest;
 									fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
 									continue;
@@ -433,7 +444,15 @@
 								for (var i = 0; i < items.length; ++i) {
 									if (items[i]['fixSize'] != null) continue;
 									block = items.splice(i, 1)[0];
-									check ? (block.width = rest) : (block.height = rest);
+									if (fitWidth) {
+										block.width = rest;
+										// for fitZone;
+										block.height = Math.min(block.height, bigLoop - b);
+									} else {
+										// for fitZone;
+										block.width = Math.min(block.width, bigLoop - b);
+										block.height = rest;
+									}
 									break;
 								}
 							}
@@ -464,7 +483,7 @@
 								x: x,
 								y: y
 							};
-							if (check) {
+							if (fitWidth) {
 								misBlock.width = rest;
 								misBlock.height = 0;
 								var lastX = x - 1;
@@ -498,8 +517,8 @@
 				}
 				
 				setZoneSize(maxX, maxY);
-				
-				return wall;
+
+				layout.grid = grid;
 			}
 		};
 
@@ -511,6 +530,7 @@
 			appendMore: function(items) {
 				var allBlock = $(items);
 				var activeBlock = [];
+				layout.refresh = false;
 
 				allBlock.each(function(index, item) {
 					container.append(item);
@@ -521,6 +541,8 @@
 				
 				layout.totalCol < layout.totalRow && container.height(layout.totalHeight << 0);
 				
+				layout.refresh && (allBlock = container.find(setting.selector));
+				
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 				});
@@ -530,7 +552,7 @@
 				height = height ? height : container.height() || $(window).height();
 				layout.length = 0;
 				layout.block = {};
-				layout.grid = {};
+				layout.grid = null;
 				layout.cellH = 0;
 				layout.cellW = 0;
 				layout.lastId = 1;
@@ -591,7 +613,7 @@
 				width = width ? width : container.width() || $(window).width();
 				layout.length = 0;
 				layout.block = {};
-				layout.grid = {};
+				layout.grid = null;
 				layout.cellH = 0;
 				layout.cellW = 0;
 				layout.lastId = 1;
@@ -655,7 +677,7 @@
 				width = width ? width : container.width() || $(window).width();
 				layout.length = 0;
 				layout.block = {};
-				layout.grid = {};
+				layout.grid = null;
 				layout.cellH = 0;
 				layout.cellW = 0;
 				layout.lastId = 1;

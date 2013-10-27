@@ -60,12 +60,18 @@
 				<div class='cover'>
 					<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
 					<div class='target'>Creating dynamic grid layouts without gaps.</div>
-					
 				</div>
 			</div>	
+			<div class="brick size11"> 
+				<div class='cover add-more'>
+					<h2>Add more ++</h2>
+					<div class="read-more">View detail ..</div>
+				</div>
+			</div>	
+
 			<div class="brick size12"> 
 				<div class='cover'>
-					<h2>Demo fit zone with "slice" engine</h2>
+					<h3>Append item with engine slice</h3>
 				</div>
 			</div>	
 			<div class="brick size21">
@@ -74,114 +80,6 @@
 					<p> © 2013 Minh Nguyen </p>
 					<p> Released under the MIT license</p>
 				</div>	
-			</div>
-			
-			<div class="brick size23">
-				<div class='cover'> 
-					<h2>Javascript grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>jQuery flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>jQuery grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Dynamic grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size11">
-				<div class='cover'>
-					<h2>Flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22"> 
-				<div class='cover'>
-					<h2>Nested layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22"> 
-				<div class='cover'>
-					<h2>Metro style</h2>
-				</div>
-			</div>
-
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Images layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size12">
-				<div class='cover'>
-					<h2>Grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Dynamic grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Flex grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size12">
-				<div class='cover'>
-					<h2>Responsive grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size11"> 
-				<div class='cover'>
-					<h2>Responsive layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Pinterest layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size13"> 
-				<div class='cover'>
-					<h2>Images layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21"> 
-				<div class='cover'>
-					<h2>Flexiable layout</h2>
-				</div>
-			</div>
-			
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Responsive layout</h2>
-				</div>
 			</div>
 		</div>
 		
@@ -200,8 +98,7 @@
 			$(".free-wall .brick").each(function() {
 				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
 			});
-		</script>
-		<script type="text/javascript">
+		
 			$(function() {
 				var wall = new freewall("#freewall");
 				wall.reset({
@@ -211,12 +108,23 @@
 						width: 160,
 						height: 160
 					},
-					delay: 30,
+					delay: 50,
+					engine: 'slice',
 					onResize: function() {
 						wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
 					}
 				})
 				wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
+
+				var temp = '<div class="brick {size}" style="background-color: {color}"><div class="cover"></div></div>';
+				var size = "size33 size32 size31 size23 size22 size21 size13 size12 size11".split(" ");
+				
+				$(".add-more").click(function() {
+					wall.appendMore(
+						temp.replace('{size}', size[size.length * Math.random() << 0])
+							.replace('{color}', colour[colour.length * Math.random() << 0])
+					);
+				});
 			});
 		</script>
 	</body>

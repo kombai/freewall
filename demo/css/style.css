@@ -237,10 +237,16 @@ table {
 	height: 480px;
 }
 
+.size31 {
+	width: 480px;
+	height: 160px;
+}
+
 .size23 {
 	width: 320px;
 	height: 480px;
 }
+
 .size32 {
 	width: 480px;
 	height: 320px;
@@ -256,9 +262,19 @@ table {
 	height: 640px;
 }
 
+.size34 {
+	width: 640px;
+	height: 480px;
+}
+
 .size35 {
 	width: 480px;
 	height: 800px;
+}
+
+.size53 {
+	width: 800px;
+	height: 480px;
 }
 
 .img-demo {

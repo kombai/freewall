@@ -12,7 +12,7 @@
 		<style type="text/css">
 			.free-wall {
 				width: 700px;
-				margin: auto;
+				margin: 2em auto;
 			}
 			
 			.f1-1 {
@@ -35,18 +35,24 @@
 				width: 320px;
 				height: 80px;
 			}
-			h1 {
-				color: #333;
-				width: 700px;
-				margin: 1em auto;
-			}
 		</style>
 	</head>
 	<body>
+		<div class='header'>
+			<div class="clearfix">
+				<div class="float-left">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layout without gaps.</div>
+				</div>
+			</div>
+		</div>
 		
-		<h1>Metro style</h1> 
 		<div id="freewall" class="free-wall">
-			<div class="brick size22"></div>
+			<div class="brick size22">
+				<div class="cover">
+					<h1>Metro style</h1> 
+				</div>
+			</div>
 			
 			<div class="size22" data-nested=".item" data-cell-width=150 data-cell-height=150 >
 				<div class="item size12" data-nested=".tiny"  data-cell-width=70 data-cell-height=70>
