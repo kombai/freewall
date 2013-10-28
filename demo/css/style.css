@@ -212,6 +212,11 @@ table {
 	margin: auto;
 }
 
+.size2-2 {
+	width: 80px;
+	height: 80px;
+}
+
 .size11 {
 	height: 160px;
 	width: 160px;
@@ -247,6 +252,11 @@ table {
 	height: 480px;
 }
 
+.size24 {
+	width: 320px;
+	height: 640px;
+}
+
 .size32 {
 	width: 480px;
 	height: 320px;
@@ -262,7 +272,7 @@ table {
 	height: 640px;
 }
 
-.size34 {
+.size43 {
 	width: 640px;
 	height: 480px;
 }

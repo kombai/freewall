@@ -154,7 +154,6 @@
 			var cellWidth = layout.cellW;
 			var cellHeight = layout.cellH;
 
-			
 			var realBlock = {
 				fixSize: block.fixSize,
 				top: y * (cellHeight + gutterY),
@@ -547,6 +546,7 @@
 					showBlock(item, item.id);
 				});
 			},
+
 			fitHeight: function(height) {
 
 				height = height ? height : container.height() || $(window).height();
@@ -575,7 +575,7 @@
 				}
 
 				if (!$.isNumeric(gutterX)) {
-					gutterX = layout.gutterX = layout.gutterY;
+					layout.gutterX = layout.gutterY;
 				}
 				
 				var deltaY = 0;
@@ -638,7 +638,7 @@
 				}
 
 				if (!$.isNumeric(gutterY)) {
-					gutterY = layout.gutterY = layout.gutterX;
+					layout.gutterY = layout.gutterX;
 				}
 
 				var deltaX = 0;
