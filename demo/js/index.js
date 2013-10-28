@@ -31,7 +31,9 @@
 		},
 		color: function(value) {
 			$(".free-wall .brick").each(function() {
-				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
+				var color = colour[colour.length * Math.random() << 0];
+				this.style.backgroundColor = color;
+				$(this).attr("data-bgcolor", color);
 			});
 		},
 		layout: function() {
