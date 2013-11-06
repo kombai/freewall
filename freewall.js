@@ -65,7 +65,7 @@
 		};
 
 		// check browser support transition;
-		var	style = document.body.style;
+		var style = document.body.style;
 		(style.webkitTransition != null ||
 		style.MozTransition != null ||
 		style.msTransition != null ||
@@ -95,7 +95,7 @@
 		function loadBlock(item, index) {
 
 			var $item = $(item), block = null, id = layout.lastId++ + '-' + flexIndex;
-			var	gutterX = layout.gutterX, gutterY = layout.gutterY;
+			var gutterX = layout.gutterX, gutterY = layout.gutterY;
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.height());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.width());
