@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Metro style</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Metro style" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, nested grid, metro style"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
+		<style type="text/css">
+			.layout {
+				margin: 4em;
+			}
+			.head {
+				margin: 2em auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class='header'>
+			<div class="clearfix">
+				<div class="float-left">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+				</div>
+			</div>
+		</div>
+		<div class="layout">
+			<div id="freewall" class="free-wall">
+				<div class="item size24"></div>
+				<div class="item size24"></div>
+				<div class="item size24"></div>
+				<div class="item size24"></div>
+				<div class="item size24"></div>
+				<div class="item size24"></div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			
+			var colour = [
+				"rgb(142, 68, 173)",
+				"rgb(243, 156, 18)",
+				"rgb(211, 84, 0)",
+				"rgb(0, 106, 63)",
+				"rgb(41, 128, 185)",
+				"rgb(192, 57, 43)",
+				"rgb(135, 0, 0)",
+				"rgb(39, 174, 96)"
+			];
+			
+			$(".free-wall .item").each(function() {
+				var backgroundColor = colour[colour.length * Math.random() << 0];
+				$(this).css({
+					backgroundColor: backgroundColor
+				});
+			});
+
+			$(function() {
+				var wall = new freewall("#freewall");
+				wall.reset({
+					selector: '.size24',
+					cell: {
+						width: 320,
+						height: 320
+					},
+					fixSize: 1,
+					gutterY: 'auto',
+					gutterX: 'auto',
+					onResize: function() {
+						wall.fitWidth();
+					}
+				})
+				wall.fitWidth();
+				$(window).trigger("resize");
+			});
+
+		</script>
+		
+	</body>
+</html>
