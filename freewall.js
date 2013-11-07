@@ -247,30 +247,33 @@
 			var gutterY = $item.attr("data-gutterY") || layout.gutterY;
 			var method = $item.attr("data-method") || "fitZone";
 			var nested = $item.attr('data-nested') || ":only-child";
+			var block = layout.block[id], innerWall;
+			
+			if (block) {
+				innerWall = new freewall($item);
+				innerWall.reset({
+					cell: {
+						width: 1* cellWidth,
+						height: 1 * cellHeight
+					},
+					gutterX: 1 * gutterX,
+					gutterY: 1 * gutterY,
+					selector: nested
+				});
 
-			var eWall = new freewall($item);
-			var block = layout.block[id];
-			eWall.reset({
-				cell: {
-					width: 1* cellWidth,
-					height: 1 * cellHeight
-				},
-				gutterX: 1 * gutterX,
-				gutterY: 1 * gutterY,
-				selector: nested
-			});
-
-			switch (method) {
-				case "fitHeight":
-					eWall[method](block.height);
-					break;
-				case "fitWidth":
-					eWall[method](block.width);
-					break;
-				case "fitZone":
-					eWall[method](block.width, block.height);
-					break;
+				switch (method) {
+					case "fitHeight":
+						innerWall[method](block.height);
+						break;
+					case "fitWidth":
+						innerWall[method](block.width);
+						break;
+					case "fitZone":
+						innerWall[method](block.width, block.height);
+						break;
+				}
 			}
+
 		}
 
 		function setZoneSize (totalCol, totalRow) {
