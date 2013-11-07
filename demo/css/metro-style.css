@@ -1,5 +1,5 @@
 body {
-	background: rgb(32, 27, 27) url(../i/freewall.png) no-repeat center fixed ;
+	background: rgb(32, 27, 27) url(../i/freewall.jpg) no-repeat center fixed ;
 	font-family: "Segoe UI", arial, tahoma;
 	background-size: cover;
 }
@@ -40,7 +40,7 @@ body {
 
 .freewall {
 	height: 100%;
-	background: url(../i/freewall.png) no-repeat center;
+	background: url(../i/freewall.jpg) no-repeat center;
 	background-size: 200% auto;
 }
 

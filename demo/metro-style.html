@@ -15,12 +15,25 @@
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
-			
+			html,body {
+				margin: 0px;
+				padding: 0px;
+			}
 			.layout {
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				right: 0px;
+				bottom: 0px;
 				margin: 4em;
 			}
 			.head {
-				margin: 2em 4em;
+				margin: 1em 4em;
+			}
+			.free-wall {
+				height: 100%;
+				margin: auto;
+				overflow: hidden;
 			}
 		</style>
 	</head>
@@ -129,10 +142,10 @@
 					gutterX: 20,
 					gutterY: 20,
 					onResize: function() {
-						wall.fitWidth();
+						wall.fitZone();
 					}
 				})
-				wall.fitWidth();
+				wall.fitZone();
 				$(window).trigger("resize");
 			});
 
