@@ -9,7 +9,7 @@ Some example layouts can be created by Freewall:
 ##### [Flexible layout](http://vnjs.net/www/project/freewall/demo/flex-grid.html)
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/flex.png'>
 <br>
-##### [Nested grid](http://vnjs.net/www/project/freewall/demo/nested-grid.html)
+##### [Metro style](http://vnjs.net/www/project/freewall/demo/metro-style.html)
 <img src='https://raw.github.com/kombai/freewall/master/demo/i/metro.png'>
 <br>
 ##### [Images show](http://vnjs.net/www/project/freewall/demo/image-layout.html)
