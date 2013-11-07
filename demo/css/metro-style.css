@@ -38,10 +38,16 @@ body {
 	background-size: cover;
 }
 
+.map {
+	height: 100%;
+	background: url(../i/map.png) no-repeat center;
+	background-size: 100% auto;
+}
+
 .freewall {
 	height: 100%;
-	background: url(../i/freewall.jpg) no-repeat center;
-	background-size: 200% auto;
+	background: url(../i/photo/12.jpg) no-repeat center;
+	background-size: 100% auto;
 }
 
 .img-demo1 {
@@ -58,6 +64,38 @@ body {
 
 .img-demo4 {
 	background: url(../i/photo/4.jpg) no-repeat center;
+}
+
+.img-demo5 {
+	background: url(../i/photo/5.jpg) no-repeat center;
+}
+
+.img-demo6 {
+	background: url(../i/photo/6.jpg) no-repeat center;
+}
+
+.img-demo7 {
+	background: url(../i/photo/21.jpg) no-repeat center;
+}
+
+.img-demo8 {
+	background: url(../i/photo/22.jpg) no-repeat center;
+}
+
+.img-demo9 {
+	background: url(../i/photo/37.jpg) no-repeat center;
+}
+
+.img-demo10 {
+	background: url(../i/photo/38.jpg) no-repeat center;
+}
+
+.img-demo11 {
+	background: url(../i/photo/30.jpg) no-repeat center;
+}
+
+.img-demo12 {
+	background: url(../i/photo/32.jpg) no-repeat center;
 }
 
 [class^="img-demo"] {

@@ -169,17 +169,19 @@
 								<h3> cell: object </h3>
 								<ul>
 									<li>
-										<h3> width : number </h3>
+										<h3> width : mix </h3>
 										<div>
 											Default: 100 <br/>
 											The width of unit, base on it will build grid container.
+											It can be a function and return value.
 										</div>
 									</li>
 									<li>
-										<h3> height : number </h3>
+										<h3> height : mix </h3>
 										<div>
 											Default: 100 <br/>
 											The height of unit, base on it will build grid container.
+											It can be a function and return value.
 										</div>
 									</li>
 								</ul>
@@ -190,7 +192,10 @@ var wall = new freewall('.free-wall');
 wall.reset({
   selector: '.brick',
   cell: {
-    width: 160,
+    width: function(container) {
+      var cellWidth = container.width() / 3;
+      return cellWidth - 20;
+    },
     height: 160
   }
 });											
@@ -273,8 +278,8 @@ wall.reset({
 						<h2>Events</h2>
 						<div class='float-left'>
 							<ul>
-								<li> onComplete </li>
 								<li> onGapFound </li>
+								<li> onComplete </li>
 								<li> onResize </li>
 								<li> onSetBlock </li>
 							</ul>
@@ -287,12 +292,12 @@ wall.reset({
 						</h2>
 						<ul>
 							<li>
-								<h3> onComplete </h3>
-								<div> Registry callback when all block arrange.</div>
-							</li>
-							<li>
 								<h3> onGapFound </h3>
 								<div> Registry callback when a gap found.</div>
+							</li>
+							<li>
+								<h3> onComplete </h3>
+								<div> Registry callback when all block arrange.</div>
 							</li>
 							<li>
 								<h3> onResize </h3>

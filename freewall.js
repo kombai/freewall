@@ -4,8 +4,6 @@
 
 (function($) {
 
-	
-
 	self.freewall = function(selector) {
 		
 		var flexIndex = Number.fw ? ++Number.fw : Number.fw = 1;
@@ -20,8 +18,8 @@
 		var setting = {
 			animate: true,
 			cell: {
-				width: 100,
-				height: 100
+				width: 100, // function(container) {return 100;}
+				height: 100 // function(container) {return 100;}
 			},
 			delay: 0, // slowdown active block;
 			engine: 'giot', // 'giot' is a person name;
@@ -30,11 +28,11 @@
 			//fixSize: 1, no resize + no adjust = no fill gap;
 			gutterX: 10, // width spacing between blocks;
 			gutterY: 10, // height spacing between blocks;
-			onComplete: function() {},
+			selector: '.item',
 			onGapFound: function() {},
+			onComplete: function() {},
 			onResize: function() {},
-			onSetBlock: function() {},
-			selector: '.item'
+			onSetBlock: function() {}
 		};
 
 		var layout = {
@@ -78,6 +76,10 @@
 		// for zeptojs;
 		$.isNumeric == null && ($.isNumeric = function(src) {
 			return src != null && src.constructor === Number;
+		});
+
+		$.isisFunction == null && ($.isFunction = function(src) {
+			return src != null && src instanceof Function;
 		});
 
 		// setup resize event;
@@ -253,8 +255,8 @@
 				innerWall = new freewall($item);
 				innerWall.reset({
 					cell: {
-						width: 1* cellWidth,
-						height: 1 * cellHeight
+						height: cellHeight,
+						width: cellWidth
 					},
 					gutterX: 1 * gutterX,
 					gutterY: 1 * gutterY,
@@ -578,6 +580,18 @@
 				var gutterY = setting.gutterY;
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
+
+				// dynamic type of unit;
+				if ($.isFunction(cellHeight)) {
+					cellHeight = cellHeight.call(this, container);
+				}
+				if ($.isFunction(cellWidth)) {
+					cellWidth = cellWidth.call(this, container);
+				}
+				// correct unit to number;
+				cellWidth = 1 * cellWidth;
+				cellHeight = 1 * cellHeight;
+
 				// estimate total rows;
 				var totalRow = Math.max(1, Math.floor(height / cellHeight));
 
@@ -640,6 +654,17 @@
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
 				
+				// dynamic type of unit;
+				if ($.isFunction(cellHeight)) {
+					cellHeight = cellHeight.call(this, container);
+				}
+				if ($.isFunction(cellWidth)) {
+					cellWidth = cellWidth.call(this, container);
+				}
+				// correct unit to number;
+				cellWidth = 1 * cellWidth;
+				cellHeight = 1 * cellHeight;
+
 				// estimate total columns;
 				var totalCol = Math.max(1, Math.floor(width / cellWidth));
 
@@ -703,6 +728,17 @@
 				var gutterY = setting.gutterY;
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
+
+				// dynamic type of unit;
+				if ($.isFunction(cellHeight)) {
+					cellHeight = cellHeight.call(this, container);
+				}
+				if ($.isFunction(cellWidth)) {
+					cellWidth = cellWidth.call(this, container);
+				}
+				// correct unit to number;
+				cellWidth = 1 * cellWidth;
+				cellHeight = 1 * cellHeight;
 
 				// estimate total columns;
 				var totalCol = Math.max(1, Math.floor(width / cellWidth));
