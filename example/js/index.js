@@ -23,7 +23,7 @@
 			var images = []
 			for (var i = 1 ; i < 50 ; ++i) {
 				images[i] = new Image();
-				images[i].src = "demo/i/photo/" + i + ".jpg";
+				images[i].src = "example/i/photo/" + i + ".jpg";
 				images[i].onload = function() {
 					//window["console"] && console.log(this.src);
 				}
