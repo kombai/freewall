@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
 			.free-wall {
-				margin: 10px;
+				margin: 15px;
 			}
 		</style>
 	</head>
@@ -39,10 +39,8 @@
 			ewall.reset({
 				selector: '.cell',
 				animate: true,
-				cell: {
-					width: 20,
-					height: 200
-				},
+				cellW: 20,
+				cellH: 200,
 				onResize: function() {
 					ewall.fitWidth();
 				}

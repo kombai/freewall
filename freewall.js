@@ -17,31 +17,29 @@
 		// default setting;
 		var setting = {
 			animate: true,
-			cell: {
-				width: 100, // function(container) {return 100;}
-				height: 100 // function(container) {return 100;}
-			},
+			cellW: 100, // function(container) {return 100;}
+			cellH: 100, // function(container) {return 100;}
 			delay: 0, // slowdown active block;
 			engine: 'giot', // 'giot' is a person name;
 			fixSize: null, // resize + adjust = fill gap;
 			//fixSize: 0, allow adjust size = no fill gap;
 			//fixSize: 1, no resize + no adjust = no fill gap;
-			gutterX: 10, // width spacing between blocks;
-			gutterY: 10, // height spacing between blocks;
+			gutterX: 15, // width spacing between blocks;
+			gutterY: 15, // height spacing between blocks;
 			selector: '.item',
 			onGapFound: function() {},
 			onComplete: function() {},
 			onResize: function() {},
 			onSetBlock: function() {}
 		};
-
+		
 		var layout = {
 			block: {}, // store all items;
 			grid: {},
 			busy: 0,
 
-			cellH: 0, // unit adjust;
 			cellW: 0,
+			cellH: 0, // unit adjust;
 			
 			filter: '', // filter selector;
 			
@@ -83,19 +81,18 @@
 		});
 
 		// setup resize event;
-		$(self).resize(function() {
+		$(window).resize(function() {
 			if (layout.busy) return;
 			layout.busy = 1;
 			setTimeout(function() {
 				layout.busy = 0;
 				setting.onResize["call"](klass, container);
 			}, 255);
-			container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
+			container.attr('data-min-width', Math.floor($(window).width() / 80) * 80);
 		});
 
 
 		function loadBlock(item, index) {
-
 			var $item = $(item), block = null, id = layout.lastId++ + '-' + flexIndex;
 			var gutterX = layout.gutterX, gutterY = layout.gutterY;
 			// store original size;
@@ -105,13 +102,13 @@
 			var fixSize = eval($item.attr('data-fixsize'));
 			fixSize == null && (fixSize = setting.fixSize);
 
-			var width = 1 * $item.attr('data-width');
 			var height = 1 * $item.attr('data-height');
-			var cellWidth = layout.cellW;
-			var cellHeight = layout.cellH;
+			var width = 1 * $item.attr('data-width');
+			var cellW = layout.cellW;
+			var cellH = layout.cellH;
 			
-			var col = !width ? 0 : Math.round((width + gutterX) / (cellWidth + gutterX));
-			var row = !height ? 0 : Math.round((height + gutterY) / (cellHeight + gutterY));
+			var col = !width ? 0 : Math.round((width + gutterX) / (cellW + gutterX));
+			var row = !height ? 0 : Math.round((height + gutterY) / (cellH + gutterY));
 			
 			// for none resize block;
 			if ((fixSize != null) && (col > layout.totalCol || row > layout.totalRow)) {
@@ -142,22 +139,21 @@
 		}
 
 		function setBlock(block) {
-			
-			var cellHeight = layout.cellH;
-			var cellWidth = layout.cellW;
 			var gutterX = layout.gutterX;
 			var gutterY = layout.gutterY;
 			var height = block.height;
 			var width = block.width;
+			var cellH = layout.cellH;
+            var cellW = layout.cellW;
 			var x = block.x;
 			var y = block.y;
 
 			var realBlock = {
 				fixSize: block.fixSize,
-				top: y * (cellHeight + gutterY),
-				left: x * (cellWidth + gutterX),
-				width: width ? cellWidth * width + gutterX * (width - 1) : cellWidth * width,
-				height: height ? cellHeight * height + gutterY * (height - 1) : cellHeight * height
+				top: y * (cellH + gutterY),
+				left: x * (cellW + gutterX),
+				width: width ? cellW * width + gutterX * (width - 1) : cellW * width,
+				height: height ? cellH * height + gutterY * (height - 1) : cellH * height
 			};
 			
 			realBlock.top = 1 * realBlock.top.toFixed(2);
@@ -171,7 +167,6 @@
 		}
 
 		function showBlock(item, id) {
-			
 			var method = setting.animate && !layout.transition ? 'animate' : 'css';
 			var $item = $(item);
 			var style = item.style;
@@ -196,7 +191,6 @@
 			$item.stop && $item.stop();
 			item.delay && clearTimeout(item.delay);
 			
-
 			function action() {
 				// start to arrange;
 				start && $item.attr("data-state", "start");
@@ -242,22 +236,19 @@
 		}
 
 		function nestedBlock($item, id) {
-			
-			var cellHeight = $item.attr("data-cell-height") || setting.cell.height;
-			var cellWidth = $item.attr("data-cell-width") || setting.cell.width;
 			var gutterX = $item.attr("data-gutterX") || layout.gutterX;
 			var gutterY = $item.attr("data-gutterY") || layout.gutterY;
 			var method = $item.attr("data-method") || "fitZone";
 			var nested = $item.attr('data-nested') || ":only-child";
+			var cellH = $item.attr("data-cellH") || setting.cellH;
+			var cellW = $item.attr("data-cellW") || setting.cellW;
 			var block = layout.block[id], innerWall;
 			
 			if (block) {
 				innerWall = new freewall($item);
 				innerWall.reset({
-					cell: {
-						height: cellHeight,
-						width: cellWidth
-					},
+					cellH: cellH,
+					cellW: cellW,
 					gutterX: 1 * gutterX,
 					gutterY: 1 * gutterY,
 					selector: nested
@@ -275,11 +266,9 @@
 						break;
 				}
 			}
-
 		}
 
 		function setZoneSize (totalCol, totalRow) {
-			
 			var gutterX = layout.gutterX;
 			var gutterY = layout.gutterY;
 			var cellH = layout.cellH;
@@ -295,7 +284,6 @@
 		var engine = {
 
 			slice: function(items, col, row) {
-
 				if (layout.grid == null) {
 					var block = items.shift(),
 						wall = {};
@@ -565,7 +553,6 @@
 			},
 
 			fitHeight: function(height) {
-
 				height = height ? height : container.height() || $(window).height();
 				layout.length = 0;
 				layout.block = {};
@@ -574,33 +561,33 @@
 				layout.cellW = 0;
 				layout.lastId = 1;
 
-				var cellHeight = setting.cell.height;
-				var cellWidth = setting.cell.width;
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
+				var cellH = setting.cellH;
+				var cellW = setting.cellW;
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
 
 				// dynamic type of unit;
-				if ($.isFunction(cellHeight)) {
-					cellHeight = cellHeight.call(this, container);
+				if ($.isFunction(cellH)) {
+					cellH = cellH.call(this, container);
 				}
-				if ($.isFunction(cellWidth)) {
-					cellWidth = cellWidth.call(this, container);
+				if ($.isFunction(cellW)) {
+					cellW = cellW.call(this, container);
 				}
 				// correct unit to number;
-				cellWidth = 1 * cellWidth;
-				cellHeight = 1 * cellHeight;
+				cellW = 1 * cellW;
+				cellH = 1 * cellH;
 
 				// estimate total rows;
-				var totalRow = Math.max(1, Math.floor(height / cellHeight));
+				var totalRow = Math.max(1, Math.floor(height / cellH));
 
 				// adjust size unit for fit height;
 				if (!$.isNumeric(gutterY)) {
-					gutterY = (height - totalRow * cellHeight) / Math.max(1, (totalRow - 1));
+					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
 					gutterY = layout.gutterY = Math.max(0, gutterY);
 				} else {
-					totalRow = Math.max(1, Math.round(height / (cellHeight + gutterY)));
+					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
 				}
 
 				if (!$.isNumeric(gutterX)) {
@@ -609,9 +596,9 @@
 				
 				var deltaY = 0;
 				// adjust cell unit for fit height;
-				deltaY = (height + gutterY) / totalRow - (cellHeight + gutterY);
-				layout.cellH = cellHeight + deltaY;
-				layout.cellW = cellWidth + (deltaY * cellWidth / cellHeight);
+				deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
+				layout.cellH = cellH + deltaY;
+				layout.cellW = cellW + (deltaY * cellW / cellH);
 				
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
@@ -638,7 +625,6 @@
 			},
 
 			fitWidth: function(width) {
-				
 				width = width ? width : container.width() || $(window).width();
 				layout.length = 0;
 				layout.block = {};
@@ -647,34 +633,34 @@
 				layout.cellW = 0;
 				layout.lastId = 1;
 
-				var cellHeight = setting.cell.height;
-				var cellWidth = setting.cell.width;
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
+				var cellH = setting.cellH;
+				var cellW = setting.cellW;
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
 				
 				// dynamic type of unit;
-				if ($.isFunction(cellHeight)) {
-					cellHeight = cellHeight.call(this, container);
+				if ($.isFunction(cellH)) {
+					cellH = cellH.call(this, container);
 				}
-				if ($.isFunction(cellWidth)) {
-					cellWidth = cellWidth.call(this, container);
+				if ($.isFunction(cellW)) {
+					cellW = cellW.call(this, container);
 				}
 				// correct unit to number;
-				cellWidth = 1 * cellWidth;
-				cellHeight = 1 * cellHeight;
+				cellW = 1 * cellW;
+				cellH = 1 * cellH;
 
 				// estimate total columns;
-				var totalCol = Math.max(1, Math.floor(width / cellWidth));
+				var totalCol = Math.max(1, Math.floor(width / cellW));
 
 				// adjust unit size for fit width;
 				if (!$.isNumeric(gutterX)) {
-					gutterX = (width - totalCol * cellWidth) / Math.max(1, (totalCol - 1));
+					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
 					gutterX = layout.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
-					totalCol = Math.max(1, Math.round(width / (cellWidth + gutterX)));
+					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
 				}
 
 				if (!$.isNumeric(gutterY)) {
@@ -683,9 +669,9 @@
 
 				var deltaX = 0;
 				// adjust cell unit for fit width;
-				deltaX = (width + gutterX) / totalCol - (cellWidth + gutterX);
-				layout.cellW = cellWidth + deltaX;
-				layout.cellH = cellHeight + (deltaX * cellHeight / cellWidth);
+				deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
+				layout.cellW = cellW + deltaX;
+				layout.cellH = cellH + (deltaX * cellH / cellW);
 
 				var allBlock = container.find(setting.selector).removeAttr('id');
 				var items, block = null, activeBlock = [];
@@ -712,7 +698,6 @@
 			},
 
 			fitZone: function(width, height) {
-				
 				height = height ? height : container.height() || $(window).height();
 				width = width ? width : container.width() || $(window).width();
 				layout.length = 0;
@@ -721,55 +706,55 @@
 				layout.cellH = 0;
 				layout.cellW = 0;
 				layout.lastId = 1;
-
-				var cellHeight = setting.cell.height;
-				var cellWidth = setting.cell.width;
+				
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
+				var cellH = setting.cellH;
+				var cellW = setting.cellW;
 				layout.gutterX = gutterX;
 				layout.gutterY = gutterY;
 
 				// dynamic type of unit;
-				if ($.isFunction(cellHeight)) {
-					cellHeight = cellHeight.call(this, container);
+				if ($.isFunction(cellH)) {
+					cellH = cellH.call(this, container);
 				}
-				if ($.isFunction(cellWidth)) {
-					cellWidth = cellWidth.call(this, container);
+				if ($.isFunction(cellW)) {
+					cellW = cellW.call(this, container);
 				}
 				// correct unit to number;
-				cellWidth = 1 * cellWidth;
-				cellHeight = 1 * cellHeight;
+				cellW = 1 * cellW;
+				cellH = 1 * cellH;
 
 				// estimate total columns;
-				var totalCol = Math.max(1, Math.floor(width / cellWidth));
+				var totalCol = Math.max(1, Math.floor(width / cellW));
 				// estimate total rows;
-				var totalRow = Math.max(1, Math.floor(height / cellHeight));
+				var totalRow = Math.max(1, Math.floor(height / cellH));
 				
 				// adjust unit size for fit width;
 				if (!$.isNumeric(gutterX)) {
-					gutterX = (width - totalCol * cellWidth) / Math.max(1, (totalCol - 1));
+					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
 					gutterX = layout.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
-					totalCol = Math.max(1, Math.round(width / (cellWidth + gutterX)));
+					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
 				}
 
 				// adjust size unit for fit height;
 				if (!$.isNumeric(gutterY)) {
-					gutterY = (height - totalRow * cellHeight) / Math.max(1, (totalRow - 1));
+					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
 					gutterY = layout.gutterY = Math.max(0, gutterY);
 				} else {
-					totalRow = Math.max(1, Math.round(height / (cellHeight + gutterY)));
+					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
 				}
 
 				var deltaX = 0, deltaY = 0;
 				// adjust cell unit for fit width;
-				deltaX = (width + gutterX) / totalCol - (cellWidth + gutterX);
-				layout.cellW = cellWidth + deltaX;
+				deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
+				layout.cellW = cellW + deltaX;
 
 				// adjust cell unit for fit height;
-				deltaY = (height + gutterY) / totalRow - (cellHeight + gutterY);
-				layout.cellH = cellHeight + deltaY;
+				deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
+				layout.cellH = cellH + deltaY;
 
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
@@ -795,7 +780,6 @@
 			},
 			
 			fixSize: function(option) {
-				
 				var config = {
 					block: null,
 					width: null,
@@ -824,7 +808,6 @@
 				return this;
 			}
 		});
-
 	};
  
 })(window.Zepto || window.jQuery);

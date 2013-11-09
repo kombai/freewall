@@ -43,10 +43,8 @@
 			wall.reset({
 				selector: '.brick',
 				animate: true,
-				cell: {
-					width: 160,
-					height: 160
-				},
+				cellW: 160,
+				cellH: 160,
 				onResize: function() {
 					var cwidth = wall.container.width();
 					wall.container.find('.full-width')

@@ -15,20 +15,20 @@
 		<script type="text/javascript">
 			$(function() {
 				app.setup({
-					preload: 1,
 					share: 1,
 					color: 1,
 					layout: 1,
 					filter: 1,
 					events: 1,
 					methods: 1,
-					options: 1
+					options: 1,
+					preload: 1
 				});
 			});
 		</script>
 		<style type="text/css">
 			.free-wall {
-				margin: 10px;
+				margin: 15px;
 			}
 		</style>
 	</head>
@@ -141,12 +141,8 @@
 						<h2>Options</h2>
 						<ul>
 							<li> animate </li>
-							<li> cell 
-								<ul>
-									<li>width</li>
-									<li>height</li>
-								</ul>
-							</li>
+							<li> cellW </li>
+							<li> cellH </li> 
 							<li> delay </li>
 							<li> fixSize </li>
 							<li> gutterX </li>
@@ -166,41 +162,34 @@
 								<div> True to make block move with animation</div>
 							</li>
 							<li>
-								<h3> cell: object </h3>
-								<ul>
-									<li>
-										<h3> width : mix </h3>
-										<div>
-											Default: 100 <br/>
-											The width of unit, base on it will build grid container.
-											It can be a function and return value.
-										</div>
-									</li>
-									<li>
-										<h3> height : mix </h3>
-										<div>
-											Default: 100 <br/>
-											The height of unit, base on it will build grid container.
-											It can be a function and return value.
-										</div>
-									</li>
-								</ul>
+								<h3> cellW: mix </h3>
+								<div>
+									Default: 100 <br/>
+									The width of unit, base on it will build grid container.
+									It can be a function and return value.
+								</div>
 								<h3> Example </h3>
 									<pre>
 										<code>
 var wall = new freewall('.free-wall');
 wall.reset({
   selector: '.brick',
-  cell: {
-    width: function(container) {
+  cellW: function(container) {
       var cellWidth = container.width() / 3;
       return cellWidth - 20;
     },
-    height: 160
-  }
+  cellH: 160
 });											
 										</code>
 									</pre>	
+							</li>
+							<li>
+								<h3> cellH: mix </h3>
+								<div>
+									Default: 100 <br/>
+									The height of unit, base on it will build grid container.
+									It can be a function and return value.
+								</div>
 							</li>
 							<li>
 								<h3> delay : number </h3>
@@ -257,10 +246,8 @@ var wall = new freewall('.free-wall');
 wall.reset({
   selector: '.brick',
   animate: true,
-  cell: {
-    width: 150,
-    height: 150
-  },
+  cellW: 150,
+  cellH: 150,
   gutterY: 10,
   gutterX: 'auto'
 });
