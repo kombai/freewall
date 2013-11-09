@@ -1,4 +1,3 @@
-
 Copyright (c) 2013 Minh Nguyen.
 
 Permission is hereby granted, free of charge, to any person
