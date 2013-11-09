@@ -144,7 +144,7 @@
 			var height = block.height;
 			var width = block.width;
 			var cellH = layout.cellH;
-            var cellW = layout.cellW;
+			var cellW = layout.cellW;
 			var x = block.x;
 			var y = block.y;
 
@@ -285,9 +285,7 @@
 
 			slice: function(items, col, row) {
 				if (layout.grid == null) {
-					var block = items.shift(),
-						wall = {};
-
+					var block = items.shift(), wall = {};
 					wall[block.id] = {
 						id: block.id,
 						x: 0,
@@ -385,13 +383,13 @@
 			// full name is Phan Dinh Giot;
 			giot: function(items, col, row) {
 				var smallLoop = Math.min(col, row),
-					bigLoop = Math.max(col, row),
-					wall = {},
-					grid = layout.grid || {},
-					maxX = 0,
-					maxY = 0,
-					fitWidth = col < row ? 1 : 0,
-					block, next, x, y, rest, lastBlock, misBlock;
+				    bigLoop = Math.max(col, row),
+				    wall = {},
+				    grid = layout.grid || {},
+				    maxX = 0,
+				    maxY = 0,
+				    fitWidth = col < row ? 1 : 0,
+				    block, next, x, y, rest, lastBlock, misBlock;
 				
 				function fillGrid(x, y, w, h) {
 					for (var i = x; i < x + w;) {
@@ -434,13 +432,13 @@
 						if (block == null && setting.fixSize == null) {
 							// resize near block to fill gap;
 							if (layout.minRow > rest && !fitWidth && lastBlock) {
-									lastBlock.height += rest;
-									fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
-									continue;
+								lastBlock.height += rest;
+								fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
+								continue;
 							} else if (layout.minCol > rest && fitWidth && lastBlock) {
-									lastBlock.width += rest;
-									fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
-									continue;
+								lastBlock.width += rest;
+								fillGrid(lastBlock.x, lastBlock.y, lastBlock.width, lastBlock.height);
+								continue;
 							} else {
 								// get other block fill to gap;
 								for (var i = 0; i < items.length; ++i) {
