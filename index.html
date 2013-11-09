@@ -3,15 +3,15 @@
 	<head>
 		<title>Freewall - jQuery plugin for creating grid layouts</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
-		<meta name="description" content="Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts: flexible layouts, images layouts, fluid grid layouts, metro style layouts, pinterest like layouts ... for desktop, mobile and tablet" />
+		<meta name="description" content="Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts: flexible layouts, images layouts, nested grid layouts, metro style layouts, pinterest like layouts ... for desktop, mobile and tablet" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, flexible layouts, images layouts, fluid grid layouts, metro style layouts, pinterest like layouts"/>
-		<meta name="og:image" content="http://vnjs.net/www/project/freewall/demo/i/flex.png" />
-		<meta name="og:description" content="Freewall is a responsive and cross-browser jQuery plugin for creating dynamic grid layout for desktop, mobile and tablet." />
+		<meta name="og:image" content="http://vnjs.net/www/project/freewall/i/flex.png" />
+		<meta name="og:description" content="Freewall is a cross-browser and responsive jQuery plugin for creating dynamic grid layouts for desktop, mobile and tablet." />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" type="text/css" href="demo/css/style.css" />
-		<script type="text/javascript" src="demo/js/jquery-1.7.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="example/css/style.css" />
+		<script type="text/javascript" src="example/js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="freewall.js"></script>
-		<script type="text/javascript" src="demo/js/index.js"></script>
+		<script type="text/javascript" src="example/js/index.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				app.setup({
@@ -37,7 +37,7 @@
 			<div class="clearfix">
 				<div class="float-left">
 						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-						<div class='target'>Creating dynamic grid layout without gaps.</div>
+						<div class='target'>Creating dynamic grid layouts without gaps.</div>
 				</div>
 				<ul class="float-right reponsive-block">
 					<li><a class="desktop active" data-width="auto"></a></li> 
@@ -53,25 +53,25 @@
 				<div class='cover'>
 					<h2>What is Freewall?</h2>
 					<p>
-						Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts: flexible layout, images layout, nested grid, fluid grid, metro style layout, pinterest like layout ... with nice CSS3 animation effects and call back events. Freewall is all-in-one solution for creating dynamic grid layouts for desktop, mobile and tablet.
+						Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts: flexible layouts, images layouts, nested grid layouts, metro style layouts, pinterest like layouts ... with nice CSS3 animation effects and call back events. Freewall is all-in-one solution for creating dynamic grid layouts for desktop, mobile and tablet.
 					</p>
 					<h4>Some example layouts:</h4>
 					<br/>
 					<ul class="img-demo">
 						<li>
-							<img src="demo/i/flex.png" width=98 height=98 />
+							<img src="i/flex.png" width=98 height=98 />
 							<h3>Flex layout</h3>
 						</li>
 						<li>
-							<img src="demo/i/metro.png" width=98 height=98 />
+							<img src="i/metro.png" width=98 height=98 />
 							<h3>Metro style</h3>
 						</li>
 						<li>
-							<img src="demo/i/images.png" width=98 height=98 />
+							<img src="i/image.png" width=98 height=98 />
 							<h3>Images layout</h3>
 						</li>
 						<li>
-							<img src="demo/i/pinterest.png" width=98 height=98 />
+							<img src="i/pinterest.png" width=98 height=98 />
 							<h3>Pinterest layout</h3>
 						</li>
 					</ul>
@@ -90,7 +90,7 @@
 				<div class='cover'> 
 					<h2>Getting started</h2>
 					<div>
-						<p> Freewall requires jQuery framework.  It requires browsers which support CSS3 for some nice animation effects.</p>
+						<p> Freewall requires jQuery or Zepto framework.  It requires browsers which support CSS3 for some nice animation effects.</p>
 						<pre>
 							<code>
 &lt;!DOCTYPE html&gt;
@@ -408,7 +408,7 @@ ewall.fitWidth(cwidth);
 			<div class="brick size11">
 				<div class='cover'>
 					<a href='https://github.com/kombai/freewall' target="_blank">
-						<img style="position: absolute; top: 0; right: 0; border: 0;" src="demo/i/forkme.png" alt="Fork me on GitHub" />
+						<img style="position: absolute; top: 0; right: 0; border: 0;" src="example/i/forkme.png" alt="Fork me on GitHub" />
 					</a>
 				</div>
 			</div>
@@ -454,7 +454,7 @@ new freewall('.free-wall')
 
 			<div class="brick size11">
 				<div class='cover'>
-					<a class="float-left" href="demo/append-more.html" target="_blank">
+					<a class="float-left" href="example/append-more.html" target="_blank">
 						<h2>Example</h2>
 						<div> Append item </div>
 						<div class="read-more">View detail ...</div>
@@ -464,7 +464,7 @@ new freewall('.free-wall')
 
 			<div class="brick size11">
 				<div class='cover'>
-					<a class="float-left" href="demo/css-animate.html" target="_blank">
+					<a class="float-left" href="example/css-animate.html" target="_blank">
 						<h2>Example</h2>
 						<div> CSS3 animation </div>
 						<div class="read-more">View detail ...</div>
@@ -474,7 +474,7 @@ new freewall('.free-wall')
 
 			<div class="brick size11">
 				<div class='cover'>
-					<a class="float-left" href="demo/engine-slice.html" target="_blank">
+					<a class="float-left" href="example/engine-slice.html" target="_blank">
 						<h2>Example</h2>
 						<div> Engine slice </div>
 						<div class="read-more">View detail ...</div>
@@ -484,7 +484,7 @@ new freewall('.free-wall')
 
 			<div class="brick size11">
 				<div class='cover'>
-					<a class="float-left" href="demo/fit-height.html" target="_blank">
+					<a class="float-left" href="example/fit-height.html" target="_blank">
 						<h2>Example</h2>
 						<div> Fit height </div>
 						<div class="read-more">View detail ...</div>
@@ -494,7 +494,7 @@ new freewall('.free-wall')
 
 			<div class="brick size11">
 				<div class='cover'>
-					<a class="float-left" href="demo/fit-zone.html" target="_blank">
+					<a class="float-left" href="example/fit-zone.html" target="_blank">
 						<h2>Example</h2>
 						<div>Fit zone</div>
 						<div class="read-more">View detail ...</div>
@@ -504,7 +504,7 @@ new freewall('.free-wall')
 
 			<div class="brick size11">
 				<div class='cover'>
-					<a class="float-left" href="demo/for-zepto.html" target="_blank">
+					<a class="float-left" href="example/for-zepto.html" target="_blank">
 						<h2>Example</h2>
 						<div>For Zeptojs</div>
 						<div class="read-more">View detail ...</div>
@@ -514,7 +514,7 @@ new freewall('.free-wall')
 
 			<div class="brick size21"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/flex-grid.html" target="_blank">
+					<a class="float-left" href="example/flex-grid.html" target="_blank">
 						<h2>Example</h2>
 						<div>Flexible grid</div>
 						<div class="read-more">View detail ...</div>
@@ -524,7 +524,7 @@ new freewall('.free-wall')
 
 			<div class="brick size21"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/grid-layout.html" target="_blank">
+					<a class="float-left" href="example/grid-layout.html" target="_blank">
 						<h2>Example</h2>
 						<div>Grid layout</div>
 						<div class="read-more">View detail ...</div>
@@ -534,7 +534,7 @@ new freewall('.free-wall')
 
 			<div class="brick size21"> 
 				<div class='cover'> 
-					<a class="float-left" href="demo/image-layout.html" target="_blank">
+					<a class="float-left" href="example/image-layout.html" target="_blank">
 						<h2>Example</h2>
 						<div>Images layout</div>
 						<div class="read-more">View detail ...</div>
@@ -544,7 +544,7 @@ new freewall('.free-wall')
 
 			<div class="brick size21"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/metro-style.html" target="_blank">
+					<a class="float-left" href="example/metro-style.html" target="_blank">
 						<h2>Example </h2>
 						<div>Metro style</div>
 						<div class="read-more">View detail ...</div>
@@ -554,7 +554,7 @@ new freewall('.free-wall')
 
 			<div class="brick size21"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/nested-grid.html" target="_blank">
+					<a class="float-left" href="example/nested-grid.html" target="_blank">
 						<h2>Example</h2>
 						<div>Nested grid</div>
 						<div class="read-more">View detail ...</div>
@@ -564,7 +564,7 @@ new freewall('.free-wall')
 
 			<div class="brick size21"> 
 				<div class='cover'>
-					<a class="float-left" href="demo/pinterest-layout.html" target="_blank">
+					<a class="float-left" href="example/pinterest-layout.html" target="_blank">
 						<h2>Example </h2>
 						<div>Pinterest like layout</div>
 						<div class="read-more">View detail ...</div>
