@@ -1,23 +1,36 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title>Fit zone demo with freewall</title>
+		<title>Freewall demo fit zone</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
-		<meta name="description" content="Fit zone demo with freewall" />
+		<meta name="description" content="Freewall demo fit zone" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, fit zone"/>
-		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
 		
 		<style type="text/css">
-			body {
+			html, body {
 				height: 100%;
+				width: 100%;
+				margin: 0;
+				padding: 0;
+			}
+			.layout {
+				position: absolute;
+				right: 0px;
+				left: 0px;
+				top: 0px;
+				bottom: 0px;
+				padding: 15px;
 				overflow: hidden;
 			}
-	
+			.header {
+				height: 100%;
+			}
 			.free-wall {
-				margin: 10px;
+				width: 100%;
+				height: 100%;
 			}
 
 			@keyframes start {
@@ -55,153 +68,41 @@
 		</style>
 	</head>
 	<body>
-		<div id="freewall" class="free-wall">
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-					<div class='target'>Creating dynamic grid layouts without gaps.</div>
-					
+		<div class="layout">
+			<div id="freewall" class="free-wall">
+				<div class="brick size32">
+					<div class="header">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+					</div>
 				</div>
-			</div>	
-			<div class="brick size12"> 
-				<div class='cover'>
-					<h2>Demo fit zone with "slice" engine</h2>
-				</div>
-			</div>	
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Copyright</h2>
-					<p> © 2013 Minh Nguyen </p>
-					<p> Released under the MIT license</p>
-				</div>	
-			</div>
-			
-			<div class="brick size23">
-				<div class='cover'> 
-					<h2>Javascript grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>jQuery flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>jQuery grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Dynamic grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size11">
-				<div class='cover'>
-					<h2>Flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22"> 
-				<div class='cover'>
-					<h2>Nested layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22"> 
-				<div class='cover'>
-					<h2>Metro style</h2>
-				</div>
-			</div>
-
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Images layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size12">
-				<div class='cover'>
-					<h2>Grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Dynamic grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Flex grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size12">
-				<div class='cover'>
-					<h2>Responsive grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size11"> 
-				<div class='cover'>
-					<h2>Responsive layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Pinterest layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size13"> 
-				<div class='cover'>
-					<h2>Images layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21"> 
-				<div class='cover'>
-					<h2>Flexiable layout</h2>
-				</div>
-			</div>
-			
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Responsive layout</h2>
-				</div>
+				<div class="brick size21"></div>
+				<div class="brick size22"></div>
+				<div class="brick size21"></div>
+				<div class="brick size32"></div>
+				<div class="brick size21"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size21"></div>
+				<div class="brick size12"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size31"></div>
+				<div class="brick size21"></div>
+				<div class="brick size32"></div>
+				<div class="brick size11"></div>
+				<div class="brick size21"></div>
+				<div class="brick size23"></div>
+				<div class="brick size21"></div>
+				<div class="brick size21"></div>
 			</div>
 		</div>
-		
 		<script type="text/javascript">
-			var colour = [
-				"rgb(142, 68, 173)",
-				"rgb(243, 156, 18)",
-				"rgb(211, 84, 0)",
-				"rgb(0, 106, 63)",
-				"rgb(41, 128, 185)",
-				"rgb(192, 57, 43)",
-				"rgb(135, 0, 0)",
-				"rgb(39, 174, 96)",
-			];
-			
-			$(".free-wall .brick").each(function() {
-				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
+			$(".free-wall .brick").each(function(index, item) {
+				if (!index) return;
+				item.style.backgroundImage =  "url(i/photo/" + index + ".jpg)";
 			});
-		</script>
-		<script type="text/javascript">
+
 			$(function() {
 				var wall = new freewall("#freewall");
 				wall.reset({
@@ -211,10 +112,10 @@
 					cellH: 160,
 					delay: 30,
 					onResize: function() {
-						wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
+						wall.fitZone();
 					}
 				})
-				wall.fitZone($(window).outerWidth() - 20, $(window).outerHeight() - 20);
+				wall.fitZone();
 			});
 		</script>
 	</body>

@@ -355,12 +355,15 @@ table {
 }
 
 .brick {
-	background-color: #2c3e50;
+	background-color: white;
 	float: left;
 	cursor: default;
 	overflow: hidden;
 	box-shadow: -1px -1px 0 rgba(255,255,255,0.2) inset, 0px 0px 1px rgba(0,0,0,0.2);
 	border-radius: 2px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
 }
 
 .brick .cover {
@@ -368,7 +371,7 @@ table {
 	margin: 20px;
 }
 
-.brick .cover .read-more {
+.brick .read-more {
 	position: absolute;
 	display: none;
 	bottom: 0px;
@@ -379,7 +382,7 @@ table {
 	background: rgba(0, 0, 0, 0.45);
 }
 
-.brick:hover .cover .read-more {
+.brick:hover .read-more {
 	display: block;
 	cursor: pointer;
 }

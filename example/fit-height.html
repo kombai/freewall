@@ -1,33 +1,31 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title>Fit height demo with freewall</title>
+		<title>Freewall dem Fit height</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-		<meta name="description" content="Fit height demo with freewall" />
+		<meta name="description" content="Freewall dem Fit height" />
 		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, fit height"/>
-		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/fix-height-style.css" />
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
-		<script type="text/javascript">
-			$(function() {
-				var wall = new freewall("#freewall");
-				wall.reset({
-					selector: '.brick',
-					cellW: 160,
-					cellH: 160,
-					onResize: function() {
-						wall.fitHeight($(window).outerHeight());
-					}
-				});
-				wall.fitHeight($(window).outerHeight());
-				$(window).trigger("resize");
-			});
-		</script>
 		<style type="text/css">
-			body {
+			html, body {
+				height: 100%;
+				width: 100%;
+				margin: 0;
+				padding: 0;
+			}
+			.layout {
+				position: absolute;
+				right: 0px;
+				left: 0px;
+				top: 124px;
+				bottom: 0px;
+				padding: 15px;
+				overflow-x: auto;
+				overflow-y: hidden;
+			}
+			.free-wall {
 				height: 100%;
 			}
 		</style>
@@ -41,147 +39,50 @@
 				</div>
 			</div>
 		</div>
-		<div id="freewall" class="free-wall">
-			<div class="brick size32"> 
-				<div class='cover'>
-					<h2>Demo fitHeight</h2>
-				</div>
-			</div>	
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Copyright</h2>
-					<p> © 2013 Minh Nguyen </p>
-					<p> Released under the MIT license</p>
-				</div>	
+		<div class="layout">
+			<div id="freewall" class="free-wall">
+				<div class="brick size22"></div>
+				<div class="brick size12"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size11"></div>
+				<div class="brick size23"></div>
+				<div class="brick size22"></div>
+				<div class="brick size22"></div>
+				<div class="brick size21"></div>
+				<div class="brick size12"></div>
+				<div class="brick size32"></div>
+				<div class="brick size32"></div>
+				<div class="brick size31"></div>
+				<div class="brick size21"></div>
+				<div class="brick size32"></div>
+				<div class="brick size11"></div>
+				<div class="brick size21"></div>
+				<div class="brick size23"></div>
+				<div class="brick size21"></div>
+				<div class="brick size21"></div>
 			</div>
-			<div class="brick siz22"> 
-				<div class='cover'>
-					<h2>Javascript flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'> 
-					<h2>Javascript grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size32">
-				<div class='cover'>
-					<h2>jQuery flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>jQuery grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Dynamic grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Window 8 style</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Flex layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size12">
-				<div class='cover'>
-					<h2>Grid layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Nested grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size22">
-				<div class='cover'>
-					<h2>Dynamic grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size31">
-				<div class='cover'>
-					<h2>Metro style</h2>
-				</div>
-			</div>
-
-			<div class="brick size21">
-				<div class='cover'>
-					<h2>Flex grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size32">
-				<div class='cover'>
-					<h2>Responsive grid</h2>
-				</div>
-			</div>
-
-			<div class="brick size11"> 
-				<div class='cover'>
-					<h2>Responsive layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21"> 
-				<div class='cover'>
-					<h2>Pinterest layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size23"> 
-				<div class='cover'>
-					<h2>Images layout</h2>
-				</div>
-			</div>
-
-			<div class="brick size21"> 
-				<div class='cover'>
-					<h2>Flexiable layout</h2>
-				</div>
-			</div>
-			
-			<div class="brick size21"> 
-				<div class='cover'>
-					<h2>Responsive layout</h2>
-				</div>
-			</div>
-
-			
 		</div>
-		
 		<script type="text/javascript">
-			var colour = [
-				"rgb(142, 68, 173)",
-				"rgb(243, 156, 18)",
-				"rgb(211, 84, 0)",
-				"rgb(0, 106, 63)",
-				"rgb(41, 128, 185)",
-				"rgb(192, 57, 43)",
-				"rgb(135, 0, 0)",
-				"rgb(39, 174, 96)"
-			];
-
-			var color = colour.concat(colour);
-			$(".free-wall .brick").each(function() {
-				this.style.backgroundColor =  "" + color.splice(color.length * Math.random() << 0, 1);
-				this.setAttribute("data-bgcolor", this.style.backgroundColor);
+			
+			$(".free-wall .brick").each(function(index, item) {
+				item.style.backgroundImage =  "url(i/photo/" + (++index) + ".jpg)";
 			});
+
+			$(function() {
+				var wall = new freewall("#freewall");
+				wall.reset({
+					selector: '.brick',
+					cellW: 160,
+					cellH: 160,
+					onResize: function() {
+						wall.fitHeight();
+					}
+				});
+				wall.fitHeight();
+				$(window).trigger("resize");
+			});
+		
 		</script>
 	</body>
 </html>

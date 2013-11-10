@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<div id="freewall" class="free-wall">
-			<div class="brick size33" data-fixsize=0 > 
+			<div class="brick size33" data-fixSize=0 > 
 				<div class='cover'>
 					<h2>What is Freewall?</h2>
 					<p>
@@ -59,25 +59,33 @@
 					<br/>
 					<ul class="img-demo">
 						<li>
-							<img src="i/flex.png" width=98 height=98 />
-							<h3>Flex layout</h3>
+							<a href="example/flex-grid.html" target="_blank">
+								<img src="i/flex.png" width=98 height=98 />
+								<h3>Flex layout</h3>
+							</a>
 						</li>
 						<li>
-							<img src="i/metro.png" width=98 height=98 />
-							<h3>Metro style</h3>
+							<a href="example/metro-style.html" target="_blank">
+								<img src="i/metro.png" width=98 height=98 />
+								<h3>Metro style</h3>
+							</a>
 						</li>
 						<li>
-							<img src="i/image.png" width=98 height=98 />
-							<h3>Images layout</h3>
+							<a href="example/image-layout.html" target="_blank">
+								<img src="i/image.png" width=98 height=98 />
+								<h3>Images layout</h3>
+							</a>
 						</li>
 						<li>
-							<img src="i/pinterest.png" width=98 height=98 />
-							<h3>Pinterest layout</h3>
+							<a href="example/pinterest-layout.html" target="_blank">
+								<img src="i/pinterest.png" width=98 height=98 />
+								<h3>Pinterest layout</h3>
+							</a>
 						</li>
 					</ul>
 				</div>
 			</div>	
-			<div class="brick size22" data-fixsize=0> 
+			<div class="brick size22" data-fixSize=0> 
 				<div class='cover'>
 					<h2> How it works </h2>
 					<p>
@@ -86,7 +94,7 @@
 				</div>
 			</div>
 
-			<div class="brick size35" data-fixsize=0 >
+			<div class="brick size35" data-fixSize=0 >
 				<div class='cover'> 
 					<h2>Getting started</h2>
 					<div>
@@ -405,28 +413,30 @@ ewall.fitWidth(cwidth);
 				</div>
 			</div>
 
-			<div class="brick size11">
-				<div class='cover'>
-					<a href='https://github.com/kombai/freewall' target="_blank">
-						<img style="position: absolute; top: 0; right: 0; border: 0;" src="example/i/forkme.png" alt="Fork me on GitHub" />
-					</a>
+			<div class="size22" data-nested=".brick" data-fixSize=0>
+				<div class="brick size11">
+					<div class='cover'>
+						<a href='https://github.com/kombai/freewall' target="_blank">
+							<img style="position: absolute; top: 0; right: 0; border: 0;" src="example/i/forkme.png" alt="Fork me on GitHub" />
+						</a>
+					</div>
 				</div>
-			</div>
 
-			<div class="brick size12" data-fixsize=0>
-				<div class='cover'>
-					<h2>Share</h2>
-					<div class="twitter-share">Twitter</div>
-					<div class="google-share">Google +</div>
-					<div class="facebook-share">Facebook</div>
+				<div class="brick size12" data-fixSize=0>
+					<div class='cover'>
+						<h2>Share</h2>
+						<div class="twitter-share">Twitter</div>
+						<div class="google-share">Google +</div>
+						<div class="facebook-share">Facebook</div>
+					</div>
 				</div>
-			</div>
 
-			<div class="brick size11">
-				<div class='cover'>
-					<h2>Download</h2>
-					<a href='https://github.com/kombai/freewall/archive/master.zip' target='_blank' class="download-icon">Project</a>
-					<a href='https://raw.github.com/kombai/freewall/master/freewall.js' target='_blank' class="js-icon">Freewall.js</a>
+				<div class="brick size11">
+					<div class='cover'>
+						<h2>Download</h2>
+						<a href='https://github.com/kombai/freewall/archive/master.zip' target='_blank' class="download-icon">Project</a>
+						<a href='https://raw.github.com/kombai/freewall/master/freewall.js' target='_blank' class="js-icon">Freewall.js</a>
+					</div>
 				</div>
 			</div>
 
@@ -452,6 +462,7 @@ new freewall('.free-wall')
 				</div>
 			</div>
 
+			
 			<div class="brick size11">
 				<div class='cover'>
 					<a class="float-left" href="example/append-more.html" target="_blank">
@@ -461,7 +472,6 @@ new freewall('.free-wall')
 					</a>
 				</div>
 			</div>
-
 			<div class="brick size11">
 				<div class='cover'>
 					<a class="float-left" href="example/css-animate.html" target="_blank">
@@ -471,7 +481,6 @@ new freewall('.free-wall')
 					</a>
 				</div>
 			</div>
-
 			<div class="brick size11">
 				<div class='cover'>
 					<a class="float-left" href="example/engine-slice.html" target="_blank">
@@ -481,27 +490,6 @@ new freewall('.free-wall')
 					</a>
 				</div>
 			</div>
-
-			<div class="brick size11">
-				<div class='cover'>
-					<a class="float-left" href="example/fit-height.html" target="_blank">
-						<h2>Example</h2>
-						<div> Fit height </div>
-						<div class="read-more">View detail ...</div>
-					</a>
-				</div>
-			</div>
-
-			<div class="brick size11">
-				<div class='cover'>
-					<a class="float-left" href="example/fit-zone.html" target="_blank">
-						<h2>Example</h2>
-						<div>Fit zone</div>
-						<div class="read-more">View detail ...</div>
-					</a>
-				</div>
-			</div>
-
 			<div class="brick size11">
 				<div class='cover'>
 					<a class="float-left" href="example/for-zepto.html" target="_blank">
@@ -511,7 +499,61 @@ new freewall('.free-wall')
 					</a>
 				</div>
 			</div>
+			
+			
+			<div class="size22" data-nested=".brick" data-fixSize=0>
+				<div class="brick size12">
+					<div class='cover'>
+						<a class="float-left" href="example/fit-height.html" target="_blank">
+							<h2>Example</h2>
+							<div> Fit height </div>
+							<div class="read-more">View detail ...</div>
+						</a>
+					</div>
+				</div>
 
+				<div class="brick size12">
+					<div class='cover'>
+						<a class="float-left" href="example/fit-zone.html" target="_blank">
+							<h2>Example</h2>
+							<div>Fit zone</div>
+							<div class="read-more">View detail ...</div>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="size22" data-nested=".brick" data-fixSize=0>
+				<div class="brick size21"> 
+					<div class='cover'>
+						<a class="float-left" href="example/metro-style.html" target="_blank">
+							<h2>Example </h2>
+							<div>Metro style</div>
+							<div class="read-more">View detail ...</div>
+						</a>
+					</div>
+				</div>
+				
+				<div class="brick size11"> 
+					<div class='cover'> 
+						<a class="float-left" href="example/image-layout.html" target="_blank">
+							<h2>Example</h2>
+							<div>Images layout</div>
+							<div class="read-more">View detail ...</div>
+						</a>
+					</div>
+				</div>
+				<div class="brick size11"> 
+					<div class='cover'>
+						<a class="float-left" href="example/pinterest-layout.html" target="_blank">
+							<h2>Example </h2>
+							<div>Pinterest like layout</div>
+							<div class="read-more">View detail ...</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			
 			<div class="brick size21"> 
 				<div class='cover'>
 					<a class="float-left" href="example/flex-grid.html" target="_blank">
@@ -533,26 +575,6 @@ new freewall('.free-wall')
 			</div>
 
 			<div class="brick size21"> 
-				<div class='cover'> 
-					<a class="float-left" href="example/image-layout.html" target="_blank">
-						<h2>Example</h2>
-						<div>Images layout</div>
-						<div class="read-more">View detail ...</div>
-					</a>
-				</div>
-			</div>
-
-			<div class="brick size21"> 
-				<div class='cover'>
-					<a class="float-left" href="example/metro-style.html" target="_blank">
-						<h2>Example </h2>
-						<div>Metro style</div>
-						<div class="read-more">View detail ...</div>
-					</a>
-				</div>
-			</div>
-
-			<div class="brick size21"> 
 				<div class='cover'>
 					<a class="float-left" href="example/nested-grid.html" target="_blank">
 						<h2>Example</h2>
@@ -562,19 +584,7 @@ new freewall('.free-wall')
 				</div>
 			</div>
 
-			<div class="brick size21"> 
-				<div class='cover'>
-					<a class="float-left" href="example/pinterest-layout.html" target="_blank">
-						<h2>Example </h2>
-						<div>Pinterest like layout</div>
-						<div class="read-more">View detail ...</div>
-					</a>
-				</div>
-			</div>
-			
-			<div class="brick example"></div>
-
-			<div class="brick size21" data-fixsize=0 >
+			<div class="brick size21" data-fixSize=0 >
 				<div class='cover'>
 					<h2>Copyright</h2>
 					<p> © 2013 Minh Nguyen </p>

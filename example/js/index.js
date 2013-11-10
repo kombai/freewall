@@ -31,9 +31,13 @@
 		},
 		color: function(value) {
 			$(".free-wall .brick").each(function() {
-				var color = colour[colour.length * Math.random() << 0];
-				this.style.backgroundColor = color;
-				$(this).attr("data-bgcolor", color);
+				var backgroundColor = colour[colour.length * Math.random() << 0];
+				var bricks = $(this).find(".nested");
+				!bricks.length && (bricks = $(this));
+				bricks.css({
+					backgroundColor: backgroundColor
+				});
+				bricks.attr("data-bgcolor", backgroundColor);
 			});
 		},
 		layout: function() {
@@ -41,7 +45,7 @@
 			wall = new freewall('.free-wall');
 			//wall.container.width('auto')
 			wall.reset({
-				selector: '.brick',
+				selector: '> div',
 				animate: true,
 				cellW: 160,
 				cellH: 160,

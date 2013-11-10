@@ -11,10 +11,7 @@
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
 			.layout {
-				margin: 4em;
-			}
-			.head {
-				margin: 2em auto;
+				padding: 15px;
 			}
 		</style>
 	</head>
@@ -29,12 +26,12 @@
 		</div>
 		<div class="layout">
 			<div id="freewall" class="free-wall">
-				<div class="item size24"></div>
-				<div class="item size24"></div>
-				<div class="item size24"></div>
-				<div class="item size24"></div>
-				<div class="item size24"></div>
-				<div class="item size24"></div>
+				<div class="size22"></div>
+				<div class="size22"></div>
+				<div class="size22"></div>
+				<div class="size22"></div>
+				<div class="size22"></div>
+				<div class="size22"></div>
 			</div>
 		</div>
 
@@ -51,7 +48,7 @@
 				"rgb(39, 174, 96)"
 			];
 			
-			$(".free-wall .item").each(function() {
+			$(".free-wall .size22").each(function() {
 				var backgroundColor = colour[colour.length * Math.random() << 0];
 				$(this).css({
 					backgroundColor: backgroundColor
@@ -61,7 +58,7 @@
 			$(function() {
 				var wall = new freewall("#freewall");
 				wall.reset({
-					selector: '.size24',
+					selector: '.size22',
 					cellW: 320,
 					cellH: 320,
 					fixSize: 1,

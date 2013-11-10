@@ -99,7 +99,7 @@
 			$item.attr('data-height') == null && $item.attr('data-height', $item.height());
 			$item.attr('data-width') == null && $item.attr('data-width', $item.width());
 			$item.attr({ id: id, 'data-delay': index });
-			var fixSize = eval($item.attr('data-fixsize'));
+			var fixSize = eval($item.attr('data-fixSize'));
 			fixSize == null && (fixSize = setting.fixSize);
 
 			var height = 1 * $item.attr('data-height');
