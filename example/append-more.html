@@ -11,15 +11,10 @@
 		<script type="text/javascript" src="../freewall.js"></script>
 		<style type="text/css">
 			.free-wall {
-				margin: 10px;
+				margin: 15px;
 			}
-			.add-item {
-				display: inline-block;
-				margin: 10px;
-				cursor: pointer;
-				text-align: center;
-				line-height: 100px;
-				background-color: rgb(142, 68, 173);
+			.add-more {
+				margin: 15px;
 			}
 		</style>
 	</head>
@@ -35,7 +30,7 @@
 		<div id="freewall" class="free-wall">
 			<div class="brick size32"> 
 				<div class='cover'>
-					<h3>Click on 'Add more ++' block to see this demo</h3>
+					<h2>Click on 'Add more ++' block to see this demo</h2>
 				</div>
 			</div>	
 			<div class="brick size21">
@@ -46,7 +41,11 @@
 				</div>	
 			</div>
 		</div>
-		<div class="size11 add-item">Add more ++</div>
+		<div class="brick size11 add-more">
+			<div class='cover'>
+				<h2>Add more ++</h2>
+			</div>
+		</div>
 		<script type="text/javascript">
 			
 			var colour = [
@@ -60,7 +59,7 @@
 				"rgb(39, 174, 96)"
 			];
 
-			$(".free-wall .brick").each(function() {
+			$(".brick").each(function() {
 				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
 			});
 
@@ -80,7 +79,7 @@
 
 				var temp = '<div class="brick {size}" style="background-color: {color}"><div class="cover"></div></div>';
 				var size = "size33 size32 size31 size23 size22 size21 size13 size12 size11".split(" ");
-				$(".add-item").click(function() {
+				$(".add-more").click(function() {
 					var html = "";
 					for (var i = 0; i < 3; ++i) {
 						html += temp.replace('{size}', size[size.length * Math.random() << 0])

@@ -576,6 +576,8 @@
 				// correct unit to number;
 				cellW = 1 * cellW;
 				cellH = 1 * cellH;
+				cellH <= 1 && (cellH *= height);
+				cellW <= 1 && (cellW = cellH);
 
 				// estimate total rows;
 				var totalRow = Math.max(1, Math.floor(height / cellH));
@@ -648,6 +650,8 @@
 				// correct unit to number;
 				cellW = 1 * cellW;
 				cellH = 1 * cellH;
+				cellW <= 1 && (cellW *= width);
+				cellH <= 1 && (cellH = cellW);
 
 				// estimate total columns;
 				var totalCol = Math.max(1, Math.floor(width / cellW));
@@ -722,6 +726,8 @@
 				// correct unit to number;
 				cellW = 1 * cellW;
 				cellH = 1 * cellH;
+				cellW <= 1 && (cellW *= width);
+				cellH <= 1 && (cellH *= height);
 
 				// estimate total columns;
 				var totalCol = Math.max(1, Math.floor(width / cellW));
