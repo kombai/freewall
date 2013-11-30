@@ -84,8 +84,8 @@
 
 				$(".reponsive-block li>a").removeClass("active");
 				var preWidth = $(this).data("width");
-				var margin = "15px auto";
-				preWidth == "auto" && (margin = "15px");
+				var margin = "10px auto";
+				preWidth == "auto" && (margin = "10px");
 				wall.container.css({
 					margin: margin,
 					width: preWidth
