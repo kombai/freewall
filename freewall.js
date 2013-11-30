@@ -110,7 +110,7 @@
 			//fixSize: 1, no resize + no adjust = no fill gap;
 			gutterX: 15, // width spacing between blocks;
 			gutterY: 15, // height spacing between blocks;
-			selector: '> *',
+			selector: ':only-child',
 			draggable: false,
 			onGapFound: function() {},
 			onComplete: function() {},
@@ -287,7 +287,7 @@
 						var height = Math.round($(this).height() / (cellH + gutterY));
 						top = Math.min(Math.max(0, top), layout.totalRow - height);
 						left = Math.min(Math.max(0, left), layout.totalCol - width);
-						klass.setHole(top, left, width, height);
+						klass.setHole([{top: top, left: left, width: width, height: height}]);
 						klass.updateLayout();
 					},
 					end: function() {
@@ -353,6 +353,7 @@
 			} else {
 				style.transition = trans;
 			}
+			$(item).stop();
 		}
 
 		function showBlock(item, id) {
@@ -460,6 +461,14 @@
 			container.attr({ 'data-wall-width': Math.ceil(totalWidth), 'data-wall-height': Math.ceil(totalHeight) });
 		}
 
+		function resetLayout() {
+			layout.length = 0;
+			layout.block = {};
+			layout.grid = null;
+			layout.cellH = 0;
+			layout.cellW = 0;
+			layout.lastId = 1;
+		}
 
 		var engine = {
 			// just a person name;
@@ -537,7 +546,9 @@
 
 				// set a hole on the wall;
 				if (hole.length) {
-					fillGrid(hole[0], hole[1], hole[2], hole[3]);
+					for (var i = 0; i < hole.length; ++i) {
+						fillGrid(hole[i]['top'], hole[i]['left'], hole[i]['width'], hole[i]['height']);
+					}
 				}
 
 				
@@ -648,6 +659,7 @@
 			}
 		};
 
+
 		var currentMethod = function() {};
 		var currentArgs = [];
 
@@ -677,15 +689,9 @@
 
 			fitHeight: function(height) {
 				height = height ? height : container.height() || $(window).height();
-				layout.length = 0;
-				layout.block = {};
-				layout.grid = null;
-				layout.cellH = 0;
-				layout.cellW = 0;
-				layout.lastId = 1;
-				console.log('fit height');
-				currentArgs = arguments;
 				currentMethod = arguments.callee;
+				currentArgs = arguments;
+				resetLayout();
 
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
@@ -760,15 +766,9 @@
 
 			fitWidth: function(width) {
 				width = width ? width : container.width() || $(window).width();
-				layout.length = 0;
-				layout.block = {};
-				layout.grid = null;
-				layout.cellH = 0;
-				layout.cellW = 0;
-				layout.lastId = 1;
-				console.log('fit width');
-				currentArgs = arguments;
 				currentMethod = arguments.callee;
+				currentArgs = arguments;
+				resetLayout();
 
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
@@ -845,15 +845,9 @@
 			fitZone: function(width, height) {
 				height = height ? height : container.height() || $(window).height();
 				width = width ? width : container.width() || $(window).width();
-				layout.length = 0;
-				layout.block = {};
-				layout.grid = null;
-				layout.cellH = 0;
-				layout.cellW = 0;
-				layout.lastId = 1;
-				console.log('fit zone');
-				currentArgs = arguments;
 				currentMethod = arguments.callee;
+				currentArgs = arguments;
+				resetLayout();
 				
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
@@ -959,12 +953,22 @@
 				return this;
 			},
 
-			setHole: function(top, left, width, height) {
-				layout.hole = [top, left, width, height];
+			setHole: function(holes) {
+				/*
+				the example of hole: 
+				[{
+					top: 2,
+					left: 2,
+					width: 2,
+					height: 2
+				}]
+				*/
+				layout.hole = holes;
 				return this;
 			},
 
 			fillHole: function() {
+
 				layout.hole = [];
 				return this;
 			},
