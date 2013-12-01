@@ -1,14 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title>Freewall demo fit zone</title>
+		<title>Dragable demo with freewall</title>
 		<meta content="text/html; charset=utf-8" http-equiv="content-type">
-		<meta name="description" content="Freewall demo fit zone" />
-		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, fit zone"/>
+		<meta name="description" content="Freewall demo for draggable" />
+		<meta name="viewport" content="width=device-width; initial-scale=0.5; maximum-scale=0.5; user-scalable=0;"/>
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, flex layouts"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
-		
 		<style type="text/css">
 			html, body {
 				height: 100%;
@@ -25,45 +26,15 @@
 				padding: 15px;
 				overflow: hidden;
 			}
-			.header {
-				height: 100%;
-			}
 			.free-wall {
 				width: 100%;
 				height: 100%;
 			}
-
-			@keyframes start {
-				from {
-					transform: scale(0);
-				}
-				to {
-					transform: scale(1);
-				}
+			.cell {
+				cursor: move;
 			}
-
-			@-webkit-keyframes start {
-				from {
-					-webkit-transform: scale(0);
-				}
-				to {
-					-webkit-transform: scale(1);
-				}
-			}
-
-			.free-wall .brick[data-state="init"] {
-				display: none;
-			}
-
-			.free-wall .brick[data-state="start"]  {
-				display: block;
-				animation: start 0.5s;
-				-webkit-animation: start 0.5s;
-			}
-
-			.free-wall .brick[data-state="move"]  {
-				transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
-				-webkit-transition: top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+			.cell .cover {
+				padding: 15px;
 			}
 		</style>
 	</head>
@@ -71,9 +42,9 @@
 		<div class="layout">
 			<div id="freewall" class="free-wall"></div>
 		</div>
-
 		<script type="text/javascript">
-			var temp = "<div class='brick' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'>Demo fit zone</div></div>";
+			
+			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'>Demo draggable</div></div>";
 			var colour = [
 				"rgb(142, 68, 173)",
 				"rgb(243, 156, 18)",
@@ -94,21 +65,20 @@
 			}
 			$("#freewall").html(html);
 			
-
-			$(function() {
-				var wall = new freewall("#freewall");
-				wall.reset({
-					selector: '.brick',
-					animate: false,
-					cellW: 160,
-					cellH: 160,
-					delay: 30,
-					onResize: function() {
-						wall.fitZone();
-					}
-				})
-				wall.fitZone();
+			var ewall = new freewall("#freewall");
+			ewall.reset({
+				draggable: true,
+				selector: '.cell',
+				animate: true,
+				cellW: 150,
+				cellH: 150,
+				onResize: function() {
+					ewall.fitZone();
+				}
 			});
+			ewall.fitZone();
+			// for scroll bar appear;
+			$(window).trigger("resize");
 		</script>
 	</body>
 </html>

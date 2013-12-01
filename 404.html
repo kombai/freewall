@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Page not found</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<script type="text/javascript" src="example/js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="freewall.js"></script>
+		
+		<style type="text/css">
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			.layout {
+				width: 620px;
+				margin: auto;
+			}
+
+			.cell {
+				width: 320px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="layout">
+			<h1> Page not found </h1>
+			<h3>Sorry the page you requested may have been moved or deleted.</h3>
+			<div id="freewall" class="free-wall"></div>
+		</div>	
+		
+		
+		<script type="text/javascript">
+			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'></div></div>";
+			var colour = [
+				"#DAA520",
+				"#CD950C",
+				"#EEB422",
+				"#CD9B1D"
+			];
+
+			var w = 1, h = 1, html = '', color = '', limitItem = 220;
+			for (var i = 0; i < limitItem; ++i) {
+				h = 1 + 3 * Math.random() << 0;
+				w = 1 + 3 * Math.random() << 0;
+				color = colour[colour.length * Math.random() << 0];
+				html += temp.replace(/\{height\}/g, h*15).replace(/\{width\}/g, w*15).replace("{color}", color);
+			}
+			$("#freewall").html(html);
+			
+			var ewall = new freewall("#freewall");
+			ewall.reset({
+				selector: '.cell',
+				animate: false,
+				cellW: 15,
+				cellH: 15,
+				gutterX: 2,
+				gutterY: 2
+			});
+			ewall.setHole([
+				// 4
+				{
+					top: 6,
+					left: 4,
+					width: 2,
+					height: 8
+				},
+				{
+					top: 14,
+					left: 4,
+					width: 8,
+					height: 2
+				},
+				{
+					top: 12,
+					left: 8,
+					width: 2,
+					height: 6
+				},
+				// 0
+				{
+					top: 6,
+					left: 14,
+					width: 8,
+					height: 2
+				},
+				{
+					top: 8,
+					left: 14,
+					width: 2,
+					height: 8
+				},
+				{
+					top: 8,
+					left: 20,
+					width: 2,
+					height: 8
+				},
+				{
+					top: 16,
+					left: 14,
+					width: 8,
+					height: 2
+				},
+				// 4
+				{
+					top: 6,
+					left: 24,
+					width: 2,
+					height: 8
+				},
+				{
+					top: 14,
+					left: 24,
+					width: 8,
+					height: 2
+				},
+				{
+					top: 12,
+					left: 28,
+					width: 2,
+					height: 6
+				},
+			]);
+			ewall.fitWidth();
+			// for scroll bar appear;
+			$(window).trigger("resize");
+		
+		</script>
+	</body>
+</html>

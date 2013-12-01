@@ -84,8 +84,8 @@
 
 				$(".reponsive-block li>a").removeClass("active");
 				var preWidth = $(this).data("width");
-				var margin = "15px auto";
-				preWidth == "auto" && (margin = "15px");
+				var margin = "10px auto";
+				preWidth == "auto" && (margin = "10px");
 				wall.container.css({
 					margin: margin,
 					width: preWidth
@@ -198,22 +198,6 @@
 					wall.setFilter('.methods');
 					wall.fitWidth();
 					window.location.hash = "methods";
-				}
-			});
-		},
-		filter: function() {
-			$(".free-wall .filter").click(function() {
-				var dna = $(this);
-				if (!dna.hasClass('open')) {
-					dna.addClass('open');
-					wall.setFilter('.size22, .size11');
-					wall.fixSize({
-						block: dna,
-						width: 320,
-						height: 320
-					});
-					wall.fitWidth();
-					window.location.hash = "demo-filter";
 				}
 			});
 		},
