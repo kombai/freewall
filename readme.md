@@ -16,14 +16,13 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 ##### [Pinterest-like](http://vnjs.net/www/project/freewall/example/pinterest-layout.html)
 <br>
 <img src='https://raw.github.com/kombai/freewall/master/i/metro.png'>
-##### [Window 8 metro style](http://vnjs.net/www/project/freewall/example/metro-style.html)
+##### [Metro style](http://vnjs.net/www/project/freewall/example/metro-style.html)
 
 ## Features:
 * [Draggable support](http://vnjs.net/www/project/freewall/example/draggable.html)
 * [Responsive grid](http://vnjs.net/www/project/freewall/)
 * [Gaps control](http://vnjs.net/www/project/freewall/404.html)
 * [Css3 animation](http://vnjs.net/www/project/freewall/example/css-animate.html)
-
 * [Nested grid](http://vnjs.net/www/project/freewall/example/nested-grid.html)
 * [Images grid/layout](http://vnjs.net/www/project/freewall/example/image-layout.html)
 * [Fit container](http://vnjs.net/www/project/freewall/example/fit-zone.html)
