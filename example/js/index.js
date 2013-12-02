@@ -134,15 +134,13 @@
 						});
 					});
 					
-					wall.unsetFilter();
-					wall.fitWidth();
-
+					wall.unFilter();
 					$(".back-button").hide();
-					$(".header")[0].scrollIntoView(true);
 				} else {
 					$(hash).trigger("click");
 					$(".back-button").show();
 				}
+				$(".header")[0].scrollIntoView(true);
 			}
 
 			// for back-button;
@@ -159,10 +157,9 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 1200
+						height: 2000
 					});
-					wall.setFilter('.options');
-					wall.fitWidth();
+					wall.filter('.options');
 					window.location.hash = "options";
 				}
 			});
@@ -178,8 +175,7 @@
 						width: cwidth,
 						height: 720
 					});
-					wall.setFilter('.events');
-					wall.fitWidth();
+					wall.filter('.events');
 					window.location.hash = "events";
 				}
 			});
@@ -193,10 +189,9 @@
 					wall.fixSize({
 						block: dna,
 						width: cwidth,
-						height: 1700
+						height: 2100
 					});
-					wall.setFilter('.methods');
-					wall.fitWidth();
+					wall.filter('.methods');
 					window.location.hash = "methods";
 				}
 			});

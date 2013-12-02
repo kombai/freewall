@@ -174,6 +174,7 @@
 					<div class='float-left'>
 						<h2>Options</h2>
 						<ul>
+							<li> draggable </li>
 							<li> animate </li>
 							<li> cellW </li>
 							<li> cellH </li> 
@@ -189,8 +190,14 @@
 						<h2>
 							<span>Options</span>
 						</h2>
-						<h3>All options are parameters of Reset method</h3>
+						<h3>All options are parameters of <i>Reset</i> method</h3>
 						<ul>
+							<li>
+								<h3> draggable : boolean </h3>
+								<div> 
+									Default: false <br/>
+									True to make block can be drag & drop</div>
+							</li>
 							<li>
 								<h3> animate : boolean </h3>
 								<div> True to make block move with animation</div>
@@ -244,7 +251,7 @@ wall.reset({
 									<h3> Example </h3>
 									<pre>
 										<code>
-&lt;div class="brick size22" data-fixsize=true&gt;
+&lt;div class="brick size22" data-fixSize=true&gt;
   &lt;div class='cover'&gt;
     &lt;div class="item size12"&gt;&lt;/div&gt;
     &lt;div class="item size12"&gt;&lt;/div&gt;
@@ -353,13 +360,17 @@ wall.reset({
 						<h2>Methods</h2>
 						<ul>
 							<li> appendMore </li>
+							<li> fillHoles </li>
+							<li> filter </li>
 							<li> fitHeight </li>
 							<li> fitWidth </li>
 							<li> fitZone </li>
 							<li> fixSize </li>
+							<li> prepend </li>
+							<li> refesh </li>
 							<li> reset </li>
-							<li> setFilter </li>
-							<li> unsetFilter </li>
+							<li> setHoles </li>
+							<li> unFilter </li>
 						</ul>
 						<div class="read-more">View detail ...</div>
 					</div>
@@ -369,8 +380,16 @@ wall.reset({
 						</h2>
 						<ul>
 							<li>
-								<h3> appendMore(elements) </h3>
-								<div> Append one or more elements in to the wall</div>
+								<h3> appendMore(items) </h3>
+								<div> Append one or more items into layout</div>
+							</li>
+							<li>
+								<h3> fillHoles() </h3>
+								<div> Let layout without gaps</div>
+							</li>
+							<li>
+								<h3> filter(selector) </h3>
+								<div> Fillter blocks to show</div>
 							</li>
 							<li>
 								<h3> fitHeight(height) </h3>
@@ -403,6 +422,14 @@ wall.fitWidth();
 								</pre>
 							</li>
 							<li>
+								<h3> prepend(items) </h3>
+								<div> Prepend one or more items into layout</div>
+							</li>
+							<li>
+								<h3> refesh() </h3>
+								<div> rearrange layout</div>
+							</li>
+							<li>
 								<h3> reset(options) </h3>
 								<div> Config options for render layout.</div>
 								<h5> Example </h5>
@@ -427,11 +454,11 @@ ewall.fitWidth(cwidth);
 								</pre>
 							</li>
 							<li>
-								<h3> setFilter(selector) </h3>
-								<div> Fillter blocks to show</div>
+								<h3> setHoles(hole) </h3>
+								<div> Set the holes on layout</div>
 							</li>
 							<li>
-								<h3> unsetFilter() </h3>
+								<h3> unFilter() </h3>
 								<div> Made all block to show</div>
 							</li>
 						</ul>
