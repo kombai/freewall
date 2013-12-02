@@ -999,7 +999,7 @@
 				delete layout.filter;
 				this.refesh();
 				return this;
-			},
+			}
 			
 		});
 	};
