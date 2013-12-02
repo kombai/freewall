@@ -32,7 +32,7 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 * [Window 8 metro style](http://vnjs.net/www/project/freewall/example/metro-style.html)
 * [Pinterest like grid/layout](http://vnjs.net/www/project/freewall/example/pinterest-layout.html)
 
-## Browsers
+## Supports
 Freewall supports almost browser:
 * Chrome 
 * Opera
