@@ -33,6 +33,9 @@
 				cursor: pointer;
 				background: rgb(205, 149, 12);
 			}
+			.filter-label:hover {
+				background: rgb(238, 180, 34);
+			}
 		</style>
 	</head>
 	<body>
@@ -40,7 +43,7 @@
 			<div class="clearfix">
 				<div class="float-left">
 						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-						<div class='target'>Creating dynamic grid layouts with gaps control.</div>
+						<div class='target'>Creating dynamic grid layouts.</div>
 				</div>
 			</div>
 		</div>
@@ -71,7 +74,7 @@
 				"rgb(39, 174, 96)"
 			];
 			var sizes = ["size11", "size12", "size21", "size22", "size13", "size31", "size23"];
-			var html = '', size = '', color = '', limitItem = 220;
+			var html = '', size = '', color = '', limitItem = 100;
 			for (var i = 0; i < limitItem; ++i) {
 				size = sizes[sizes.length * Math.random() << 0];
 				color = colour[colour.length * Math.random() << 0];
