@@ -287,6 +287,11 @@ table {
 	height: 480px;
 }
 
+.size36 {
+	width: 480px;
+	height: 960px;
+}
+
 .img-demo {
 	vertical-align: bottom;
 	list-style: none;
