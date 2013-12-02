@@ -155,11 +155,10 @@
 					gutterX: 20,
 					gutterY: 10,
 					onResize: function() {
-						wall.fitZone($(window).width() - 30 , $(window).height() - 30);
+						wall.fitZone();
 					}
 				});
-				// caculator width and height for IE7;
-				wall.fitZone($(window).width() - 30 , $(window).height() - 30);
+				wall.fitZone();
 				$(window).trigger("resize");
 			});
 
