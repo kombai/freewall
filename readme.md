@@ -33,7 +33,7 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 * [Pinterest like grid/layout](http://vnjs.net/www/project/freewall/example/pinterest-layout.html)
 
 ## Supports
-Freewall supports almost browser:
+Freewall supports almost browser
 * Chrome 
 * Opera
 * Safari
