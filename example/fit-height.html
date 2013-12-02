@@ -76,10 +76,11 @@
 					cellW: 160,
 					cellH: 160,
 					onResize: function() {
-						wall.fitHeight();
+						wall.fitHeight($(window).height() - 170);
 					}
 				});
-				wall.fitHeight();
+				// caculator height for IE7;
+				wall.fitHeight($(window).height() - 170);
 				$(window).trigger("resize");
 			});
 		

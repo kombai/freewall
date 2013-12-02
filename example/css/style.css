@@ -364,8 +364,7 @@ table {
 	float: left;
 	cursor: default;
 	overflow: hidden;
-	//box-shadow: -1px -1px 0 rgba(255,255,255,0.2) inset, 0px 0px 1px rgba(0,0,0,0.2);
-	//border-radius: 2px;
+	background-color: #222;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -443,6 +442,7 @@ table {
 	background-repeat: no-repeat;
 	background-size: cover;
 	position: absolute;
+	background-color: #222;
 }
 
 [class*="-share"] {
