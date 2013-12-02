@@ -65,18 +65,18 @@
 			}
 			$("#freewall").html(html);
 			
-			var ewall = new freewall("#freewall");
-			ewall.reset({
+			var wall = new freewall("#freewall");
+			wall.reset({
 				draggable: true,
 				selector: '.cell',
 				animate: true,
 				cellW: 150,
 				cellH: 150,
 				onResize: function() {
-					ewall.fitZone();
+					wall.refesh();
 				}
 			});
-			ewall.fitZone();
+			wall.fitZone();
 			// for scroll bar appear;
 			$(window).trigger("resize");
 		</script>

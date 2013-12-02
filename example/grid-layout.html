@@ -20,7 +20,7 @@
 			<div class="clearfix">
 				<div class="float-left">
 						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
-						<div class='target'>Creating dynamic grid layouts without gaps.</div>
+						<div class='target'>Creating dynamic grid layouts.</div>
 				</div>
 			</div>
 		</div>
@@ -35,17 +35,17 @@
 			}
 			$("#freewall").html(html);
 			
-			var ewall = new freewall("#freewall");
-			ewall.reset({
+			var wall = new freewall("#freewall");
+			wall.reset({
 				selector: '.cell',
 				animate: true,
 				cellW: 200,
 				cellH: 200,
 				onResize: function() {
-					ewall.fitWidth();
+					wall.refesh();
 				}
 			});
-			ewall.fitWidth();
+			wall.fitWidth();
 			// for scroll bar appear;
 			$(window).trigger("resize");
 		</script>

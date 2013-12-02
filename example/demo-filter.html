@@ -36,16 +36,24 @@
 		</style>
 	</head>
 	<body>
+		<div class='header'>
+			<div class="clearfix">
+				<div class="float-left">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layouts with gaps control.</div>
+				</div>
+			</div>
+		</div>
 		<div class="layout">
 			<div class="filter-items">
 				<div class="filter-label" >All block</div>
-				<div class="filter-label" data-filter="size11">Block 1-1</div>
-				<div class="filter-label" data-filter="size12">Block 1-2</div>
-				<div class="filter-label" data-filter="size21">Block 2-1</div>
-				<div class="filter-label" data-filter="size22">Block 2-2</div>
-				<div class="filter-label" data-filter="size13">Block 1-3</div>
-				<div class="filter-label" data-filter="size31">Block 3-1</div>
-				<div class="filter-label" data-filter="size23">Block 2-3</div>
+				<div class="filter-label" data-filter=".size11">Block 1-1</div>
+				<div class="filter-label" data-filter=".size12">Block 1-2</div>
+				<div class="filter-label" data-filter=".size21">Block 2-1</div>
+				<div class="filter-label" data-filter=".size22">Block 2-2</div>
+				<div class="filter-label" data-filter=".size13">Block 1-3</div>
+				<div class="filter-label" data-filter=".size31">Block 3-1</div>
+				<div class="filter-label" data-filter=".size23">Block 2-3</div>
 			</div>
 			<div id="freewall" class="free-wall"></div>
 		</div>
@@ -79,22 +87,20 @@
 					cellH: 160,
 					fixSize: 0,
 					onResize: function() {
-						wall.updateLayout();
+						wall.refesh();
 					}
 				})
 				
 				$(".filter-label").click(function() {
 					var filter = $(this).data('filter');
 					if (filter) {
-						wall.setFilter('.' + filter);
+						wall.filter(filter);
 					} else {
-						wall.unsetFilter();
+						wall.unFilter();
 					}
-					wall.updateLayout();
 				});
 
 				wall.fitWidth();
-
 			});
 		</script>
 	</body>

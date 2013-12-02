@@ -193,6 +193,7 @@
 			}
 
 			/*
+			// support size of block set with percent;
 			if ($item.attr('data-width') == undefined) {
 				// store init width;
 				if (parseInt(item.style.width)) {
@@ -204,8 +205,8 @@
 				// backup the width;
 				$item.width($item.attr('data-width'));
 			}
+			var width = $item.width();
 			
-
 			if ($item.attr('data-height') == undefined) {
 				// store init height;
 				if (parseInt(item.style.height)) {
@@ -219,7 +220,7 @@
 			}
 
 			var height = $item.height();
-			var width = $item.width();
+			
 			*/
 			
 			// store original size;
@@ -296,8 +297,8 @@
 						var height = Math.round($(this).height() / (cellH + gutterY));
 						top = Math.min(Math.max(0, top), layout.totalRow - height);
 						left = Math.min(Math.max(0, left), layout.totalCol - width);
-						klass.setHole([{top: top, left: left, width: width, height: height}]);
-						klass.updateLayout();
+						klass.setHoles([{top: top, left: left, width: width, height: height}]);
+						klass.refesh();
 					},
 					end: function() {
 						var position = $(this).position();
@@ -313,7 +314,7 @@
 							top: top * (cellH + gutterY),
 							left: left * (cellW + gutterX)
 						});
-						klass.fillHole();
+						klass.fillHoles();
 						this.style.zIndex = "auto";
 					}
 				});
@@ -362,6 +363,7 @@
 			} else {
 				style.transition = trans;
 			}
+			// end animation;
 			$(item).stop();
 		}
 
@@ -417,9 +419,9 @@
 					nestedBlock($item, id);
 				}
 
-				setting.onSetBlock["call"](item, block);
+				setting.onSetBlock.call(item, block);
 
-				layout.length == 0 && setting.onComplete["call"](klass, container);
+				layout.length == 0 && setting.onComplete.call(klass, container);
 			}
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
@@ -668,13 +670,11 @@
 			}
 		};
 
-
+		// store the fit method;
 		var currentMethod = function() {};
-		var currentArgs = [];
+		var currentArguments = [];
 
 		$.extend(klass, {
-			
-			container: container,
 			
 			appendMore: function(items) {
 				var allBlock = $(items);
@@ -694,6 +694,19 @@
 				allBlock.each(function(index, item) {
 					showBlock(item, item.id);
 				});
+			},
+
+			container: container,
+
+			fillHoles: function() {
+				layout.hole = [];
+				return this;
+			},
+
+			filter: function(filter) {
+				layout.filter = filter;
+				this.refesh();
+				return this;
 			},
 
 			fitHeight: function(height) {
@@ -951,20 +964,26 @@
 
 				return this;
 			},
-			
+
+			prepend: function(items) {
+				this.container.prepend(items);
+				this.refesh();
+				return this;
+			},
+
+			refesh: function() {
+				var args = arguments.length ? arguments : currentArguments;
+				currentMethod.apply(this, Array.prototype.slice.call(args, 0));
+			},
+
 			reset: function(option) {
 				$.extend(setting, option);
 				return this;
 			},
 
-			setFilter: function(selector) {
-				layout.filter = selector;
-				return this;
-			},
-
-			setHole: function(holes) {
+			setHoles: function(hole) {
 				/*
-				the example of hole: 
+				the hole example: 
 				[{
 					top: 2,
 					left: 2,
@@ -972,24 +991,16 @@
 					height: 2
 				}]
 				*/
-				layout.hole = holes;
+				layout.hole = hole;
 				return this;
 			},
 
-			fillHole: function() {
-
-				layout.hole = [];
-				return this;
-			},
-
-			unsetFilter: function() {
+			unFilter: function() {
 				delete layout.filter;
+				this.refesh();
 				return this;
 			},
-			updateLayout: function() {
-				var args = arguments.length ? arguments : currentArgs;
-				currentMethod.apply(this, args);
-			}
+			
 		});
 	};
  
