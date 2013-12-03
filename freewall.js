@@ -112,6 +112,8 @@
 			gutterY: 15, // height spacing between blocks;
 			selector: ':only-child',
 			draggable: false,
+			rightToLeft: false,
+			bottomToTop: false,
 			onGapFound: function() {},
 			onComplete: function() {},
 			onResize: function() {},
@@ -332,6 +334,12 @@
 			var x = block.x;
 			var y = block.y;
 
+			if (setting.rightToLeft) {
+				x = layout.totalCol - x - width;
+			}
+			if (setting.bottomToTop) {
+				y = layout.totalRow - y - height;
+			}
 			var realBlock = {
 				fixSize: block.fixSize,
 				top: y * (cellH + gutterY),
@@ -465,6 +473,8 @@
 			var gutterX = layout.gutterX;
 			var cellH = layout.cellH;
 			var cellW = layout.cellW;
+			layout.totalCol = totalCol;
+			layout.totalRow = totalRow;
 
 			var totalWidth = totalCol ? cellW * totalCol + gutterX * (totalCol - 1) : cellW * totalCol;
 			var totalHeight = totalRow ? cellH * totalRow + gutterY * (totalRow - 1) : cellH * totalRow;
@@ -660,11 +670,11 @@
 
 				}
 
+				setZoneSize(maxX, maxY);
+
 				for (var i in wall) {
 					wall.hasOwnProperty(i) && setBlock(wall[i]);
 				}
-				
-				setZoneSize(maxX, maxY);
 
 				layout.grid = grid;
 			}
