@@ -114,6 +114,7 @@
 			draggable: false,
 			rightToLeft: false,
 			bottomToTop: false,
+			onStartSet: function() {},
 			onGapFound: function() {},
 			onComplete: function() {},
 			onResize: function() {},
@@ -359,7 +360,8 @@
 		}
 
 		function setTransition(item, trans) {
-			var style = item.style;
+			var style = item.style, $item = $(item);
+			// remove transition;
 			if (style.webkitTransition != null) {
 				style.webkitTransition = trans;
 			} else if (style.MozTransition != null) {
@@ -372,45 +374,47 @@
 				style.transition = trans;
 			}
 			// end animation;
-			$(item).stop();
+			$item.stop && $item.stop();
 		}
 
 		function showBlock(item, id) {
 			var method = setting.animate && !layout.transition ? 'animate' : 'css';
+			var block = layout.block[id];
 			var $item = $(item);
 			var start = $item.attr("data-state") != "move";
 			var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s";
+			
+			item.delay && clearTimeout(item.delay);
 			//ignore dragging block;
 			if ($item.hasClass('fw-dragging')) return;
-
-			if (setting.animate && layout.transition) {
-				setTransition(item, trans);
-			}
 			
 			// kill the old transition;
-			$item.stop && $item.stop();
-			item.delay && clearTimeout(item.delay);
+			setTransition(item, "");
+			item.style.position = "absolute";
+			setting.onStartSet.call(item, block, container);
 			
 			function action() {
 				// start to arrange;
 				start && $item.attr("data-state", "start");
-				
+				// add animation by using css3 transition;
+				if (setting.animate && layout.transition) {
+					setTransition(item, trans);
+				}
+
 				// for hidden block;
-				if (!layout.block[id]) {
+				if (!block) {
 					$item[method]({
 						opacity: 0,
 						width: 0,
 						height: 0
 					});
 				} else {
-					var block = layout.block[id];
-					layout.length -= 1;
 					if (block.fixSize) {
 						block.height = 1 * $item.attr("data-height");
 						block.width = 1 * $item.attr("data-width");
 					}
+
 					$item["css"]({
-						position: 'absolute',
 						opacity: 1,
 						width: block.width,
 						height: block.height
@@ -421,13 +425,15 @@
 						top: block.top,
 						left: block.left
 					});
+
+					layout.length -= 1;
 				}
 
 				if ($item.attr('data-nested') != null) {
 					nestedBlock($item, id);
 				}
 
-				setting.onSetBlock.call(item, block);
+				setting.onSetBlock.call(item, block, container);
 
 				layout.length == 0 && setting.onComplete.call(klass, container);
 			}
