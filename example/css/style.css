@@ -39,6 +39,8 @@ body {
 	background: rgba(231, 231, 231, 0.43);
 	line-height: 1.125em;
 	color: white;
+	max-width: 1920px;
+	margin: 0 auto;
 	position: relative;
 	font-family: 'Lato', Helvetica, Arial, Tahoma;
 	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
@@ -212,6 +214,10 @@ table {
 	margin: auto;
 }
 
+.free-wall-logo {
+	margin: auto;
+	height: 480px;
+}
 .size2-2 {
 	width: 80px;
 	height: 80px;

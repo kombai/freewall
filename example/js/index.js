@@ -148,6 +148,156 @@
 				window.location.hash = "";
 			});
 		},
+		logo: function() {
+			var wall = new freewall('.free-wall-logo');
+			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'></div></div>";
+			var colour = [
+				"#DAA520",
+				"#CD950C",
+				"#EEB422",
+				"#CD9B1D"
+			];
+
+			var w = 1, h = 1, html = '', color = '', limitItem = 820;
+			for (var i = 0; i < limitItem; ++i) {
+				h = 1 + 3 * Math.random() << 0;
+				w = 1 + 3 * Math.random() << 0;
+				color = colour[colour.length * Math.random() << 0];
+				html += temp.replace(/\{height\}/g, h*15).replace(/\{width\}/g, w*15).replace("{color}", color);
+			}
+			wall.container.html(html);
+			wall.reset({
+				selector: '.cell',
+				animate: false,
+				cellW: 15,
+				cellH: 15,
+				gutterX: 2,
+				gutterY: 2,
+				onResize: function() {
+					this.refesh();
+					var totalCol = this.container.attr('data-total-col');
+					var offsetLeft = Math.round(totalCol/2 - 16);
+					this.setHoles(getPosition(offsetLeft));
+					this.refesh();
+				}
+			});
+
+			function getPosition(offsetLeft) {
+				return [
+					// F
+					{
+						top: 6,
+						left: offsetLeft,
+						width: 9,
+						height: 3
+					},
+					{
+						top: 8,
+						left: offsetLeft,
+						width: 3,
+						height: 14
+					},
+					{
+						top: 12,
+						left: offsetLeft,
+						width: 7,
+						height: 3
+					},
+					// r
+					{
+						top: 12,
+						left: offsetLeft + 11,
+						width: 2,
+						height: 10
+					},
+					{
+						top: 14,
+						left: offsetLeft + 13,
+						width: 1,
+						height: 2
+					},
+					{
+						top: 13,
+						left: offsetLeft + 14,
+						width: 1,
+						height: 2
+					},
+					{
+						top: 12,
+						left: offsetLeft + 15,
+						width: 2,
+						height: 2
+					},
+					// e
+					{
+						top: 12,
+						left: offsetLeft + 19,
+						width: 2,
+						height: 10
+					},
+					{
+						top: 12,
+						left: offsetLeft + 19,
+						width: 4,
+						height: 2
+					},
+					{
+						top: 12,
+						left: offsetLeft + 23,
+						width: 2,
+						height: 6
+					},
+					{
+						top: 16,
+						left: offsetLeft + 20,
+						width: 4,
+						height: 2
+					},
+					{
+						top: 20,
+						left: offsetLeft + 20,
+						width: 5,
+						height: 2
+					},
+					// e
+					{
+						top: 12,
+						left: offsetLeft + 27,
+						width: 2,
+						height: 10
+					},
+					{
+						top: 12,
+						left: offsetLeft + 27,
+						width: 4,
+						height: 2
+					},
+					{
+						top: 12,
+						left: offsetLeft + 31,
+						width: 2,
+						height: 6
+					},
+					{
+						top: 16,
+						left: offsetLeft + 27,
+						width: 4,
+						height: 2
+					},
+					{
+						top: 20,
+						left: offsetLeft + 27,
+						width: 5,
+						height: 2
+					}
+				];
+			}
+			wall.fitZone();
+			var totalCol = wall.container.attr('data-total-col');
+			var offsetLeft = Math.round(totalCol/2 - 16);
+			wall.setHoles(getPosition(offsetLeft));
+			wall.refesh();
+		},
 		options: function() {
 			$('.free-wall .options').click(function() {
 				var cwidth = wall.container.width() - 10;
