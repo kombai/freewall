@@ -468,7 +468,7 @@
 
 			var totalWidth = totalCol ? cellW * totalCol + gutterX * (totalCol - 1) : cellW * totalCol;
 			var totalHeight = totalRow ? cellH * totalRow + gutterY * (totalRow - 1) : cellH * totalRow;
-
+			container.attr({ 'data-total-col': totalCol, 'data-total-row': totalRow });
 			container.attr({ 'data-wall-width': Math.ceil(totalWidth), 'data-wall-height': Math.ceil(totalHeight) });
 		}
 
