@@ -136,9 +136,11 @@
 					
 					wall.unFilter();
 					$(".back-button").hide();
+					$(".free-wall-logo").show();
 				} else {
 					$(hash).trigger("click");
 					$(".back-button").show();
+					$(".free-wall-logo").hide();
 				}
 				$(".header")[0].scrollIntoView(true);
 			}
@@ -168,17 +170,38 @@
 			wall.container.html(html);
 			wall.reset({
 				selector: '.cell',
-				animate: false,
+				animate: true,
 				cellW: 15,
 				cellH: 15,
 				gutterX: 2,
 				gutterY: 2,
+				delay: 10,
 				onResize: function() {
 					this.refesh();
 					var totalCol = this.container.attr('data-total-col');
 					var offsetLeft = Math.round(totalCol/2 - 16);
 					this.setHoles(getPosition(offsetLeft));
 					this.refesh();
+				},
+				onStartSet: function(block, container) {
+					// check for showing brick;
+					if (block != null) {
+						$(this).css({
+							top: - 10000,
+							left: block.left
+						});
+					} else {
+						$(this).css({
+							opacity: 0
+						})
+					}
+				},
+				onComplete: function() {
+					this.reset({
+						delay: 0,
+						animate: false,
+						onStartSet: function() {}
+					})
 				}
 			});
 

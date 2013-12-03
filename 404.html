@@ -51,7 +51,8 @@
 			var wall = new freewall("#freewall");
 			wall.reset({
 				selector: '.cell',
-				animate: false,
+				animate: true,
+				delay: 20,
 				cellW: 15,
 				cellH: 15,
 				gutterX: 2,
@@ -123,9 +124,6 @@
 				}
 			]);
 			wall.fitWidth();
-			// for scroll bar appear;
-			$(window).trigger("resize");
-		
 		</script>
 	</body>
 </html>
