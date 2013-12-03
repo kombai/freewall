@@ -249,13 +249,13 @@
 					},
 					{
 						top: 16,
-						left: offsetLeft + 20,
+						left: offsetLeft + 19,
 						width: 4,
 						height: 2
 					},
 					{
 						top: 20,
-						left: offsetLeft + 20,
+						left: offsetLeft + 19,
 						width: 5,
 						height: 2
 					},
