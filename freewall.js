@@ -224,10 +224,10 @@
 			*/
 			
 			// store original size;
-            $item.attr('data-height') == null && $item.attr('data-height', $item.height());
-            $item.attr('data-width') == null && $item.attr('data-width', $item.width());
+			$item.attr('data-height') == null && $item.attr('data-height', $item.height());
+			$item.attr('data-width') == null && $item.attr('data-width', $item.width());
 			var height = 1 * $item.attr('data-height');
-            var width = 1 * $item.attr('data-width');
+			var width = 1 * $item.attr('data-width');
 
 			var cellH = layout.cellH;
 			var cellW = layout.cellW;
