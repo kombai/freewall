@@ -171,7 +171,7 @@
 				</div>
 			</div>
 
-			<div class="brick size22 options">
+			<div class="brick size23 options">
 				<div class='cover' id="options">
 					<div class='float-left'>
 						<h2>Options</h2>
@@ -185,6 +185,8 @@
 							<li> gutterX </li>
 							<li> gutterY </li>
 							<li> selector </li>
+							<li> rightToLeft </li>
+							<li> bottomToTop </li>
 						</ul>
 						<div class="read-more">View detail ...</div>
 					</div>
@@ -198,11 +200,11 @@
 								<h3> draggable : boolean </h3>
 								<div> 
 									Default: false <br/>
-									True to make block can be drag & drop</div>
+									True: to make block can be drag & drop</div>
 							</li>
 							<li>
 								<h3> animate : boolean </h3>
-								<div> True to make block move with animation</div>
+								<div> True: to make block move with animation</div>
 							</li>
 							<li>
 								<h3> cellW: mix </h3>
@@ -296,7 +298,17 @@ wall.reset({
 });
 									</code>
 								</pre>
-							</li>	
+							</li>
+							<li>
+								<h3> rightToLeft : boolean </h3>
+								<div> Default: false <br/>
+									True: let layout start render from right to left</div>
+							</li>
+							<li>
+								<h3> bottomToTop : boolean </h3>
+								<div> Default: false <br/>
+									True: let layout start render from bottom up to top</div>
+							</li>
 						</ul>
 					</div>
 				</div>
