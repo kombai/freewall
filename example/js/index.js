@@ -162,17 +162,17 @@
 
 			var w = 1, h = 1, html = '', color = '', limitItem = 820;
 			for (var i = 0; i < limitItem; ++i) {
-				h = 1 + 3 * Math.random() << 0;
-				w = 1 + 3 * Math.random() << 0;
+				h = 1;
+				w = 2 + 4 * Math.random() << 0;
 				color = colour[colour.length * Math.random() << 0];
-				html += temp.replace(/\{height\}/g, h*15).replace(/\{width\}/g, w*15).replace("{color}", color);
+				html += temp.replace(/\{height\}/g, h*20).replace(/\{width\}/g, w*15).replace("{color}", color);
 			}
 			wall.container.html(html);
 			wall.reset({
 				selector: '.cell',
 				animate: true,
 				cellW: 15,
-				cellH: 15,
+				cellH: 20,
 				gutterX: 2,
 				gutterY: 2,
 				delay: 10,
