@@ -3,103 +3,19 @@
 // version 1.03;
 
 (function($, doc, win) {
-
-	// simple dragdrop;
-	function setDragable(sel, opt) {
-		var touch = false;
-		var def = {
-			sX: 0, //start clientX;
-			sY: 0, 
-			top: 0,
-			left: 0,
-			proxy: null,
-			end: function() {},
-			move: function() {},
-			start: function() {}
-		};
-		
-		$(sel).each(function() {
-			var set = $.extend({}, def, opt);
-			var ele = set.proxy || this;
-			var $ele = $(ele);
-			ignoreDrag(ele);
-			var posStyle = $ele.css("position");
-			posStyle != "absolute" && $ele.css("position", "relative");
-			
-
-			function mouseDown(evt) {
-				evt.stopPropagation();
-				evt = evt.originalEvent;
-
-				if (evt.touches) {
-					touch = true;
-					evt = evt.changedTouches[0];
-				}
-				
-				set.start.call(ele, evt);
-
-				if (evt.button != 2 && evt.which != 3) {
-					set.sX = evt.clientX;
-					set.sY = evt.clientY;
-					set.top = parseInt($ele.css("top")) || 0;
-					set.left = parseInt($ele.css("left")) || 0;
-					
-					$(doc).bind("mouseup touchend", mouseUp);
-					$(doc).bind("mousemove touchmove", mouseMove); 
-				}
-
-				return false;
-			};
-			
-					
-			function mouseMove(evt) {
-				evt = evt.originalEvent;
-				touch && (evt = evt.changedTouches[0]);
-				
-				$ele.css({
-					top: set.top - (set.sY - evt.clientY),
-					left: set.left - (set.sX - evt.clientX)
-				});
-				
-				set.move.call(ele, evt);
-			};
-			
-			function mouseUp(evt) {
-				evt = evt.originalEvent;
-				touch && (evt = evt.changedTouches[0]);
 	
-				set.end.call(ele, evt);
+	// for zeptojs;
+	$.isNumeric == null && ($.isNumeric = function(src) {
+		return src != null && src.constructor === Number;
+	});
 
-				$(doc).unbind("mouseup touchend", mouseUp);
-			 	$(doc).unbind("mousemove touchmove", mouseMove);
-			};
-			
-			$(this).unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
+	$.isFunction == null && ($.isFunction = function(src) {
+		return src != null && src instanceof Function;
+	});
 
-		});
-	}
-
-	function ignoreDrag(ele) {
-		$(ele).find("iframe, form, input, textarea, .ignore-drag")
-		.each(function() {
-			$(this).on("touchstart mousedown", function(evt) {
-				evt.stopPropagation();
-			});
-		});
-	}
-
-	win.freewall = function(selector) {
-		
-		var flexIndex = Number.fw ? ++Number.fw : Number.fw = 1;
-		var klass = this;
-		var MAX = Number.MAX_VALUE;
-		var container = $(selector);
-		if (container.css('position') == 'static') {
-			container.css('position', 'relative');
-		}
-
-		// default setting;
-		var setting = {
+	
+	var layoutManager = {
+		defaultSetting: {
 			animate: false,
 			cellW: 100, // function(container) {return 100;}
 			cellH: 100, // function(container) {return 100;}
@@ -119,112 +35,25 @@
 			onComplete: function() {},
 			onResize: function() {},
 			onSetBlock: function() {}
-		};
-		
-		var layout = {
-			block: {}, // store all items;
-			grid: {},
-			hole: [], // drop zone;
-			busy: 0,
-			
-			maxW: 0, // max width of block;
-			maxH: 0,
-			minW: MAX, 
-			minH: MAX, // min height of block;
-
-			cellW: 0,
-			cellH: 0, // unit adjust;
-			
-			filter: '', // filter selector;
-			
-			lastId: 0,
-			length: 0,
-
-			gutterX: 15, 
-			gutterY: 15,
-			
-			totalCol: 1,
-			totalRow: 1,
-			
-			transition: 0
-		};
-
-		// check browser support transition;
-		var style = document.body.style;
-		(style.webkitTransition != null ||
-		style.MozTransition != null ||
-		style.msTransition != null ||
-		style.OTransition != null ||
-		style.transition != null) &&
-		(layout.transition = true);
-		
-		// for zeptojs;
-		$.isNumeric == null && ($.isNumeric = function(src) {
-			return src != null && src.constructor === Number;
-		});
-
-		$.isFunction == null && ($.isFunction = function(src) {
-			return src != null && src instanceof Function;
-		});
-
-		// setup resize event;
-		$(win).resize(function() {
-			if (layout.busy) return;
-			layout.busy = 1;
-			setTimeout(function() {
-				layout.busy = 0;
-				setting.onResize["call"](klass, container);
-			}, 122);
-			container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
-		});
-
-		container.attr('data-min-width', Math.floor($(self).width() / 80) * 80);
-
-		function loadBlock(item, index) {
-
-			var $item = $(item), block = null, id = layout.lastId++ + '-' + flexIndex;
-			var gutterX = layout.gutterX, gutterY = layout.gutterY;
-			var fixSize = eval($item.attr('data-fixSize'));
+		},
+		index: 1,
+		transition: false,
+		loadBlock: function(item, index, layout, setting) {
+			var $item = $(item),
+				block = null,
+				id = layout.lastId++ + '-' + this.index,
+				gutterX = layout.gutterX,
+				gutterY = layout.gutterY,
+				fixSize = eval($item.attr('data-fixSize'));
 			
 			//ignore dragging block;
 			if ($item.hasClass('fw-dragging')) return;
-			$item.attr({ id: id, 'data-delay': index});
+			$item.attr({id: id, 'data-delay': index});
 
 			//remove animation for speed render;
-			if (setting.animate && layout.transition) {
-				setTransition(item, "");
+			if (setting.animate && this.transition) {
+				this.setTransition(item, "");
 			}
-
-			/*
-			// support size of block set with percent;
-			if ($item.attr('data-width') == undefined) {
-				// store init width;
-				if (parseInt(item.style.width)) {
-					$item.attr('data-width', $item.width());
-				} else {
-					$item.attr('data-width', "");
-				}
-			} else {
-				// backup the width;
-				$item.width($item.attr('data-width'));
-			}
-			var width = $item.width();
-			
-			if ($item.attr('data-height') == undefined) {
-				// store init height;
-				if (parseInt(item.style.height)) {
-					$item.attr('data-height', $item.height());
-				} else {
-					$item.attr('data-height', "");
-				}
-			} else {
-				// back up the height;
-				$item.height($item.attr('data-height'));
-			}
-
-			var height = $item.height();
-			
-			*/
 			
 			// store original size;
 			$item.attr('data-height') == null && $item.attr('data-height', $item.height());
@@ -282,50 +111,9 @@
 				$item.attr("data-state", "move");
 			}
 
-			// dragging block;
-			if (setting.draggable == true) {
-				setDragable(item, {
-					start: function(event) {
-						if (setting.animate && layout.transition) {
-							setTransition(this, "");
-						}
-						this.style.zIndex = 999;
-						$(this).addClass('fw-dragging');
-					},
-					move: function(evt, tracker) {
-						var position = $(this).position();
-						var top = Math.round(position.top / (cellH + gutterY));
-						var left = Math.round(position.left/ (cellW + gutterX));
-						var width = Math.round($(this).width() / (cellW + gutterX));
-						var height = Math.round($(this).height() / (cellH + gutterY));
-						top = Math.min(Math.max(0, top), layout.totalRow - height);
-						left = Math.min(Math.max(0, left), layout.totalCol - width);
-						klass.setHoles([{top: top, left: left, width: width, height: height}]);
-						klass.refesh();
-					},
-					end: function() {
-						var position = $(this).position();
-						var top = Math.round(position.top / (cellH + gutterY));
-						var left = Math.round(position.left/ (cellW + gutterX));
-						var width = Math.round($(this).width() / (cellW + gutterX));
-						var height = Math.round($(this).height() / (cellH + gutterY));
-						$(this).removeClass('fw-dragging');
-						top = Math.min(Math.max(0, top), layout.totalRow - height);
-						left = Math.min(Math.max(0, left), layout.totalCol - width);
-
-						$(this).css({
-							top: top * (cellH + gutterY),
-							left: left * (cellW + gutterX)
-						});
-						klass.fillHoles();
-						this.style.zIndex = "auto";
-					}
-				});
-			}
 			return block;
-		}
-
-		function setBlock(block) {
+		},
+		setBlock: function(block, layout, setting) {
 			var gutterX = layout.gutterX;
 			var gutterY = layout.gutterY;
 			var height = block.height;
@@ -357,30 +145,12 @@
 			block.id && ++layout.length && (layout.block[block.id] = realBlock);
 			// for append feature;
 			return realBlock;
-		}
-
-		function setTransition(item, trans) {
-			var style = item.style, $item = $(item);
-			// remove transition;
-			if (style.webkitTransition != null) {
-				style.webkitTransition = trans;
-			} else if (style.MozTransition != null) {
-				style.MozTransition = trans;
-			} else if (style.msTransition != null) {
-				style.msTransition = trans;
-			} else if (style.OTransition != null) {
-				style.OTransition = trans;
-			} else {
-				style.transition = trans;
-			}
-			// end animation;
-			$item.stop && $item.stop();
-		}
-
-		function showBlock(item, id) {
-			var method = setting.animate && !layout.transition ? 'animate' : 'css';
-			var block = layout.block[id];
+		},
+		showBlock: function(item, layout, setting, container) {
+			var method = setting.animate && !this.transition ? 'animate' : 'css';
+			var block = layout.block[item.id];
 			var $item = $(item);
+			var self = this;
 			var start = $item.attr("data-state") != "move";
 			var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s";
 			
@@ -389,7 +159,7 @@
 			if ($item.hasClass('fw-dragging')) return;
 			
 			// kill the old transition;
-			setTransition(item, "");
+			self.setTransition(item, "");
 			item.style.position = "absolute";
 			setting.onStartSet.call(item, block, container);
 			
@@ -397,8 +167,8 @@
 				// start to arrange;
 				start && $item.attr("data-state", "start");
 				// add animation by using css3 transition;
-				if (setting.animate && layout.transition) {
-					setTransition(item, trans);
+				if (setting.animate && self.transition) {
+					self.setTransition(item, trans);
 				}
 
 				// for hidden block;
@@ -430,25 +200,25 @@
 				}
 
 				if ($item.attr('data-nested') != null) {
-					nestedBlock($item, id);
+					self.nestedBlock(item, layout, setting);
 				}
 
 				setting.onSetBlock.call(item, block, container);
 
-				layout.length == 0 && setting.onComplete.call(klass, container);
+				//layout.length == 0 && setting.onComplete.call(klass, container);
 			}
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
-		}
-
-		function nestedBlock($item, id) {
+		},
+		nestedBlock: function(item, layout, setting) {
+			var $item = $(item);
 			var gutterX = $item.attr("data-gutterX") || layout.gutterX;
 			var gutterY = $item.attr("data-gutterY") || layout.gutterY;
 			var method = $item.attr("data-method") || "fitZone";
 			var nested = $item.attr('data-nested') || ":only-child";
 			var cellH = $item.attr("data-cellH") || setting.cellH;
 			var cellW = $item.attr("data-cellW") || setting.cellW;
-			var block = layout.block[id], innerWall;
+			var block = layout.block[item.id], innerWall;
 			
 			if (block) {
 				innerWall = new freewall($item);
@@ -472,220 +242,430 @@
 						break;
 				}
 			}
-		}
-
-		function setZoneSize (totalCol, totalRow) {
-			var gutterY = layout.gutterY;
-			var gutterX = layout.gutterX;
-			var cellH = layout.cellH;
-			var cellW = layout.cellW;
-			layout.totalCol = totalCol;
-			layout.totalRow = totalRow;
-
-			var totalWidth = totalCol ? cellW * totalCol + gutterX * (totalCol - 1) : cellW * totalCol;
-			var totalHeight = totalRow ? cellH * totalRow + gutterY * (totalRow - 1) : cellH * totalRow;
-			container.attr({ 'data-total-col': totalCol, 'data-total-row': totalRow });
-			container.attr({ 'data-wall-width': Math.ceil(totalWidth), 'data-wall-height': Math.ceil(totalHeight) });
-		}
-
-		function resetLayout() {
+		},
+		resetLayout: function(layout) {
 			layout.length = 0;
 			layout.block = {};
 			layout.grid = null;
 			layout.cellH = 0;
 			layout.cellW = 0;
 			layout.lastId = 1;
-		}
-
-		var engine = {
-			// just a person name;
-			// full name is Phan Dinh Giot;
-			giot: function(items, col, row) {
-				var smallLoop = Math.min(col, row),
-				    bigLoop = Math.max(col, row),
-				    grid = layout.grid || {},
-				    hole = layout.hole,
-				    wall = {},
-				    maxX = 0,
-				    maxY = 0,
-				    freeArea = null,
-				    fitWidth = col < row ? 1 : 0,
-				    block, x, y, lastBlock, misBlock;
-
-				// fill area with top, left, width, height;
-				function fillGrid(t, l, w, h) { 
-					for (var y = t; y < t + h;) {
-						for (var x = l; x < l + w;) {
-							grid[y + '-' + x] = true;
-							++x > maxX && (maxX = x);
-						}
-						++y > maxY && (maxY = y);
-					}
-				}
+		},
+		setDragable: function(item, opt) {
+			var touch = false;
+			var def = {
+				sX: 0, //start clientX;
+				sY: 0, 
+				top: 0,
+				left: 0,
+				proxy: null,
+				end: function() {},
+				move: function() {},
+				start: function() {}
+			};
+			
+			$(item).each(function() {
+				var set = $.extend({}, def, opt);
+				var ele = set.proxy || this;
+				var $ele = $(ele);
 				
-				function getZone(t, l, w, h) {
-					
-					var maxY = Math.min(t + h, row);
-					var maxX = Math.min(l + w, col);
-					var minX = maxX;
-					var minY = maxY;
-
-					// find limit width and limit height of zone;
-					for (var y = t; y < maxY; ++y) {
-						for (var x = l; x < maxX; ++x) {
-							if (grid[y + '-' + x] == true) {
-								(t < y && y < minY) && (minY = y);
-								(l < x && x < minX) && (minX = x);
- 							}
-						}
-					}
-
-					// find limit zone by horizon;
-					var minLeft = maxX;
-					for (var y = t; y < minY; ++y) {
-						for (var x = l; x < maxX; ++x) {
-							if (grid[y + '-' + x] == true) {
-								(l < x && x < minLeft) && (minLeft = x);
-							}
-						}
-					}
-					// find limit zone by vertical;
-					var minTop = maxY;
-					for (var y = t; y < maxY; ++y) {
-						for (var x = l; x < minX; ++x) {
-							if (grid[y + '-' + x] == true) {
-								(t < y && y < minTop) && (minTop = y);
-							}
-						}
-					}
-
-					var compare = minLeft * minY - minX * minTop;
-					
-					var free = {
-						top: t,
-						left: l,
-						width: compare ? minLeft - l : minX - l,
-						height: compare ? minY - t : minTop - t
-					};
-
-					return free;
-				}
-
-				// set a hole on the wall;
-				if (hole.length) {
-					for (var i = 0; i < hole.length; ++i) {
-						fillGrid(hole[i]['top'], hole[i]['left'], hole[i]['width'], hole[i]['height']);
-					}
-				}
-
+				var posStyle = $ele.css("position");
+				posStyle != "absolute" && $ele.css("position", "relative");
 				
-				for (var b = 0; b < bigLoop; ++b) {
-					if (!items.length) break;
-					fitWidth ? (y = b) : (x = b);
-					lastBlock = null;
 
-					for (var s = 0; s < smallLoop; ++s) {
-						if (!items.length) break;
-						fitWidth ? (x = s) : (y = s);
-						if (grid[y + '-' + x]) continue;
-						block = null;
-						freeArea = getZone(y, x, layout.maxW, layout.maxH);
-						for (var i = 0; i < items.length; ++i) {
-							if (items[i].height > freeArea.height) continue;
-							if (items[i].width > freeArea.width) continue;
-							block = items.splice(i, 1)[0];
-							break;
-						}
+				function mouseDown(evt) {
+					evt.stopPropagation();
+					evt = evt.originalEvent;
 
-						// trying resize the other block to fit gap;
-						if (block == null && setting.fixSize == null) {
-							// resize near block to fill gap;
-							if (lastBlock && !fitWidth && layout.minH > freeArea.height) {
-								lastBlock.height += freeArra.height;
-								fillGrid(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
-								continue;
-							} else if (lastBlock && fitWidth && layout.minW > freeArea.width) {
-								lastBlock.width += freeArea.width;
-								fillGrid(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
-								continue;
-							} else {
-								// get other block fill to gap;
-								for (var i = 0; i < items.length; ++i) {
-									if (items[i]['fixSize'] != null) continue;
-									block = items.splice(i, 1)[0];
-									if (fitWidth) {
-										block.width = freeArea.width;
-										// for fitZone;
-										block.height = Math.min(block.height, freeArea.height);
-									} else {
-										// for fitZone;
-										block.width = Math.min(block.width, freeArea.width);
-										block.height = freeArea.height;
-									}
-									break;
-								}
-							}
-						}
+					if (evt.touches) {
+						touch = true;
+						evt = evt.changedTouches[0];
+					}
+					
+					set.start.call(ele, evt);
+
+					if (evt.button != 2 && evt.which != 3) {
+						set.sX = evt.clientX;
+						set.sY = evt.clientY;
+						set.top = parseInt($ele.css("top")) || 0;
+						set.left = parseInt($ele.css("left")) || 0;
 						
-						if (block != null) {
-							wall[block.id] = {
-								id: block.id,
-								x: x,
-								y: y,
-								width: block.width,
-								height: block.height,
-								fixSize: block.fixSize
-							};
-							
-							// keep success block for next round;
-							lastBlock = wall[block.id];
-							fillGrid(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
-						} else {
-							// get expect area;
-							var misBlock = {
-								x: x,
-								y: y,
-								fixSize: 0
-							};
-							if (fitWidth) {
-								misBlock.width = freeArea.width;
-								misBlock.height = 0;
-								var lastX = x - 1;
-								var lastY = y;
-								
-								while (grid[lastY + '-' + lastX]) {
-									grid[lastY + '-' + x] = true;
-									misBlock.height += 1;
-									lastY += 1;
-								}
-							} else {
-								misBlock.height = freeArea.height;
-								misBlock.width = 0;
-								var lastY = y - 1;
-								var lastX = x;
-								
-								while (grid[lastY + '-' + lastX]) {
-									grid[y + '-' + lastX] = true;
-									misBlock.width += 1;
-									lastX += 1;
-								}
-							}
-							setting.onGapFound(setBlock(misBlock));
-						}
+						$(doc).bind("mouseup touchend", mouseUp);
+						$(doc).bind("mousemove touchmove", mouseMove); 
 					}
 
-				}
+					return false;
+				};
+				
+						
+				function mouseMove(evt) {
+					evt = evt.originalEvent;
+					touch && (evt = evt.changedTouches[0]);
+					
+					$ele.css({
+						top: set.top - (set.sY - evt.clientY),
+						left: set.left - (set.sX - evt.clientX)
+					});
+					
+					set.move.call(ele, evt);
+				};
+				
+				function mouseUp(evt) {
+					evt = evt.originalEvent;
+					touch && (evt = evt.changedTouches[0]);
+		
+					set.end.call(ele, evt);
 
-				setZoneSize(maxX, maxY);
+					$(doc).unbind("mouseup touchend", mouseUp);
+				 	$(doc).unbind("mousemove touchmove", mouseMove);
+				};
 
-				for (var i in wall) {
-					wall.hasOwnProperty(i) && setBlock(wall[i]);
-				}
+				// ignore drag drop on text field;
+				$(this).find("iframe, form, input, textarea, .ignore-drag")
+				.each(function() {
+					$(this).on("touchstart mousedown", function(evt) {
+						evt.stopPropagation();
+					});
+				});
+				
+				$(doc).unbind("mouseup touchend", mouseUp);
+				$(doc).unbind("mousemove touchmove", mouseMove);
+				$(this).unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
 
-				layout.grid = grid;
+			});
+		},
+		setTransition: function(item, trans) {
+			var $item = $(item),
+				style = item.style;
+
+			// remove animation;
+			if (!this.transition) {
+				$item.stop && $item.stop();
+			} else if (style.webkitTransition != null) {
+				style.webkitTransition = trans;
+			} else if (style.MozTransition != null) {
+				style.MozTransition = trans;
+			} else if (style.msTransition != null) {
+				style.msTransition = trans;
+			} else if (style.OTransition != null) {
+				style.OTransition = trans;
+			} else {
+				style.transition = trans;
 			}
+		},
+		setZoneSize: function(layout, container) {
+			var totalRow = layout.totalRow;
+			var totalCol = layout.totalCol;
+			var gutterY = layout.gutterY;
+			var gutterX = layout.gutterX;
+			var cellH = layout.cellH;
+			var cellW = layout.cellW;
+			var totalWidth = totalCol ? cellW * totalCol + gutterX * (totalCol - 1) : cellW * totalCol;
+			var totalHeight = totalRow ? cellH * totalRow + gutterY * (totalRow - 1) : cellH * totalRow;
+			container.attr({ 'data-total-col': totalCol, 'data-total-row': totalRow });
+			container.attr({ 'data-wall-width': Math.ceil(totalWidth), 'data-wall-height': Math.ceil(totalHeight) });
+		}
+	};
+
+	
+
+	var engine = {
+		// Giot just a person name;
+		giot: function(items, layout, setting) {
+			var col = layout.totalCol, row = layout.totalRow;
+			var smallLoop = Math.min(col, row),
+			    bigLoop = Math.max(col, row),
+			    grid = layout.grid || {},
+			    hole = layout.hole,
+			    wall = {},
+			    maxX = 0,
+			    maxY = 0,
+			    freeArea = null,
+			    fitWidth = col < row ? 1 : 0,
+			    block, x, y, lastBlock, misBlock;
+
+			// fill area with top, left, width, height;
+			function fillGrid(id, t, l, w, h) { 
+				for (var y = t; y < t + h;) {
+					for (var x = l; x < l + w;) {
+						grid[y + '-' + x] = true;
+						++x > maxX && (maxX = x);
+					}
+					++y > maxY && (maxY = y);
+				}
+				wall[id] && layoutManager.setBlock(wall[id], layout, setting);
+			}
+			
+			function getZone(t, l, w, h) {
+				
+				var maxY = Math.min(t + h, row);
+				var maxX = Math.min(l + w, col);
+				var minX = maxX;
+				var minY = maxY;
+
+				// find limit width and limit height of zone;
+				for (var y = t; y < maxY; ++y) {
+					for (var x = l; x < maxX; ++x) {
+						if (grid[y + '-' + x] == true) {
+							(t < y && y < minY) && (minY = y);
+							(l < x && x < minX) && (minX = x);
+							}
+					}
+				}
+
+				// find limit zone by horizon;
+				var minLeft = maxX;
+				for (var y = t; y < minY; ++y) {
+					for (var x = l; x < maxX; ++x) {
+						if (grid[y + '-' + x] == true) {
+							(l < x && x < minLeft) && (minLeft = x);
+						}
+					}
+				}
+				// find limit zone by vertical;
+				var minTop = maxY;
+				for (var y = t; y < maxY; ++y) {
+					for (var x = l; x < minX; ++x) {
+						if (grid[y + '-' + x] == true) {
+							(t < y && y < minTop) && (minTop = y);
+						}
+					}
+				}
+
+				var compare = minLeft * minY - minX * minTop;
+				
+				var free = {
+					top: t,
+					left: l,
+					width: compare ? minLeft - l : minX - l,
+					height: compare ? minY - t : minTop - t
+				};
+
+				return free;
+			}
+
+			// set a hole on the wall;
+			if (hole.length) {
+				for (var i = 0; i < hole.length; ++i) {
+					fillGrid(true, hole[i]['top'], hole[i]['left'], hole[i]['width'], hole[i]['height']);
+				}
+			}
+
+			for (var b = 0; b < bigLoop; ++b) {
+				if (!items.length) break;
+				fitWidth ? (y = b) : (x = b);
+				lastBlock = null;
+
+				for (var s = 0; s < smallLoop; ++s) {
+					if (!items.length) break;
+					fitWidth ? (x = s) : (y = s);
+					if (grid[y + '-' + x]) continue;
+					block = null;
+					freeArea = getZone(y, x, layout.maxW, layout.maxH);
+					for (var i = 0; i < items.length; ++i) {
+						if (items[i].height > freeArea.height) continue;
+						if (items[i].width > freeArea.width) continue;
+						block = items.splice(i, 1)[0];
+						break;
+					}
+
+					// trying resize the other block to fit gap;
+					if (block == null && setting.fixSize == null) {
+						// resize near block to fill gap;
+						if (lastBlock && !fitWidth && layout.minH > freeArea.height) {
+							lastBlock.height += freeArra.height;
+							fillGrid(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							continue;
+						} else if (lastBlock && fitWidth && layout.minW > freeArea.width) {
+							lastBlock.width += freeArea.width;
+							fillGrid(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							continue;
+						} else {
+							// get other block fill to gap;
+							for (var i = 0; i < items.length; ++i) {
+								if (items[i]['fixSize'] != null) continue;
+								block = items.splice(i, 1)[0];
+								if (fitWidth) {
+									block.width = freeArea.width;
+									// for fitZone;
+									block.height = Math.min(block.height, freeArea.height);
+								} else {
+									// for fitZone;
+									block.width = Math.min(block.width, freeArea.width);
+									block.height = freeArea.height;
+								}
+								break;
+							}
+						}
+					}
+					
+					if (block != null) {
+						wall[block.id] = {
+							id: block.id,
+							x: x,
+							y: y,
+							width: block.width,
+							height: block.height,
+							fixSize: block.fixSize
+						};
+						
+						// keep success block for next round;
+						lastBlock = wall[block.id];
+						fillGrid(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+					} else {
+						// get expect area;
+						var misBlock = {
+							x: x,
+							y: y,
+							fixSize: 0
+						};
+						if (fitWidth) {
+							misBlock.width = freeArea.width;
+							misBlock.height = 0;
+							var lastX = x - 1;
+							var lastY = y;
+							
+							while (grid[lastY + '-' + lastX]) {
+								grid[lastY + '-' + x] = true;
+								misBlock.height += 1;
+								lastY += 1;
+							}
+						} else {
+							misBlock.height = freeArea.height;
+							misBlock.width = 0;
+							var lastY = y - 1;
+							var lastX = x;
+							
+							while (grid[lastY + '-' + lastX]) {
+								grid[y + '-' + lastX] = true;
+								misBlock.width += 1;
+								lastX += 1;
+							}
+						}
+						setting.onGapFound(layout, layoutManager.setBlock(misBlock, layout, setting));
+					}
+				}
+
+			}
+
+			layout.totalRow = maxY;
+			layout.totalCol = maxX;
+			layout.grid = grid;
+		}
+	};
+
+
+
+	win.freewall = function(selector) {
+		
+		var container = $(selector);
+		if (container.css('position') == 'static') {
+			container.css('position', 'relative');
+		}
+		var klass = this;
+		var MAX = Number.MAX_VALUE;
+
+		// default setting;
+		var setting = $.extend({}, layoutManager.defaultSetting);
+		// increase the instance index;
+		layoutManager.index += 1;
+		
+		var layout = {
+			block: {}, // store all items;
+			grid: {},
+			hole: [], // drop zone;
+			busy: 0,
+			
+			maxW: 0, // max width of block;
+			maxH: 0,
+			minW: MAX, 
+			minH: MAX, // min height of block;
+
+			cellW: 0,
+			cellH: 0, // unit adjust;
+			
+			filter: '', // filter selector;
+			
+			lastId: 0,
+			length: 0,
+
+
+			gutterX: 15, 
+			gutterY: 15,
+			
+			totalCol: 1,
+			totalRow: 1
+
 		};
 
+		// check browser support transition;
+		var style = document.body.style;
+		(style.webkitTransition != null ||
+		style.MozTransition != null ||
+		style.msTransition != null ||
+		style.OTransition != null ||
+		style.transition != null) &&
+		(layoutManager.transition = true);
+		
+
+		// setup resize event;
+		$(win).resize(function() {
+			if (layout.busy) return;
+			layout.busy = 1;
+			setTimeout(function() {
+				layout.busy = 0;
+				setting.onResize.call(klass, container);
+			}, 122);
+			container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
+		});
+
+		container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
+
+		function setDragable(item) {
+			var cellH = layout.cellH;
+			var cellW = layout.cellW;
+			var gutterX = layout.gutterX;
+			var gutterY = layout.gutterY;
+
+			layoutManager.setDragable(item, {
+				start: function(event) {
+					if (setting.animate && layoutManager.transition) {
+						layoutManager.setTransition(this, "");
+					}
+					this.style.zIndex = 999;
+					$(this).addClass('fw-dragging');
+				},
+				move: function(evt, tracker) {
+					var position = $(this).position();
+					var top = Math.round(position.top / (cellH + gutterY));
+					var left = Math.round(position.left/ (cellW + gutterX));
+					var width = Math.round($(this).width() / (cellW + gutterX));
+					var height = Math.round($(this).height() / (cellH + gutterY));
+					top = Math.min(Math.max(0, top), layout.totalRow - height);
+					left = Math.min(Math.max(0, left), layout.totalCol - width);
+					klass.setHoles([{top: top, left: left, width: width, height: height}]);
+					klass.refesh();
+				},
+				end: function() {
+					var position = $(this).position();
+					var top = Math.round(position.top / (cellH + gutterY));
+					var left = Math.round(position.left/ (cellW + gutterX));
+					var width = Math.round($(this).width() / (cellW + gutterX));
+					var height = Math.round($(this).height() / (cellH + gutterY));
+					$(this).removeClass('fw-dragging');
+					top = Math.min(Math.max(0, top), layout.totalRow - height);
+					left = Math.min(Math.max(0, left), layout.totalCol - width);
+
+					$(this).css({
+						top: top * (cellH + gutterY),
+						left: left * (cellW + gutterX)
+					});
+					klass.fillHoles();
+					this.style.zIndex = "auto";
+				}
+			});
+		}
+		
 		// store the fit method;
 		var currentMethod = function() {};
 		var currentArguments = [];
@@ -693,23 +673,9 @@
 		$.extend(klass, {
 			
 			appendMore: function(items) {
-				var allBlock = $(items);
-				var activeBlock = [];
-
-				allBlock.each(function(index, item) {
-					container.append(item);
-					block = loadBlock(item, ++index);
-					block && activeBlock.push(block);
-				});
-				engine[setting.engine](activeBlock, layout.totalCol, layout.totalRow);
-				
-				if (!container.attr('data-height') && layout.totalCol < layout.totalRow) {
-					container.height(container.attr("data-wall-height"));
-				}
-
-				allBlock.each(function(index, item) {
-					showBlock(item, item.id);
-				});
+				this.container.append(items);
+				this.refesh();
+				return this;
 			},
 
 			container: container,
@@ -729,7 +695,7 @@
 				height = height ? height : container.height() || $(window).height();
 				currentMethod = arguments.callee;
 				currentArgs = arguments;
-				resetLayout();
+				layoutManager.resetLayout(layout);
 
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
@@ -791,14 +757,16 @@
 				layout.totalRow = totalRow;
 
 				items.each(function(index, item) {
-					block = loadBlock(item, ++index);
+					block = layoutManager.loadBlock(item, ++index, layout, setting);
 					block && activeBlock.push(block);
 				});
 				
-				engine[setting.engine](activeBlock, totalCol, totalRow);
-				
+				engine[setting.engine](activeBlock, layout, setting);
+				layoutManager.setZoneSize(layout, container);
+
 				allBlock.each(function(index, item) {
-					showBlock(item, item.id);
+					setting.draggable && setDragable(item);
+					layoutManager.showBlock(item, layout, setting, container);
 				});
 			},
 
@@ -806,7 +774,7 @@
 				width = width ? width : container.width() || $(window).width();
 				currentMethod = arguments.callee;
 				currentArgs = arguments;
-				resetLayout();
+				layoutManager.resetLayout(layout);
 
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
@@ -869,14 +837,16 @@
 				layout.totalRow = totalRow;
 
 				items.each(function(index, item) {
-					block = loadBlock(item, ++index);
+					block = layoutManager.loadBlock(item, ++index, layout, setting);
 					block && activeBlock.push(block);
 				});
-				engine[setting.engine](activeBlock, totalCol, totalRow);
-				
+				engine[setting.engine](activeBlock, layout, setting);
+				layoutManager.setZoneSize(layout, container);
+
 				!container.attr('data-height') && container.height(container.attr("data-wall-height"));
 				allBlock.each(function(index, item) {
-					showBlock(item, item.id);
+					setting.draggable && setDragable(item);
+					layoutManager.showBlock(item, layout, setting, container);
 				});
 			},
 
@@ -885,7 +855,7 @@
 				width = width ? width : container.width() || $(window).width();
 				currentMethod = arguments.callee;
 				currentArgs = arguments;
-				resetLayout();
+				layoutManager.resetLayout(layout);
 				
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
@@ -956,14 +926,17 @@
 				layout.totalRow = totalRow;
 
 				items.each(function(index, item) {
-					block = loadBlock(item, ++index);
+					block = layoutManager.loadBlock(item, ++index, layout, setting);
 					block && activeBlock.push(block);
 				});
 
-				engine[setting.engine](activeBlock, totalCol, totalRow);
-				
+				engine[setting.engine](activeBlock, layout, setting);
+				layoutManager.setZoneSize(layout, container);
+
+
 				allBlock.each(function(index, item) {
-					showBlock(item, item.id);
+					setting.draggable && setDragable(item);
+					layoutManager.showBlock(item, layout, setting, container);
 				});
 			},
 			
@@ -1018,6 +991,20 @@
 			}
 			
 		});
+	};
+
+	freewall.createPlugin = function(pluginData) {
+		/*
+		pluginData = {
+			setting: {},
+			plugin: {}
+		};
+		*/
+
+		// register new plugin;
+		$.extend(layoutManager.plugin, {plugin: {}}, pluginData.plugin);
+		// extend defaultSetting;
+		$.extend(layoutManager.defaultSetting, {setting: {}}, pluginData.setting);
 	};
  
 })(window.Zepto || window.jQuery, document, window);
