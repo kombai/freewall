@@ -183,7 +183,7 @@
 					this.setHoles(getPosition(offsetLeft));
 					this.refesh();
 				},
-				onStartSet: function(block, container) {
+				onStartSet: function(block, setting) {
 					// check for showing brick;
 					if (block != null) {
 						$(this).css({
@@ -197,7 +197,7 @@
 					}
 				},
 				onComplete: function() {
-					this.reset({
+					wall.reset({
 						delay: 0,
 						animate: false,
 						onStartSet: function() {}
@@ -391,6 +391,7 @@
 			if (window.location.hash && $(window.location.hash).length) {
 				$(window.location.hash).trigger("click");
 				$('.back-button').show();
+				$(".free-wall-logo").hide();
 			} 
 		}
 	};

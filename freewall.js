@@ -36,14 +36,15 @@
 			onResize: function() {},
 			onSetBlock: function() {}
 		},
-		index: 1,
 		transition: false,
-		loadBlock: function(item, index, layout, setting) {
-			var $item = $(item),
+		index: 1,
+		loadBlock: function(item, index, setting) {
+			var runtime = setting.runtime,
+				$item = $(item),
 				block = null,
-				id = layout.lastId++ + '-' + this.index,
-				gutterX = layout.gutterX,
-				gutterY = layout.gutterY,
+				id = runtime.lastId++ + '-' + this.index,
+				gutterX = runtime.gutterX,
+				gutterY = runtime.gutterY,
 				fixSize = eval($item.attr('data-fixSize'));
 			
 			//ignore dragging block;
@@ -61,8 +62,8 @@
 			var height = 1 * $item.attr('data-height');
 			var width = 1 * $item.attr('data-width');
 
-			var cellH = layout.cellH;
-			var cellW = layout.cellW;
+			var cellH = runtime.cellH;
+			var cellW = runtime.cellW;
 			
 			var col = !width ? 0 : Math.round((width + gutterX) / (cellW + gutterX));
 			var row = !height ? 0 : Math.round((height + gutterY) / (cellH + gutterY));
@@ -81,17 +82,17 @@
 			}
 			
 			// for none resize block;
-			if ((fixSize != null) && (col > layout.totalCol || row > layout.totalRow)) {
+			if ((fixSize != null) && (col > runtime.totalCol || row > runtime.totalRow)) {
 				block = null;
 			} else {
 				// get smallest width and smallest height of block;
-				// using for image layout;
-				row && row < layout.minH && (layout.minH = row);
-				col && col < layout.minW && (layout.minW = col);
+				// using for image runtime;
+				row && row < runtime.minH && (runtime.minH = row);
+				col && col < runtime.minW && (runtime.minW = col);
 
 				// get biggest width and biggest height of block;
-				row > layout.maxH && (layout.maxH = row);
-				col > layout.maxW && (layout.maxW = col);
+				row > runtime.maxH && (runtime.maxH = row);
+				col > runtime.maxW && (runtime.maxW = col);
 
 				width == 0 && (col = 0);
 				height == 0 && (row = 0);
@@ -113,21 +114,22 @@
 
 			return block;
 		},
-		setBlock: function(block, layout, setting) {
-			var gutterX = layout.gutterX;
-			var gutterY = layout.gutterY;
+		setBlock: function(block, setting) {
+			var runtime = setting.runtime;
+			var gutterX = runtime.gutterX;
+			var gutterY = runtime.gutterY;
 			var height = block.height;
 			var width = block.width;
-			var cellH = layout.cellH;
-			var cellW = layout.cellW;
+			var cellH = runtime.cellH;
+			var cellW = runtime.cellW;
 			var x = block.x;
 			var y = block.y;
 
 			if (setting.rightToLeft) {
-				x = layout.totalCol - x - width;
+				x = runtime.totalCol - x - width;
 			}
 			if (setting.bottomToTop) {
-				y = layout.totalRow - y - height;
+				y = runtime.totalRow - y - height;
 			}
 			var realBlock = {
 				fixSize: block.fixSize,
@@ -142,13 +144,14 @@
 			realBlock.width = 1 * realBlock.width.toFixed(2);
 			realBlock.height = 1 * realBlock.height.toFixed(2);
 
-			block.id && ++layout.length && (layout.block[block.id] = realBlock);
+			block.id && ++runtime.length && (runtime.block[block.id] = realBlock);
 			// for append feature;
 			return realBlock;
 		},
-		showBlock: function(item, layout, setting, container) {
+		showBlock: function(item, setting) {
+			var runtime = setting.runtime;
 			var method = setting.animate && !this.transition ? 'animate' : 'css';
-			var block = layout.block[item.id];
+			var block = runtime.block[item.id];
 			var $item = $(item);
 			var self = this;
 			var start = $item.attr("data-state") != "move";
@@ -161,7 +164,7 @@
 			// kill the old transition;
 			self.setTransition(item, "");
 			item.style.position = "absolute";
-			setting.onStartSet.call(item, block, container);
+			setting.onStartSet.call(item, block, setting);
 			
 			function action() {
 				// start to arrange;
@@ -196,29 +199,30 @@
 						left: block.left
 					});
 
-					layout.length -= 1;
+					runtime.length -= 1;
 				}
 
 				if ($item.attr('data-nested') != null) {
-					self.nestedBlock(item, layout, setting);
+					self.nestedBlock(item, setting);
 				}
 
-				setting.onSetBlock.call(item, block, container);
+				setting.onSetBlock.call(item, block, setting);
 
-				//layout.length == 0 && setting.onComplete.call(klass, container);
+				runtime.length == 0 && setting.onComplete.call(item, block, setting);
 			}
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
 		},
-		nestedBlock: function(item, layout, setting) {
+		nestedBlock: function(item, setting) {
+			var runtime = setting.runtime;
 			var $item = $(item);
-			var gutterX = $item.attr("data-gutterX") || layout.gutterX;
-			var gutterY = $item.attr("data-gutterY") || layout.gutterY;
+			var gutterX = $item.attr("data-gutterX") || setting.gutterX;
+			var gutterY = $item.attr("data-gutterY") || setting.gutterY;
 			var method = $item.attr("data-method") || "fitZone";
 			var nested = $item.attr('data-nested') || ":only-child";
 			var cellH = $item.attr("data-cellH") || setting.cellH;
 			var cellW = $item.attr("data-cellW") || setting.cellW;
-			var block = layout.block[item.id], innerWall;
+			var block = runtime.block[item.id], innerWall;
 			
 			if (block) {
 				innerWall = new freewall($item);
@@ -243,13 +247,13 @@
 				}
 			}
 		},
-		resetLayout: function(layout) {
-			layout.length = 0;
-			layout.block = {};
-			layout.grid = null;
-			layout.cellH = 0;
-			layout.cellW = 0;
-			layout.lastId = 1;
+		resetLayout: function(runtime) {
+			runtime.length = 0;
+			runtime.block = {};
+			runtime.cellH = 0;
+			runtime.cellW = 0;
+			runtime.lastId = 1;
+			runtime.matrix = null;
 		},
 		setDragable: function(item, opt) {
 			var touch = false;
@@ -335,12 +339,12 @@
 			});
 		},
 		setTransition: function(item, trans) {
-			var $item = $(item),
-				style = item.style;
-
+			var style = item.style,
+				$item = $(item);
+				
 			// remove animation;
-			if (!this.transition) {
-				$item.stop && $item.stop();
+			if (!this.transition && $item.stop) {
+				$item.stop();
 			} else if (style.webkitTransition != null) {
 				style.webkitTransition = trans;
 			} else if (style.MozTransition != null) {
@@ -353,17 +357,21 @@
 				style.transition = trans;
 			}
 		},
-		setZoneSize: function(layout, container) {
-			var totalRow = layout.totalRow;
-			var totalCol = layout.totalCol;
-			var gutterY = layout.gutterY;
-			var gutterX = layout.gutterX;
-			var cellH = layout.cellH;
-			var cellW = layout.cellW;
-			var totalWidth = totalCol ? cellW * totalCol + gutterX * (totalCol - 1) : cellW * totalCol;
-			var totalHeight = totalRow ? cellH * totalRow + gutterY * (totalRow - 1) : cellH * totalRow;
-			container.attr({ 'data-total-col': totalCol, 'data-total-row': totalRow });
-			container.attr({ 'data-wall-width': Math.ceil(totalWidth), 'data-wall-height': Math.ceil(totalHeight) });
+		setWallSize: function(runtime, container) {
+			var totalRow = Math.max(1, runtime.totalRow);
+			var totalCol = Math.max(1, runtime.totalCol);
+			var gutterY = runtime.gutterY;
+			var gutterX = runtime.gutterX;
+			var cellH = runtime.cellH;
+			var cellW = runtime.cellW;
+			var totalWidth = cellW * totalCol + gutterX * (totalCol - 1);
+			var totalHeight = cellH * totalRow + gutterY * (totalRow - 1);
+			container.attr({
+				'data-total-col': totalCol,
+				'data-total-row': totalRow,
+				'data-wall-width': Math.ceil(totalWidth),
+				'data-wall-height': Math.ceil(totalHeight)
+			});
 		}
 	};
 
@@ -371,29 +379,35 @@
 
 	var engine = {
 		// Giot just a person name;
-		giot: function(items, layout, setting) {
-			var col = layout.totalCol, row = layout.totalRow;
-			var smallLoop = Math.min(col, row),
-			    bigLoop = Math.max(col, row),
-			    grid = layout.grid || {},
-			    hole = layout.hole,
-			    wall = {},
+		giot: function(items, setting) {
+			var runtime = setting.runtime,
+				row = runtime.totalRow,
+				col = runtime.totalCol,
+				x = 0,
+				y = 0,
 			    maxX = 0,
 			    maxY = 0,
+			    wall = {},
+			    hole = runtime.hole,
+			    block = null,
+			    matrix = runtime.matrix || {},
+			    bigLoop = Math.max(col, row),
 			    freeArea = null,
+			    misBlock = null,
 			    fitWidth = col < row ? 1 : 0,
-			    block, x, y, lastBlock, misBlock;
+			    lastBlock = null,
+			    smallLoop = Math.min(col, row);
 
 			// fill area with top, left, width, height;
-			function fillGrid(id, t, l, w, h) { 
+			function fillMatrix(id, t, l, w, h) { 
 				for (var y = t; y < t + h;) {
 					for (var x = l; x < l + w;) {
-						grid[y + '-' + x] = true;
+						matrix[y + '-' + x] = true;
 						++x > maxX && (maxX = x);
 					}
 					++y > maxY && (maxY = y);
 				}
-				wall[id] && layoutManager.setBlock(wall[id], layout, setting);
+				wall[id] && layoutManager.setBlock(wall[id], setting);
 			}
 			
 			function getZone(t, l, w, h) {
@@ -406,7 +420,7 @@
 				// find limit width and limit height of zone;
 				for (var y = t; y < maxY; ++y) {
 					for (var x = l; x < maxX; ++x) {
-						if (grid[y + '-' + x] == true) {
+						if (matrix[y + '-' + x] == true) {
 							(t < y && y < minY) && (minY = y);
 							(l < x && x < minX) && (minX = x);
 							}
@@ -417,7 +431,7 @@
 				var minLeft = maxX;
 				for (var y = t; y < minY; ++y) {
 					for (var x = l; x < maxX; ++x) {
-						if (grid[y + '-' + x] == true) {
+						if (matrix[y + '-' + x] == true) {
 							(l < x && x < minLeft) && (minLeft = x);
 						}
 					}
@@ -426,7 +440,7 @@
 				var minTop = maxY;
 				for (var y = t; y < maxY; ++y) {
 					for (var x = l; x < minX; ++x) {
-						if (grid[y + '-' + x] == true) {
+						if (matrix[y + '-' + x] == true) {
 							(t < y && y < minTop) && (minTop = y);
 						}
 					}
@@ -447,7 +461,7 @@
 			// set a hole on the wall;
 			if (hole.length) {
 				for (var i = 0; i < hole.length; ++i) {
-					fillGrid(true, hole[i]['top'], hole[i]['left'], hole[i]['width'], hole[i]['height']);
+					fillMatrix(true, hole[i]['top'], hole[i]['left'], hole[i]['width'], hole[i]['height']);
 				}
 			}
 
@@ -459,9 +473,9 @@
 				for (var s = 0; s < smallLoop; ++s) {
 					if (!items.length) break;
 					fitWidth ? (x = s) : (y = s);
-					if (grid[y + '-' + x]) continue;
+					if (matrix[y + '-' + x]) continue;
 					block = null;
-					freeArea = getZone(y, x, layout.maxW, layout.maxH);
+					freeArea = getZone(y, x, runtime.maxW, runtime.maxH);
 					for (var i = 0; i < items.length; ++i) {
 						if (items[i].height > freeArea.height) continue;
 						if (items[i].width > freeArea.width) continue;
@@ -472,13 +486,13 @@
 					// trying resize the other block to fit gap;
 					if (block == null && setting.fixSize == null) {
 						// resize near block to fill gap;
-						if (lastBlock && !fitWidth && layout.minH > freeArea.height) {
+						if (lastBlock && !fitWidth && runtime.minH > freeArea.height) {
 							lastBlock.height += freeArra.height;
-							fillGrid(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
 							continue;
-						} else if (lastBlock && fitWidth && layout.minW > freeArea.width) {
+						} else if (lastBlock && fitWidth && runtime.minW > freeArea.width) {
 							lastBlock.width += freeArea.width;
-							fillGrid(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
 							continue;
 						} else {
 							// get other block fill to gap;
@@ -511,7 +525,7 @@
 						
 						// keep success block for next round;
 						lastBlock = wall[block.id];
-						fillGrid(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+						fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
 					} else {
 						// get expect area;
 						var misBlock = {
@@ -525,8 +539,8 @@
 							var lastX = x - 1;
 							var lastY = y;
 							
-							while (grid[lastY + '-' + lastX]) {
-								grid[lastY + '-' + x] = true;
+							while (matrix[lastY + '-' + lastX]) {
+								matrix[lastY + '-' + x] = true;
 								misBlock.height += 1;
 								lastY += 1;
 							}
@@ -536,21 +550,21 @@
 							var lastY = y - 1;
 							var lastX = x;
 							
-							while (grid[lastY + '-' + lastX]) {
-								grid[y + '-' + lastX] = true;
+							while (matrix[lastY + '-' + lastX]) {
+								matrix[y + '-' + lastX] = true;
 								misBlock.width += 1;
 								lastX += 1;
 							}
 						}
-						setting.onGapFound(layout, layoutManager.setBlock(misBlock, layout, setting));
+						setting.onGapFound(layoutManager.setBlock(misBlock, setting), setting);
 					}
 				}
 
 			}
 
-			layout.totalRow = maxY;
-			layout.totalCol = maxX;
-			layout.grid = grid;
+			runtime.matrix = matrix;
+			runtime.totalRow = maxY;
+			runtime.totalCol = maxX;
 		}
 	};
 
@@ -570,9 +584,9 @@
 		// increase the instance index;
 		layoutManager.index += 1;
 		
-		var layout = {
+		var runtime = {
 			block: {}, // store all items;
-			grid: {},
+			matrix: {},
 			hole: [], // drop zone;
 			busy: 0,
 			
@@ -594,9 +608,14 @@
 			gutterY: 15,
 			
 			totalCol: 1,
-			totalRow: 1
+			totalRow: 1,
 
+			currentMethod: null,
+			currentArguments: []
 		};
+
+
+		setting.runtime = runtime;
 
 		// check browser support transition;
 		var style = document.body.style;
@@ -610,10 +629,10 @@
 
 		// setup resize event;
 		$(win).resize(function() {
-			if (layout.busy) return;
-			layout.busy = 1;
+			if (runtime.busy) return;
+			runtime.busy = 1;
 			setTimeout(function() {
-				layout.busy = 0;
+				runtime.busy = 0;
 				setting.onResize.call(klass, container);
 			}, 122);
 			container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
@@ -622,10 +641,10 @@
 		container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
 
 		function setDragable(item) {
-			var cellH = layout.cellH;
-			var cellW = layout.cellW;
-			var gutterX = layout.gutterX;
-			var gutterY = layout.gutterY;
+			var cellH = runtime.cellH;
+			var cellW = runtime.cellW;
+			var gutterX = runtime.gutterX;
+			var gutterY = runtime.gutterY;
 
 			layoutManager.setDragable(item, {
 				start: function(event) {
@@ -641,8 +660,8 @@
 					var left = Math.round(position.left/ (cellW + gutterX));
 					var width = Math.round($(this).width() / (cellW + gutterX));
 					var height = Math.round($(this).height() / (cellH + gutterY));
-					top = Math.min(Math.max(0, top), layout.totalRow - height);
-					left = Math.min(Math.max(0, left), layout.totalCol - width);
+					top = Math.min(Math.max(0, top), runtime.totalRow - height);
+					left = Math.min(Math.max(0, left), runtime.totalCol - width);
 					klass.setHoles([{top: top, left: left, width: width, height: height}]);
 					klass.refesh();
 				},
@@ -653,8 +672,8 @@
 					var width = Math.round($(this).width() / (cellW + gutterX));
 					var height = Math.round($(this).height() / (cellH + gutterY));
 					$(this).removeClass('fw-dragging');
-					top = Math.min(Math.max(0, top), layout.totalRow - height);
-					left = Math.min(Math.max(0, left), layout.totalCol - width);
+					top = Math.min(Math.max(0, top), runtime.totalRow - height);
+					left = Math.min(Math.max(0, left), runtime.totalCol - width);
 
 					$(this).css({
 						top: top * (cellH + gutterY),
@@ -666,10 +685,6 @@
 			});
 		}
 		
-		// store the fit method;
-		var currentMethod = function() {};
-		var currentArguments = [];
-
 		$.extend(klass, {
 			
 			appendMore: function(items) {
@@ -681,28 +696,28 @@
 			container: container,
 
 			fillHoles: function() {
-				layout.hole = [];
+				runtime.hole = [];
 				return this;
 			},
 
 			filter: function(filter) {
-				layout.filter = filter;
+				runtime.filter = filter;
 				this.refesh();
 				return this;
 			},
 
 			fitHeight: function(height) {
 				height = height ? height : container.height() || $(window).height();
-				currentMethod = arguments.callee;
-				currentArgs = arguments;
-				layoutManager.resetLayout(layout);
+				runtime.currentMethod = arguments.callee;
+				runtime.currentArguments = arguments;
+				layoutManager.resetLayout(runtime);
 
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
 				var cellH = setting.cellH;
 				var cellW = setting.cellW;
-				layout.gutterX = gutterX;
-				layout.gutterY = gutterY;
+				runtime.gutterX = gutterX;
+				runtime.gutterY = gutterY;
 
 				// dynamic type of unit;
 				if (cellH == 'auto') {
@@ -729,59 +744,59 @@
 				// adjust size unit for fit height;
 				if (!$.isNumeric(gutterY)) {
 					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
-					gutterY = layout.gutterY = Math.max(0, gutterY);
+					gutterY = runtime.gutterY = Math.max(0, gutterY);
 				} else {
 					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
 				}
 
 				if (!$.isNumeric(gutterX)) {
-					layout.gutterX = layout.gutterY;
+					runtime.gutterX = runtime.gutterY;
 				}
 				
 				var deltaY = 0;
 				// adjust cell unit for fit height;
 				deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
-				layout.cellH = cellH + deltaY;
-				layout.cellW = cellW + (deltaY * cellW / cellH);
+				runtime.cellH = cellH + deltaY;
+				runtime.cellW = cellW + (deltaY * cellW / cellH);
 				
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
-				if (layout.filter) {
-					items = allBlock.filter(layout.filter).addClass('fw-filter');
+				if (runtime.filter) {
+					items = allBlock.filter(runtime.filter).addClass('fw-filter');
 				} else {
 					items = allBlock.removeClass('fw-filter');
 				}
 
 				var totalCol = 666666;
-				layout.totalCol = totalCol;
-				layout.totalRow = totalRow;
+				runtime.totalCol = totalCol;
+				runtime.totalRow = totalRow;
 
 				items.each(function(index, item) {
-					block = layoutManager.loadBlock(item, ++index, layout, setting);
+					block = layoutManager.loadBlock(item, ++index, setting);
 					block && activeBlock.push(block);
 				});
 				
-				engine[setting.engine](activeBlock, layout, setting);
-				layoutManager.setZoneSize(layout, container);
+				engine[setting.engine](activeBlock, setting);
+				layoutManager.setWallSize(runtime, container);
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
-					layoutManager.showBlock(item, layout, setting, container);
+					layoutManager.showBlock(item, setting);
 				});
 			},
 
 			fitWidth: function(width) {
 				width = width ? width : container.width() || $(window).width();
-				currentMethod = arguments.callee;
-				currentArgs = arguments;
-				layoutManager.resetLayout(layout);
+				runtime.currentMethod = arguments.callee;
+				runtime.currentArguments = arguments;
+				layoutManager.resetLayout(runtime);
 
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
 				var cellH = setting.cellH;
 				var cellW = setting.cellW;
-				layout.gutterX = gutterX;
-				layout.gutterY = gutterY;
+				runtime.gutterX = gutterX;
+				runtime.gutterY = gutterY;
 				
 				// dynamic type of unit;
 				if (cellH == 'auto') {
@@ -808,61 +823,65 @@
 				// adjust unit size for fit width;
 				if (!$.isNumeric(gutterX)) {
 					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
-					gutterX = layout.gutterX = Math.max(0, gutterX);
+					gutterX = runtime.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
 					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
 				}
 
 				if (!$.isNumeric(gutterY)) {
-					layout.gutterY = layout.gutterX;
+					runtime.gutterY = runtime.gutterX;
 				}
 
 				var deltaX = 0;
 				// adjust cell unit for fit width;
 				deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
-				layout.cellW = cellW + deltaX;
-				layout.cellH = cellH + (deltaX * cellH / cellW);
+				runtime.cellW = cellW + deltaX;
+				runtime.cellH = cellH + (deltaX * cellH / cellW);
 
 				var allBlock = container.find(setting.selector).removeAttr('id');
 				var items, block = null, activeBlock = [];
-				if (layout.filter) {
-					items = allBlock.filter(layout.filter).addClass('fw-filter');
+				if (runtime.filter) {
+					items = allBlock.filter(runtime.filter).addClass('fw-filter');
 				} else {
 					items = allBlock.removeClass('fw-filter');
 				}
 				
 				var totalRow = 666666;
-				layout.totalCol = totalCol;
-				layout.totalRow = totalRow;
+				runtime.totalCol = totalCol;
+				runtime.totalRow = totalRow;
 
 				items.each(function(index, item) {
-					block = layoutManager.loadBlock(item, ++index, layout, setting);
+					block = layoutManager.loadBlock(item, ++index, setting);
 					block && activeBlock.push(block);
 				});
-				engine[setting.engine](activeBlock, layout, setting);
-				layoutManager.setZoneSize(layout, container);
-
-				!container.attr('data-height') && container.height(container.attr("data-wall-height"));
+				engine[setting.engine](activeBlock, setting);
+				layoutManager.setWallSize(runtime, container);
+				
+				// ignore incase nested grid;
+				if (!container.attr('data-height')) {
+					container.height(container.attr("data-wall-height"));
+				}
+ 				 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
-					layoutManager.showBlock(item, layout, setting, container);
+					layoutManager.showBlock(item, setting);
 				});
 			},
 
 			fitZone: function(width, height) {
 				height = height ? height : container.height() || $(window).height();
 				width = width ? width : container.width() || $(window).width();
-				currentMethod = arguments.callee;
-				currentArgs = arguments;
-				layoutManager.resetLayout(layout);
+				runtime.currentMethod = arguments.callee;
+				runtime.currentArguments = arguments;
+				layoutManager.resetLayout(runtime);
 				
 				var gutterX = setting.gutterX;
 				var gutterY = setting.gutterY;
 				var cellH = setting.cellH;
 				var cellW = setting.cellW;
-				layout.gutterX = gutterX;
-				layout.gutterY = gutterY;
+				runtime.gutterX = gutterX;
+				runtime.gutterY = gutterY;
 
 				// dynamic type of unit;
 				if (cellH == 'auto') {
@@ -891,7 +910,7 @@
 				// adjust unit size for fit width;
 				if (!$.isNumeric(gutterX)) {
 					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
-					gutterX = layout.gutterX = Math.max(0, gutterX);
+					gutterX = runtime.gutterX = Math.max(0, gutterX);
 				} else {
 					// correct total column with gutter;
 					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
@@ -900,7 +919,7 @@
 				// adjust size unit for fit height;
 				if (!$.isNumeric(gutterY)) {
 					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
-					gutterY = layout.gutterY = Math.max(0, gutterY);
+					gutterY = runtime.gutterY = Math.max(0, gutterY);
 				} else {
 					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
 				}
@@ -908,35 +927,35 @@
 				var deltaX = 0, deltaY = 0;
 				// adjust cell unit for fit width;
 				deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
-				layout.cellW = cellW + deltaX;
+				runtime.cellW = cellW + deltaX;
 
 				// adjust cell unit for fit height;
 				deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
-				layout.cellH = cellH + deltaY;
+				runtime.cellH = cellH + deltaY;
 
 				var allBlock = container.find(setting.selector).attr('id', '');
 				var items, block = null, activeBlock = [];
-				if (layout.filter) {
-					items = allBlock.filter(layout.filter).addClass('fw-filter');
+				if (runtime.filter) {
+					items = allBlock.filter(runtime.filter).addClass('fw-filter');
 				} else {
 					items = allBlock.removeClass('fw-filter');
 				}
 
-				layout.totalCol = totalCol;
-				layout.totalRow = totalRow;
+				runtime.totalCol = totalCol;
+				runtime.totalRow = totalRow;
 
 				items.each(function(index, item) {
-					block = layoutManager.loadBlock(item, ++index, layout, setting);
+					block = layoutManager.loadBlock(item, ++index, setting);
 					block && activeBlock.push(block);
 				});
 
-				engine[setting.engine](activeBlock, layout, setting);
-				layoutManager.setZoneSize(layout, container);
+				engine[setting.engine](activeBlock, setting);
+				layoutManager.setWallSize(runtime, container);
 
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
-					layoutManager.showBlock(item, layout, setting, container);
+					layoutManager.showBlock(item, setting);
 				});
 			},
 			
@@ -961,8 +980,8 @@
 			},
 
 			refesh: function() {
-				var args = arguments.length ? arguments : currentArguments;
-				currentMethod.apply(this, Array.prototype.slice.call(args, 0));
+				var args = arguments.length ? arguments : runtime.currentArguments;
+				runtime.currentMethod.apply(this, Array.prototype.slice.call(args, 0));
 			},
 
 			reset: function(option) {
@@ -980,12 +999,12 @@
 					height: 2
 				}]
 				*/
-				layout.hole = hole;
+				runtime.hole = hole;
 				return this;
 			},
 
 			unFilter: function() {
-				delete layout.filter;
+				delete runtime.filter;
 				this.refesh();
 				return this;
 			}
