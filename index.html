@@ -219,8 +219,8 @@
 var wall = new freewall('.free-wall');
 wall.reset({
   selector: '.brick',
-  cellW: function(container) {
-      var cellWidth = container.width() / 3;
+  cellW: function(width) {
+      var cellWidth = width / 3;
       return cellWidth - 20;
     },
   cellH: 160
