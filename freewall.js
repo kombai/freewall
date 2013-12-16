@@ -12,10 +12,11 @@
 	$.isFunction == null && ($.isFunction = function(src) {
 		return src != null && src instanceof Function;
 	});
-
+	var $win = $(win);
 	
 	var layoutManager = {
-		defaultSetting: {
+		// default setting;
+		defaultConfig: {
 			animate: false,
 			cellW: 100, // function(container) {return 100;}
 			cellH: 100, // function(container) {return 100;}
@@ -36,20 +37,21 @@
 			onResize: function() {},
 			onSetBlock: function() {}
 		},
+		plugin: {},
+		totalGrid: 1,
 		transition: false,
-		index: 1,
-		loadBlock: function(item, index, setting) {
+		loadBlock: function(item, setting) {
 			var runtime = setting.runtime,
 				$item = $(item),
 				block = null,
-				id = runtime.lastId++ + '-' + this.index,
 				gutterX = runtime.gutterX,
 				gutterY = runtime.gutterY,
-				fixSize = eval($item.attr('data-fixSize'));
+				fixSize = eval($item.attr('data-fixSize')),
+				blockId = runtime.lastId++ + '-' + this.totalGrid;
 			
 			//ignore dragging block;
 			if ($item.hasClass('fw-dragging')) return;
-			$item.attr({id: id, 'data-delay': index});
+			$item.attr({id: blockId, 'data-delay': item.index});
 
 			//remove animation for speed render;
 			if (setting.animate && this.transition) {
@@ -98,7 +100,7 @@
 				height == 0 && (row = 0);
 
 				block = {
-					id: id,
+					id: blockId,
 					width: col,
 					height: row,
 					fixSize: fixSize
@@ -144,14 +146,14 @@
 			realBlock.width = 1 * realBlock.width.toFixed(2);
 			realBlock.height = 1 * realBlock.height.toFixed(2);
 
-			block.id && ++runtime.length && (runtime.block[block.id] = realBlock);
+			block.id && ++runtime.length && (runtime.blocks[block.id] = realBlock);
 			// for append feature;
 			return realBlock;
 		},
 		showBlock: function(item, setting) {
 			var runtime = setting.runtime;
 			var method = setting.animate && !this.transition ? 'animate' : 'css';
-			var block = runtime.block[item.id];
+			var block = runtime.blocks[item.id];
 			var $item = $(item);
 			var self = this;
 			var start = $item.attr("data-state") != "move";
@@ -203,7 +205,7 @@
 				}
 
 				if ($item.attr('data-nested') != null) {
-					self.nestedBlock(item, setting);
+					self.nestedGrid(item, setting);
 				}
 
 				setting.onSetBlock.call(item, block, setting);
@@ -213,16 +215,15 @@
 
 			setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
 		},
-		nestedBlock: function(item, setting) {
-			var runtime = setting.runtime;
-			var $item = $(item);
+		nestedGrid: function(item, setting) {
+			var innerWall, $item = $(item), runtime = setting.runtime;
 			var gutterX = $item.attr("data-gutterX") || setting.gutterX;
 			var gutterY = $item.attr("data-gutterY") || setting.gutterY;
 			var method = $item.attr("data-method") || "fitZone";
 			var nested = $item.attr('data-nested') || ":only-child";
 			var cellH = $item.attr("data-cellH") || setting.cellH;
 			var cellW = $item.attr("data-cellW") || setting.cellW;
-			var block = runtime.block[item.id], innerWall;
+			var block = runtime.blocks[item.id];
 			
 			if (block) {
 				innerWall = new freewall($item);
@@ -247,15 +248,97 @@
 				}
 			}
 		},
-		resetLayout: function(runtime) {
+		adjustWidth: function(width, setting) {
+			var gutterX = setting.gutterX;
+			var runtime = setting.runtime;
+			var cellW = setting.cellW;
+
+			if (cellW == 'auto') {
+				cellW = 10;
+			} else if ($.isFunction(cellW)) {
+				cellW = cellW(width);
+			}
+			// correct unit to number;
+			cellW = 1 * cellW;
+
+			if ($.isNumeric(width)) {
+				// adjust cell width via container;
+				cellW <= 1 && (cellW = cellW * width);
+
+				// estimate total columns;
+				var totalCol = Math.max(1, Math.floor(width / cellW));
+
+				// adjust unit size for fit width;
+				if (!$.isNumeric(gutterX)) {
+					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
+					gutterX = Math.max(0, gutterX);
+				} else {
+					// correct total column with gutter;
+					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
+				}
+
+				var deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
+				runtime.cellW = cellW + deltaX;
+				runtime.cellS = runtime.cellW / cellW;
+				runtime.gutterX = gutterX;
+				runtime.totalCol = totalCol;
+			} else {
+				// adjust cell width via cell height;
+				cellW <= 1 && (cellW = runtime.cellH);
+				runtime.cellW = cellW * runtime.cellS;
+				runtime.totalCol = 666666;
+			}
+		},
+		adjustHeight: function(height, setting) {
+			var gutterY = setting.gutterY;
+			var runtime = setting.runtime;
+			var cellH = setting.cellH;
+
+			// dynamic type of unit;
+			if (cellH == 'auto') {
+				cellH = 10;
+			} else if ($.isFunction(cellH)) {
+				cellH = cellH(height);
+			}
+			// correct unit to number;
+			cellH = 1 * cellH;
+
+			if ($.isNumeric(height)) {
+				// adjust cell height via container;
+				cellH <= 1 && (cellH = cellH * height);
+
+				// estimate total rows;
+				var totalRow = Math.max(1, Math.floor(height / cellH));
+
+				// adjust size unit for fit height;
+				if (!$.isNumeric(gutterY)) {
+					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
+					gutterY = Math.max(0, gutterY);
+				} else {
+					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
+				}
+
+				var deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
+				runtime.cellH = cellH + deltaY;
+				runtime.cellS = runtime.cellH / cellH;
+				runtime.gutterY = gutterY;
+				runtime.totalRow = totalRow;
+			} else {
+				// adjust cell height via cell width;
+				cellH <= 1 && (cellH = runtime.cellW);
+				runtime.cellH = cellH * runtime.cellS;
+				runtime.totalRow = 666666;
+			}
+		},
+		resetGrid: function(runtime) {
+			runtime.blocks = {};
 			runtime.length = 0;
-			runtime.block = {};
 			runtime.cellH = 0;
 			runtime.cellW = 0;
 			runtime.lastId = 1;
 			runtime.matrix = null;
 		},
-		setDragable: function(item, opt) {
+		setDragable: function(item, option) {
 			var touch = false;
 			var def = {
 				sX: 0, //start clientX;
@@ -269,7 +352,7 @@
 			};
 			
 			$(item).each(function() {
-				var set = $.extend({}, def, opt);
+				var set = $.extend({}, def, option);
 				var ele = set.proxy || this;
 				var $ele = $(ele);
 				
@@ -388,7 +471,7 @@
 			    maxX = 0,
 			    maxY = 0,
 			    wall = {},
-			    hole = runtime.hole,
+			    holes = runtime.holes,
 			    block = null,
 			    matrix = runtime.matrix || {},
 			    bigLoop = Math.max(col, row),
@@ -459,9 +542,9 @@
 			}
 
 			// set a hole on the wall;
-			if (hole.length) {
-				for (var i = 0; i < hole.length; ++i) {
-					fillMatrix(true, hole[i]['top'], hole[i]['left'], hole[i]['width'], hole[i]['height']);
+			if (holes.length) {
+				for (var i = 0; i < holes.length; ++i) {
+					fillMatrix(true, holes[i]['top'], holes[i]['left'], holes[i]['width'], holes[i]['height']);
 				}
 			}
 
@@ -576,18 +659,16 @@
 		if (container.css('position') == 'static') {
 			container.css('position', 'relative');
 		}
-		var klass = this;
 		var MAX = Number.MAX_VALUE;
-
-		// default setting;
-		var setting = $.extend({}, layoutManager.defaultSetting);
+		var klass = this;
 		// increase the instance index;
-		layoutManager.index += 1;
-		
+		layoutManager.totalGrid += 1;
+
+		var setting = $.extend({}, layoutManager.defaultConfig);
 		var runtime = {
-			block: {}, // store all items;
+			blocks: {}, // store all items;
 			matrix: {},
-			hole: [], // drop zone;
+			holes: [], // drop zone;
 			busy: 0,
 			
 			maxW: 0, // max width of block;
@@ -597,67 +678,55 @@
 
 			cellW: 0,
 			cellH: 0, // unit adjust;
+			cellS: 1, // unit scale;
 			
 			filter: '', // filter selector;
 			
 			lastId: 0,
 			length: 0,
 
-
 			gutterX: 15, 
 			gutterY: 15,
-			
+
 			totalCol: 1,
 			totalRow: 1,
 
 			currentMethod: null,
 			currentArguments: []
 		};
-
-
 		setting.runtime = runtime;
-
+		
 		// check browser support transition;
-		var style = document.body.style;
-		(style.webkitTransition != null ||
-		style.MozTransition != null ||
-		style.msTransition != null ||
-		style.OTransition != null ||
-		style.transition != null) &&
-		(layoutManager.transition = true);
+		var bodyStyle = document.body.style;
+		if (!layoutManager.transition) {
+			(bodyStyle.webkitTransition != null ||
+			bodyStyle.MozTransition != null ||
+			bodyStyle.msTransition != null ||
+			bodyStyle.OTransition != null ||
+			bodyStyle.transition != null) &&
+			(layoutManager.transition = true);
+		}
 		
 
-		// setup resize event;
-		$(win).resize(function() {
-			if (runtime.busy) return;
-			runtime.busy = 1;
-			setTimeout(function() {
-				runtime.busy = 0;
-				setting.onResize.call(klass, container);
-			}, 122);
-			container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
-		});
-
-		container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
-
 		function setDragable(item) {
-			var cellH = runtime.cellH;
-			var cellW = runtime.cellW;
+			
 			var gutterX = runtime.gutterX;
 			var gutterY = runtime.gutterY;
+			var cellH = runtime.cellH;
+			var cellW = runtime.cellW;
 
 			layoutManager.setDragable(item, {
 				start: function(event) {
 					if (setting.animate && layoutManager.transition) {
 						layoutManager.setTransition(this, "");
 					}
-					this.style.zIndex = 999;
+					this.style.zIndex = 9999;
 					$(this).addClass('fw-dragging');
 				},
 				move: function(evt, tracker) {
 					var position = $(this).position();
 					var top = Math.round(position.top / (cellH + gutterY));
-					var left = Math.round(position.left/ (cellW + gutterX));
+					var left = Math.round(position.left / (cellW + gutterX));
 					var width = Math.round($(this).width() / (cellW + gutterX));
 					var height = Math.round($(this).height() / (cellH + gutterY));
 					top = Math.min(Math.max(0, top), runtime.totalRow - height);
@@ -668,7 +737,7 @@
 				end: function() {
 					var position = $(this).position();
 					var top = Math.round(position.top / (cellH + gutterY));
-					var left = Math.round(position.left/ (cellW + gutterX));
+					var left = Math.round(position.left / (cellW + gutterX));
 					var width = Math.round($(this).width() / (cellW + gutterX));
 					var height = Math.round($(this).height() / (cellH + gutterY));
 					$(this).removeClass('fw-dragging');
@@ -688,7 +757,7 @@
 		$.extend(klass, {
 			
 			appendMore: function(items) {
-				this.container.append(items);
+				container.append(items);
 				this.refesh();
 				return this;
 			},
@@ -707,73 +776,30 @@
 			},
 
 			fitHeight: function(height) {
+				var allBlock = container.find(setting.selector).removeAttr('id'),
+					items,
+					block = null,
+					activeBlock = [];
+
 				height = height ? height : container.height() || $(window).height();
+				
 				runtime.currentMethod = arguments.callee;
 				runtime.currentArguments = arguments;
-				layoutManager.resetLayout(runtime);
-
-				var gutterX = setting.gutterX;
-				var gutterY = setting.gutterY;
-				var cellH = setting.cellH;
-				var cellW = setting.cellW;
-				runtime.gutterX = gutterX;
-				runtime.gutterY = gutterY;
-
-				// dynamic type of unit;
-				if (cellH == 'auto') {
-					cellH = 20;
-				} else if ($.isFunction(cellH)) {
-					cellH = cellH.call(this, container);
-				}
-
-				if (cellW == 'auto') {
-					cellW = 20;
-				} else if ($.isFunction(cellW)) {
-					cellW = cellW.call(this, container);
-				}
-
-				// correct unit to number;
-				cellW = 1 * cellW;
-				cellH = 1 * cellH;
-				cellH <= 1 && (cellH *= height);
-				cellW <= 1 && (cellW = cellH);
-
-				// estimate total rows;
-				var totalRow = Math.max(1, Math.floor(height / cellH));
-
-				// adjust size unit for fit height;
-				if (!$.isNumeric(gutterY)) {
-					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
-					gutterY = runtime.gutterY = Math.max(0, gutterY);
-				} else {
-					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
-				}
-
-				if (!$.isNumeric(gutterX)) {
-					runtime.gutterX = runtime.gutterY;
-				}
 				
-				var deltaY = 0;
-				// adjust cell unit for fit height;
-				deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
-				runtime.cellH = cellH + deltaY;
-				runtime.cellW = cellW + (deltaY * cellW / cellH);
+				layoutManager.resetGrid(runtime);
+				layoutManager.adjustHeight(height, setting);
+				layoutManager.adjustWidth('auto', setting);
 				
-				var allBlock = container.find(setting.selector).attr('id', '');
-				var items, block = null, activeBlock = [];
 				if (runtime.filter) {
 					items = allBlock.filter(runtime.filter).addClass('fw-filter');
 				} else {
 					items = allBlock.removeClass('fw-filter');
 				}
 
-				var totalCol = 666666;
-				runtime.totalCol = totalCol;
-				runtime.totalRow = totalRow;
-
 				items.each(function(index, item) {
-					block = layoutManager.loadBlock(item, ++index, setting);
-					block && activeBlock.push(block);
+					item.index = ++index;
+					block = layoutManager.loadBlock(item, setting);
+					block != null && activeBlock.push(block);
 				});
 				
 				engine[setting.engine](activeBlock, setting);
@@ -786,75 +812,32 @@
 			},
 
 			fitWidth: function(width) {
+				var allBlock = container.find(setting.selector).removeAttr('id'),
+					items,
+					block = null,
+					activeBlock = [];
+
 				width = width ? width : container.width() || $(window).width();
+
 				runtime.currentMethod = arguments.callee;
 				runtime.currentArguments = arguments;
-				layoutManager.resetLayout(runtime);
-
-				var gutterX = setting.gutterX;
-				var gutterY = setting.gutterY;
-				var cellH = setting.cellH;
-				var cellW = setting.cellW;
-				runtime.gutterX = gutterX;
-				runtime.gutterY = gutterY;
 				
-				// dynamic type of unit;
-				if (cellH == 'auto') {
-					cellH = 2;
-				} else if ($.isFunction(cellH)) {
-					cellH = cellH.call(this, container);
-				}
+				layoutManager.resetGrid(runtime);
+				layoutManager.adjustWidth(width, setting);
+				layoutManager.adjustHeight('auto', setting);
 
-				if (cellW == 'auto') {
-					cellW = 2;
-				} else if ($.isFunction(cellW)) {
-					cellW = cellW.call(this, container);
-				}
-
-				// correct unit to number;
-				cellW = 1 * cellW;
-				cellH = 1 * cellH;
-				cellW <= 1 && (cellW *= width);
-				cellH <= 1 && (cellH = cellW);
-
-				// estimate total columns;
-				var totalCol = Math.max(1, Math.floor(width / cellW));
-
-				// adjust unit size for fit width;
-				if (!$.isNumeric(gutterX)) {
-					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
-					gutterX = runtime.gutterX = Math.max(0, gutterX);
-				} else {
-					// correct total column with gutter;
-					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
-				}
-
-				if (!$.isNumeric(gutterY)) {
-					runtime.gutterY = runtime.gutterX;
-				}
-
-				var deltaX = 0;
-				// adjust cell unit for fit width;
-				deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
-				runtime.cellW = cellW + deltaX;
-				runtime.cellH = cellH + (deltaX * cellH / cellW);
-
-				var allBlock = container.find(setting.selector).removeAttr('id');
-				var items, block = null, activeBlock = [];
 				if (runtime.filter) {
 					items = allBlock.filter(runtime.filter).addClass('fw-filter');
 				} else {
 					items = allBlock.removeClass('fw-filter');
 				}
 				
-				var totalRow = 666666;
-				runtime.totalCol = totalCol;
-				runtime.totalRow = totalRow;
-
 				items.each(function(index, item) {
-					block = layoutManager.loadBlock(item, ++index, setting);
-					block && activeBlock.push(block);
+					item.index = ++index;
+					block = layoutManager.loadBlock(item, setting);
+					block != null && activeBlock.push(block);
 				});
+
 				engine[setting.engine](activeBlock, setting);
 				layoutManager.setWallSize(runtime, container);
 				
@@ -870,88 +853,35 @@
 			},
 
 			fitZone: function(width, height) {
+				var allBlock = container.find(setting.selector).removeAttr('id'),
+					items,
+					block = null,
+					activeBlock = [];
+
 				height = height ? height : container.height() || $(window).height();
 				width = width ? width : container.width() || $(window).width();
+				
 				runtime.currentMethod = arguments.callee;
 				runtime.currentArguments = arguments;
-				layoutManager.resetLayout(runtime);
 				
-				var gutterX = setting.gutterX;
-				var gutterY = setting.gutterY;
-				var cellH = setting.cellH;
-				var cellW = setting.cellW;
-				runtime.gutterX = gutterX;
-				runtime.gutterY = gutterY;
+				layoutManager.resetGrid(runtime);
+				layoutManager.adjustWidth(width, setting);
+				layoutManager.adjustHeight(height, setting);
 
-				// dynamic type of unit;
-				if (cellH == 'auto') {
-					cellH = 20;
-				} else if ($.isFunction(cellH)) {
-					cellH = cellH.call(this, container);
-				}
-
-				if (cellW == 'auto') {
-					cellW = 20;
-				} else if ($.isFunction(cellW)) {
-					cellW = cellW.call(this, container);
-				}
-
-				// correct unit to number;
-				cellW = 1 * cellW;
-				cellH = 1 * cellH;
-				cellW <= 1 && (cellW *= width);
-				cellH <= 1 && (cellH *= height);
-
-				// estimate total columns;
-				var totalCol = Math.max(1, Math.floor(width / cellW));
-				// estimate total rows;
-				var totalRow = Math.max(1, Math.floor(height / cellH));
-				
-				// adjust unit size for fit width;
-				if (!$.isNumeric(gutterX)) {
-					gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
-					gutterX = runtime.gutterX = Math.max(0, gutterX);
-				} else {
-					// correct total column with gutter;
-					totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
-				}
-
-				// adjust size unit for fit height;
-				if (!$.isNumeric(gutterY)) {
-					gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
-					gutterY = runtime.gutterY = Math.max(0, gutterY);
-				} else {
-					totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
-				}
-
-				var deltaX = 0, deltaY = 0;
-				// adjust cell unit for fit width;
-				deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
-				runtime.cellW = cellW + deltaX;
-
-				// adjust cell unit for fit height;
-				deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
-				runtime.cellH = cellH + deltaY;
-
-				var allBlock = container.find(setting.selector).attr('id', '');
-				var items, block = null, activeBlock = [];
 				if (runtime.filter) {
 					items = allBlock.filter(runtime.filter).addClass('fw-filter');
 				} else {
 					items = allBlock.removeClass('fw-filter');
 				}
 
-				runtime.totalCol = totalCol;
-				runtime.totalRow = totalRow;
-
 				items.each(function(index, item) {
-					block = layoutManager.loadBlock(item, ++index, setting);
-					block && activeBlock.push(block);
+					item.index = ++index;
+					block = layoutManager.loadBlock(item, setting);
+					block != null && activeBlock.push(block);
 				});
 
 				engine[setting.engine](activeBlock, setting);
 				layoutManager.setWallSize(runtime, container);
-
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
@@ -974,7 +904,7 @@
 			},
 
 			prepend: function(items) {
-				this.container.prepend(items);
+				container.prepend(items);
 				this.refesh();
 				return this;
 			},
@@ -989,9 +919,9 @@
 				return this;
 			},
 
-			setHoles: function(hole) {
+			setHoles: function(holes) {
 				/*
-				the hole example: 
+				the holes example: 
 				[{
 					top: 2,
 					left: 2,
@@ -999,7 +929,7 @@
 					height: 2
 				}]
 				*/
-				runtime.hole = hole;
+				runtime.holes = holes;
 				return this;
 			},
 
@@ -1010,20 +940,59 @@
 			}
 			
 		});
+		
+		container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
+		// run plugin;
+		for (var i in layoutManager.plugin) {
+			if (layoutManager.plugin.hasOwnProperty(i)) {
+				layoutManager.plugin[i].call(klass, setting, container);
+			}
+		}
+
+		// setup resize event;
+		$(win).resize(function() {
+			if (runtime.busy) return;
+			runtime.busy = 1;
+			setTimeout(function() {
+				runtime.busy = 0;
+				setting.onResize.call(klass, container);
+			}, 122);
+			container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
+		});
 	};
 
-	freewall.createPlugin = function(pluginData) {
-		/*
-		pluginData = {
-			setting: {},
-			plugin: {}
-		};
-		*/
 
+	/*
+		allow implement more arrange algorithm or create new plugin;
+		example:
+
+			freewall.createPlugin({
+				engine: {
+					slice: function(items, setting) {
+						// slice engine;
+					}
+				}
+			});
+
+			freewall.createPlugin({
+				setting: {
+					forNewPlugin: 2
+				},
+				plugin: {
+					newPlugin: function(setting, container) {
+						console.log(this);
+						console.log(setting.forNewPlugin);
+					}
+				}
+			});
+	*/
+	freewall.createPlugin = function(pluginData) {
+		// create new engine;
+		$.extend(engine, pluginData.engine);
 		// register new plugin;
-		$.extend(layoutManager.plugin, {plugin: {}}, pluginData.plugin);
-		// extend defaultSetting;
-		$.extend(layoutManager.defaultSetting, {setting: {}}, pluginData.setting);
+		$.extend(layoutManager.plugin, pluginData.plugin);
+		// extend default setting;
+		$.extend(layoutManager.defaultConfig, pluginData.setting);
 	};
  
 })(window.Zepto || window.jQuery, document, window);
