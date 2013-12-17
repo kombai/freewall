@@ -2,7 +2,7 @@
 // created by Minh Nguyen;
 // version 1.03;
 
-(function($, doc, win) {
+(function($) {
 	
 	// for zeptojs;
 	$.isNumeric == null && ($.isNumeric = function(src) {
@@ -12,7 +12,9 @@
 	$.isFunction == null && ($.isFunction = function(src) {
 		return src != null && src instanceof Function;
 	});
-	var $win = $(win);
+
+	var	$W = $(window);
+	var $D = $(document);
 	
 	var layoutManager = {
 		// default setting;
@@ -286,6 +288,7 @@
 				// adjust cell width via cell height;
 				cellW <= 1 && (cellW = runtime.cellH);
 				runtime.cellW = cellW * runtime.cellS;
+				runtime.gutterX = gutterX;
 				runtime.totalCol = 666666;
 			}
 		},
@@ -327,6 +330,7 @@
 				// adjust cell height via cell width;
 				cellH <= 1 && (cellH = runtime.cellW);
 				runtime.cellH = cellH * runtime.cellS;
+				runtime.gutterY = gutterY;
 				runtime.totalRow = 666666;
 			}
 		},
@@ -377,8 +381,8 @@
 						set.top = parseInt($ele.css("top")) || 0;
 						set.left = parseInt($ele.css("left")) || 0;
 						
-						$(doc).bind("mouseup touchend", mouseUp);
-						$(doc).bind("mousemove touchmove", mouseMove); 
+						$D.bind("mouseup touchend", mouseUp);
+						$D.bind("mousemove touchmove", mouseMove); 
 					}
 
 					return false;
@@ -403,8 +407,8 @@
 		
 					set.end.call(ele, evt);
 
-					$(doc).unbind("mouseup touchend", mouseUp);
-				 	$(doc).unbind("mousemove touchmove", mouseMove);
+					$D.unbind("mouseup touchend", mouseUp);
+				 	$D.unbind("mousemove touchmove", mouseMove);
 				};
 
 				// ignore drag drop on text field;
@@ -415,9 +419,9 @@
 					});
 				});
 				
-				$(doc).unbind("mouseup touchend", mouseUp);
-				$(doc).unbind("mousemove touchmove", mouseMove);
-				$(this).unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
+				$D.unbind("mouseup touchend", mouseUp);
+				$D.unbind("mousemove touchmove", mouseMove);
+				$ele.unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
 
 			});
 		},
@@ -653,7 +657,7 @@
 
 
 
-	win.freewall = function(selector) {
+	window.freewall = function(selector) {
 		
 		var container = $(selector);
 		if (container.css('position') == 'static') {
@@ -754,6 +758,31 @@
 			});
 		}
 		
+		var UIControl = {
+            events: {},
+            index: 0,
+            addEvent: function(name, obj, func) {
+                var self = this;
+                ++ self.index;
+                if (!self.events[name]) {
+                    self.events[name] = [];
+                }
+                obj['e' + self.index] = true;
+                self.events[name]['e' + self.index] = { obj: obj, func: func };
+            },
+            fireEvent: function(name, data) {
+                var self = this, subevent;
+                for (var i in self.events[name]) {
+                    subevent = self.events[name][i];
+                    subevent.func.call(subevent.obj, data);
+                }
+            },
+            removeEvent: function(name) {
+                var self = this;
+                self.events[name] = [];
+            }
+        };
+        
 		$.extend(klass, {
 			
 			appendMore: function(items) {
@@ -781,7 +810,7 @@
 					block = null,
 					activeBlock = [];
 
-				height = height ? height : container.height() || $(window).height();
+				height = height ? height : container.height() || $W.height();
 				
 				runtime.currentMethod = arguments.callee;
 				runtime.currentArguments = arguments;
@@ -817,7 +846,7 @@
 					block = null,
 					activeBlock = [];
 
-				width = width ? width : container.width() || $(window).width();
+				width = width ? width : container.width() || $W.width();
 
 				runtime.currentMethod = arguments.callee;
 				runtime.currentArguments = arguments;
@@ -858,8 +887,8 @@
 					block = null,
 					activeBlock = [];
 
-				height = height ? height : container.height() || $(window).height();
-				width = width ? width : container.width() || $(window).width();
+				height = height ? height : container.height() || $W.height();
+				width = width ? width : container.width() || $W.width();
 				
 				runtime.currentMethod = arguments.callee;
 				runtime.currentArguments = arguments;
@@ -941,7 +970,7 @@
 			
 		});
 		
-		container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
+		container.attr('data-min-width', Math.floor($W.width() / 80) * 80);
 		// run plugin;
 		for (var i in layoutManager.plugin) {
 			if (layoutManager.plugin.hasOwnProperty(i)) {
@@ -950,14 +979,14 @@
 		}
 
 		// setup resize event;
-		$(win).resize(function() {
+		$W.resize(function() {
 			if (runtime.busy) return;
 			runtime.busy = 1;
 			setTimeout(function() {
 				runtime.busy = 0;
 				setting.onResize.call(klass, container);
 			}, 122);
-			container.attr('data-min-width', Math.floor($(win).width() / 80) * 80);
+			container.attr('data-min-width', Math.floor($W.width() / 80) * 80);
 		});
 	};
 
@@ -995,4 +1024,4 @@
 		$.extend(layoutManager.defaultConfig, pluginData.setting);
 	};
  
-})(window.Zepto || window.jQuery, document, window);
+})(window.Zepto || window.jQuery);
