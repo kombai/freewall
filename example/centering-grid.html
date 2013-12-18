@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Centering grid content</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Centering grid content" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, flex layouts"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
+		<script type="text/javascript" src="../plugin/centering.js"></script>
+		<style type="text/css">
+			.free-wall {
+				margin: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class='header'>
+			<div class="clearfix">
+				<div class="float-left">
+						<h1><a href="http://vnjs.net/www/project/freewall/">Free Wall</a></h1>
+						<div class='target'>Creating dynamic grid layouts.</div>
+				</div>
+			</div>
+		</div>
+		<div id="freewall" class="free-wall">
+			<div class="brick size32"> 
+				<div class='cover'>
+					<h2>Centering grid content</h2>
+				</div>
+			</div>	
+			<div class="brick size12 add-more">
+				<div class='cover'>
+					<h2>Add more block</h2>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			
+			var colour = [
+				"rgb(142, 68, 173)",
+				"rgb(243, 156, 18)",
+				"rgb(211, 84, 0)",
+				"rgb(0, 106, 63)",
+				"rgb(41, 128, 185)",
+				"rgb(192, 57, 43)",
+				"rgb(135, 0, 0)",
+				"rgb(39, 174, 96)"
+			];
+
+			$(".brick").each(function() {
+				this.style.backgroundColor =  colour[colour.length * Math.random() << 0];
+			});
+
+			$(function() {
+				var wall = new freewall("#freewall");
+				wall.reset({
+					selector: '.brick',
+					animate: true,
+					cellW: 160,
+					cellH: 160,
+					delay: 50,
+					onResize: function() {
+						wall.fitWidth();
+					}
+				});
+				wall.fitWidth();
+				
+				var temp = '<div class="brick {size}" style="background-color: {color}"><div class="cover"></div></div>';
+				var size = "size23 size22 size21 size13 size12 size11".split(" ");
+				$(".add-more").click(function() {
+					var	html = temp.replace('{size}', size[size.length * Math.random() << 0])
+									.replace('{color}', colour[colour.length * Math.random() << 0]);
+					wall.prepend(html);
+				});
+			});
+		</script>
+	</body>
+</html>

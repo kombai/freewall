@@ -1,5 +1,5 @@
 
-// created by minHoB Nguyen;
+// created by Minh Nguyen;
 // version 1.03;
 
 (function($) {
@@ -809,12 +809,12 @@
 				return this;
 			},
 
-			fireEvent: function(name, object, klass, setting) {
+			fireEvent: function(name, object, setting) {
             	var events = runtime.events;
             	name = name.toLowerCase();
                 if (events[name] && events[name].length) {
                 	for (var i = 0; i < events[name].length; ++i) {
-	                    events[name][i].call(object, klass, setting);
+	                    events[name][i].call(object, setting);
 	                }
                 }
                 return this;
@@ -845,25 +845,25 @@
 					item.index = ++index;
 					if (block = layoutManager.loadBlock(item, setting)) {
 						activeBlock.push(block);
-						klass.fireEvent('onBlockLoad', item, klass, setting);
+						klass.fireEvent('onBlockLoad', item, setting);
 					}
 				});
 				
-				klass.fireEvent('onGridLoad', activeBlock, klass, setting);
+				klass.fireEvent('onGridLoad', activeBlock, setting);
 
 				engine[setting.engine](activeBlock, setting);
 				
 				layoutManager.setWallSize(runtime, container);
 
-				klass.fireEvent('onGridArrange', activeBlock, klass, setting);
+				klass.fireEvent('onGridArrange', container, setting);
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
-					klass.fireEvent('onBlockShow', item, klass, setting);
+					klass.fireEvent('onBlockShow', item, setting);
 				});
 
-				klass.fireEvent('onGridShow', activeBlock, klass, setting);
+				klass.fireEvent('onGridShow', container, setting);
 			},
 
 			fitWidth: function(width) {
@@ -891,19 +891,19 @@
 					item.index = ++index;
 					if (block = layoutManager.loadBlock(item, setting)) {
 						activeBlock.push(block);
-						klass.fireEvent('onBlockLoad', item, klass, setting);
+						klass.fireEvent('onBlockLoad', item, setting);
 					}
 				});
 				
-				klass.fireEvent('onGridLoad', activeBlock, klass, setting);
+				klass.fireEvent('onGridLoad', activeBlock, setting);
 				
 				engine[setting.engine](activeBlock, setting);
 
 				layoutManager.setWallSize(runtime, container);
 				
-				klass.fireEvent('onGridArrange', activeBlock, klass, setting);
+				klass.fireEvent('onGridArrange', container, setting);
 
-				// ignore incase nested grid;
+				// don't set height when nesting block;
 				if (!container.attr('data-height')) {
 					container.height(container.attr("data-wall-height"));
 				}
@@ -911,10 +911,10 @@
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
-					klass.fireEvent('onBlockShow', item, klass, setting);
+					klass.fireEvent('onBlockShow', item, setting);
 				});
 
-				klass.fireEvent('onGridShow', activeBlock, klass, setting);
+				klass.fireEvent('onGridShow', container, setting);
 			},
 
 			fitZone: function(width, height) {
@@ -943,49 +943,51 @@
 					item.index = ++index;
 					if (block = layoutManager.loadBlock(item, setting)) {
 						activeBlock.push(block);
-						klass.fireEvent('onBlockLoad', item, klass, setting);
+						klass.fireEvent('onBlockLoad', item, setting);
 					}
 				});
 
-				klass.fireEvent('onGridLoad', activeBlock, klass, setting);
+				klass.fireEvent('onGridLoad', activeBlock, setting);
 
 				engine[setting.engine](activeBlock, setting);
 				
 				layoutManager.setWallSize(runtime, container);
 				
-				klass.fireEvent('onGridArrange', activeBlock, klass, setting);
+				klass.fireEvent('onGridArrange', container, setting);
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
-					klass.fireEvent('onBlockShow', item, klass, setting);
+					klass.fireEvent('onBlockShow', item, setting);
 				});
 
-				klass.fireEvent('onGridShow', activeBlock, klass, setting);
+				klass.fireEvent('onGridShow', container, setting);
 			},
-			/*
-				set block with special position, the top and left are multiple of unit width/height;
-				example:
 
-					wall.fixSize({
-						top: 0,
-						left: 0,
-						block: $('.free')
-					});
+			/*
+			set block with special position, the top and left are multiple of unit width/height;
+			example:
+
+				wall.fixSize({
+					top: 0,
+					left: 0,
+					block: $('.free')
+				});
 			*/
 			fixPos: function(option) {
 				$(option.block).attr({'data-fixPos': option.top + "-" + option.left});
 				return this;
 			},
-			/*
-				set block with special size, the width and height are multiple of unit width/height;
-				example:
 
-					wall.fixSize({
-						height: 5,
-						width: 2,
-						block: $('.free')
-					});
+			/*
+			set block with special size, the width and height are multiple of unit width/height;
+			example:
+
+				wall.fixSize({
+					height: 5,
+					width: 2,
+					block: $('.free')
+				});
 			*/
 			fixSize: function(option) {
 				option.width != null && $(option.block).attr({'data-width': option.width});
@@ -1006,36 +1008,37 @@
 			},
 
 			/*
-				custom setting layout;
-				example:
+			custom layout setting;
+			example:
 
-					wall.reset({
-						selector: '.brick',
-						animate: true,
-						cellW: 160,
-						cellH: 160,
-						delay: 50,
-						onResize: function() {
-							wall.fitWidth();
-						}
-					});
+				wall.reset({
+					selector: '.brick',
+					animate: true,
+					cellW: 160,
+					cellH: 160,
+					delay: 50,
+					onResize: function() {
+						wall.fitWidth();
+					}
+				});
 			*/
 			reset: function(option) {
 				$.extend(setting, option);
 				return this;
 			},
+
 			/*
-				create blank are on layout;
-				example:
-					
-					wall.setHoles([
-						{
-							top: 2,
-							left: 2,
-							width: 2,
-							height: 2
-						}
-					]);
+			create blank are on layout;
+			example:
+				
+				wall.setHoles([
+					{
+						top: 2,
+						left: 2,
+						width: 2,
+						height: 2
+					}
+				]);
 			*/
 			setHoles: function(holes) {
 				runtime.holes = holes;
@@ -1072,36 +1075,34 @@
 
 
 	/*
-		allow implement more arrange algorithm or create new plugin;
-		example:
-
-			freewall.createPlugin({
-				engine: {
-					slice: function(items, setting) {
-						// slice engine;
-					}
-				}
-			});
-
-			freewall.createPlugin({
-				setting: {
-					forNewPlugin: 2
-				},
-				plugin: {
-					newPlugin: function(setting, container) {
-						console.log(this);
-						console.log(setting.forNewPlugin);
-					}
-				}
-			});
+	support create new plugin;
+	example:
+		
+		freewall.createPlugin({
+			newPlugin: function(setting, container) {
+				console.log(this);
+				console.log(setting);
+			}
+		});
 	*/
 	freewall.createPlugin = function(pluginData) {
-		// create new engine;
-		$.extend(engine, pluginData.engine);
 		// register new plugin;
-		$.extend(layoutManager.plugin, pluginData.plugin);
-		// extend default setting;
-		$.extend(layoutManager.defaultConfig, pluginData.setting);
+		$.extend(layoutManager.plugin, pluginData);
+	};
+
+	/*
+	support implement more arrange algorithm;
+	example:
+
+		freewall.createEngine({
+			slice: function(items, setting) {
+				// slice engine;
+			}
+		});
+	*/
+	freewall.createEngine = function(engineData) {
+		// create new engine;
+		$.extend(engine, engineData);
 	};
  
 })(window.Zepto || window.jQuery);
