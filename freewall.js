@@ -1,5 +1,5 @@
 
-// created by Minh Nguyen;
+// created by minHoB Nguyen;
 // version 1.03;
 
 (function($) {
@@ -91,12 +91,12 @@
 			} else {
 				// get smallest width and smallest height of block;
 				// using for image runtime;
-				row && row < runtime.minH && (runtime.minH = row);
-				col && col < runtime.minW && (runtime.minW = col);
+				row && row < runtime.minHoB && (runtime.minHoB = row);
+				col && col < runtime.minWoB && (runtime.minWoB = col);
 
 				// get biggest width and biggest height of block;
-				row > runtime.maxH && (runtime.maxH = row);
-				col > runtime.maxW && (runtime.maxW = col);
+				row > runtime.maxHoB && (runtime.maxHoB = row);
+				col > runtime.maxWoB && (runtime.maxWoB = col);
 
 				width == 0 && (col = 0);
 				height == 0 && (row = 0);
@@ -340,7 +340,7 @@
 			runtime.cellH = 0;
 			runtime.cellW = 0;
 			runtime.lastId = 1;
-			runtime.matrix = null;
+			runtime.matrix = {};
 		},
 		setDragable: function(item, option) {
 			var touch = false;
@@ -444,6 +444,53 @@
 				style.transition = trans;
 			}
 		},
+		getFreeArea: function(t, l, runtime) {
+			var maxY = Math.min(t + runtime.maxHoB, runtime.totalRow);
+			var maxX = Math.min(l + runtime.maxWoB, runtime.totalCol);
+			var minX = maxX;
+			var minY = maxY;
+			var matrix = runtime.matrix;
+
+			// find limit width and limit height of zone;
+			for (var y = t; y < maxY; ++y) {
+				for (var x = l; x < maxX; ++x) {
+					if (matrix[y + '-' + x] == true) {
+						(t < y && y < minY) && (minY = y);
+						(l < x && x < minX) && (minX = x);
+						}
+				}
+			}
+
+			// find limit zone by horizon;
+			var minLeft = maxX;
+			for (var y = t; y < minY; ++y) {
+				for (var x = l; x < maxX; ++x) {
+					if (matrix[y + '-' + x] == true) {
+						(l < x && x < minLeft) && (minLeft = x);
+					}
+				}
+			}
+			// find limit zone by vertical;
+			var minTop = maxY;
+			for (var y = t; y < maxY; ++y) {
+				for (var x = l; x < minX; ++x) {
+					if (matrix[y + '-' + x] == true) {
+						(t < y && y < minTop) && (minTop = y);
+					}
+				}
+			}
+
+			var compare = minLeft * minY - minX * minTop;
+			
+			var freeArea = {
+				top: t,
+				left: l,
+				width: compare ? minLeft - l : minX - l,
+				height: compare ? minY - t : minTop - t
+			};
+
+			return freeArea;
+		},
 		setWallSize: function(runtime, container) {
 			var totalRow = Math.max(1, runtime.totalRow);
 			var totalCol = Math.max(1, runtime.totalCol);
@@ -477,7 +524,7 @@
 			    wall = {},
 			    holes = runtime.holes,
 			    block = null,
-			    matrix = runtime.matrix || {},
+			    matrix = runtime.matrix,
 			    bigLoop = Math.max(col, row),
 			    freeArea = null,
 			    misBlock = null,
@@ -486,7 +533,7 @@
 			    smallLoop = Math.min(col, row);
 
 			// fill area with top, left, width, height;
-			function fillMatrix(id, t, l, w, h) { 
+			function fillMatrix(t, l, w, h) { 
 				for (var y = t; y < t + h;) {
 					for (var x = l; x < l + w;) {
 						matrix[y + '-' + x] = true;
@@ -494,61 +541,12 @@
 					}
 					++y > maxY && (maxY = y);
 				}
-				wall[id] && layoutManager.setBlock(wall[id], setting);
 			}
 			
-			function getZone(t, l, w, h) {
-				
-				var maxY = Math.min(t + h, row);
-				var maxX = Math.min(l + w, col);
-				var minX = maxX;
-				var minY = maxY;
-
-				// find limit width and limit height of zone;
-				for (var y = t; y < maxY; ++y) {
-					for (var x = l; x < maxX; ++x) {
-						if (matrix[y + '-' + x] == true) {
-							(t < y && y < minY) && (minY = y);
-							(l < x && x < minX) && (minX = x);
-							}
-					}
-				}
-
-				// find limit zone by horizon;
-				var minLeft = maxX;
-				for (var y = t; y < minY; ++y) {
-					for (var x = l; x < maxX; ++x) {
-						if (matrix[y + '-' + x] == true) {
-							(l < x && x < minLeft) && (minLeft = x);
-						}
-					}
-				}
-				// find limit zone by vertical;
-				var minTop = maxY;
-				for (var y = t; y < maxY; ++y) {
-					for (var x = l; x < minX; ++x) {
-						if (matrix[y + '-' + x] == true) {
-							(t < y && y < minTop) && (minTop = y);
-						}
-					}
-				}
-
-				var compare = minLeft * minY - minX * minTop;
-				
-				var free = {
-					top: t,
-					left: l,
-					width: compare ? minLeft - l : minX - l,
-					height: compare ? minY - t : minTop - t
-				};
-
-				return free;
-			}
-
 			// set a hole on the wall;
 			if (holes.length) {
 				for (var i = 0; i < holes.length; ++i) {
-					fillMatrix(true, holes[i]['top'], holes[i]['left'], holes[i]['width'], holes[i]['height']);
+					fillMatrix(holes[i]['top'], holes[i]['left'], holes[i]['width'], holes[i]['height']);
 				}
 			}
 
@@ -562,7 +560,7 @@
 					fitWidth ? (x = s) : (y = s);
 					if (matrix[y + '-' + x]) continue;
 					block = null;
-					freeArea = getZone(y, x, runtime.maxW, runtime.maxH);
+					freeArea = layoutManager.getFreeArea(y, x, runtime);
 					for (var i = 0; i < items.length; ++i) {
 						if (items[i].height > freeArea.height) continue;
 						if (items[i].width > freeArea.width) continue;
@@ -573,13 +571,15 @@
 					// trying resize the other block to fit gap;
 					if (block == null && setting.fixSize == null) {
 						// resize near block to fill gap;
-						if (lastBlock && !fitWidth && runtime.minH > freeArea.height) {
-							lastBlock.height += freeArra.height;
-							fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+						if (lastBlock && !fitWidth && runtime.minHoB > freeArea.height) {
+							lastBlock.height += freeArea.height;
+							fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							layoutManager.setBlock(lastBlock, setting);
 							continue;
-						} else if (lastBlock && fitWidth && runtime.minW > freeArea.width) {
+						} else if (lastBlock && fitWidth && runtime.minWoB > freeArea.width) {
 							lastBlock.width += freeArea.width;
-							fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+							layoutManager.setBlock(lastBlock, setting);
 							continue;
 						} else {
 							// get other block fill to gap;
@@ -612,7 +612,8 @@
 						
 						// keep success block for next round;
 						lastBlock = wall[block.id];
-						fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+						fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+						layoutManager.setBlock(lastBlock, setting);
 					} else {
 						// get expect area;
 						var misBlock = {
@@ -671,15 +672,10 @@
 		var setting = $.extend({}, layoutManager.defaultConfig);
 		var runtime = {
 			blocks: {}, // store all items;
+			events: {}, // store custome events;
 			matrix: {},
-			holes: [], // drop zone;
-			busy: 0,
+			holes: [], // forbidden zone;
 			
-			maxW: 0, // max width of block;
-			maxH: 0,
-			minW: MAX, 
-			minH: MAX, // min height of block;
-
 			cellW: 0,
 			cellH: 0, // unit adjust;
 			cellS: 1, // unit scale;
@@ -689,12 +685,19 @@
 			lastId: 0,
 			length: 0,
 
+			maxWoB: 0, // max width of block;
+			maxHoB: 0,
+			minWoB: MAX, 
+			minHoB: MAX, // min height of block;
+
+			running: 0, // flag to check layout arranging;
+
 			gutterX: 15, 
 			gutterY: 15,
 
 			totalCol: 1,
 			totalRow: 1,
-
+			
 			currentMethod: null,
 			currentArguments: []
 		};
@@ -758,43 +761,28 @@
 			});
 		}
 		
-		var UIControl = {
-            events: {},
-            index: 0,
-            addEvent: function(name, obj, func) {
-                var self = this;
-                ++ self.index;
-                if (!self.events[name]) {
-                    self.events[name] = [];
-                }
-                obj['e' + self.index] = true;
-                self.events[name]['e' + self.index] = { obj: obj, func: func };
-            },
-            fireEvent: function(name, data) {
-                var self = this, subevent;
-                for (var i in self.events[name]) {
-                    subevent = self.events[name][i];
-                    subevent.func.call(subevent.obj, data);
-                }
-            },
-            removeEvent: function(name) {
-                var self = this;
-                self.events[name] = [];
-            }
-        };
-        
+
 		$.extend(klass, {
 			
-			appendMore: function(items) {
-				container.append(items);
+
+			appendBlock: function(item) {
+				container.append(item);
 				this.refesh();
 				return this;
 			},
 
-			container: container,
+			attachEvent: function(name, func) {
+				var events = runtime.events;
+                !events[name] && (events[name] = []);
+                func.eid = events[name].length;
+                events[name].push(func);
+                return this;
+            },
+            
+            container: container,
 
 			fillHoles: function() {
-				runtime.hole = [];
+				runtime.holes = [];
 				return this;
 			},
 
@@ -803,6 +791,16 @@
 				this.refesh();
 				return this;
 			},
+
+			fireEvent: function(name, object, option) {
+            	var events = runtime.events;
+                if (events[name] && events[name].length) {
+                	for (var i = 0; i < events[name].length; ++i) {
+	                    events[name][i].call(object, option);
+	                }
+                }
+                return this;
+            },
 
 			fitHeight: function(height) {
 				var allBlock = container.find(setting.selector).removeAttr('id'),
@@ -838,6 +836,8 @@
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
 				});
+
+				return this;
 			},
 
 			fitWidth: function(width) {
@@ -866,8 +866,11 @@
 					block = layoutManager.loadBlock(item, setting);
 					block != null && activeBlock.push(block);
 				});
-
+				
+				this.fireEvent("beforeArrange", this, setting);
 				engine[setting.engine](activeBlock, setting);
+				this.fireEvent("finishArrange", this, setting);
+
 				layoutManager.setWallSize(runtime, container);
 				
 				// ignore incase nested grid;
@@ -879,6 +882,8 @@
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
 				});
+
+				return this;
 			},
 
 			fitZone: function(width, height) {
@@ -916,6 +921,8 @@
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
 				});
+
+				return this;
 			},
 			
 			fixSize: function(option) {
@@ -941,23 +948,42 @@
 			refesh: function() {
 				var args = arguments.length ? arguments : runtime.currentArguments;
 				runtime.currentMethod.apply(this, Array.prototype.slice.call(args, 0));
+				return this;
 			},
 
+			/*
+				custom setting layout;
+				example:
+
+					wall.reset({
+						selector: '.brick',
+						animate: true,
+						cellW: 160,
+						cellH: 160,
+						delay: 50,
+						onResize: function() {
+							wall.fitWidth();
+						}
+					});
+			*/
 			reset: function(option) {
 				$.extend(setting, option);
 				return this;
 			},
-
+			/*
+				create blank are on layout;
+				example:
+					
+					wall.setHoles([
+						{
+							top: 2,
+							left: 2,
+							width: 2,
+							height: 2
+						}
+					]);
+			*/
 			setHoles: function(holes) {
-				/*
-				the holes example: 
-				[{
-					top: 2,
-					left: 2,
-					width: 2,
-					height: 2
-				}]
-				*/
 				runtime.holes = holes;
 				return this;
 			},
@@ -971,7 +997,7 @@
 		});
 		
 		container.attr('data-min-width', Math.floor($W.width() / 80) * 80);
-		// run plugin;
+		// execute plugins;
 		for (var i in layoutManager.plugin) {
 			if (layoutManager.plugin.hasOwnProperty(i)) {
 				layoutManager.plugin[i].call(klass, setting, container);
@@ -980,10 +1006,10 @@
 
 		// setup resize event;
 		$W.resize(function() {
-			if (runtime.busy) return;
-			runtime.busy = 1;
+			if (runtime.running) return;
+			runtime.running = 1;
 			setTimeout(function() {
-				runtime.busy = 0;
+				runtime.running = 0;
 				setting.onResize.call(klass, container);
 			}, 122);
 			container.attr('data-min-width', Math.floor($W.width() / 80) * 80);
