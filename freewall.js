@@ -52,7 +52,7 @@
 				blockId = runtime.lastId++ + '-' + this.totalGrid;
 			
 			//ignore dragging block;
-			if ($item.hasClass('fw-dragging')) return;
+			if ($item.hasClass('fw-float')) return;
 			$item.attr({id: blockId, 'data-delay': item.index});
 
 			//remove animation for speed render;
@@ -65,6 +65,7 @@
 			$item.attr('data-width') == null && $item.attr('data-width', $item.width());
 			var height = 1 * $item.attr('data-height');
 			var width = 1 * $item.attr('data-width');
+			var fixPos = $item.attr('data-fixPos');
 
 			var cellH = runtime.cellH;
 			var cellW = runtime.cellW;
@@ -107,6 +108,22 @@
 					height: row,
 					fixSize: fixSize
 				};
+
+				// for fix position;
+				if (fixPos) {
+					fixPos = fixPos.split("-");
+					block.y = 1 * fixPos[0];
+					block.x = 1 * fixPos[1];
+					block.width = fixSize != null ? col : Math.min(col, runtime.totalCol - block.x);
+					block.height = fixSize != null ? row : Math.min(row, runtime.totalRow - block.y);
+					runtime.holes.push({
+						top: block.y,
+						left: block.x,
+						width: block.width,
+						height: block.height
+					});
+					this.setBlock(block, setting);
+				}
 			}
 
 			// for css animation;
@@ -116,7 +133,7 @@
 				$item.attr("data-state", "move");
 			}
 
-			return block;
+			return fixPos ? null : block;
 		},
 		setBlock: function(block, setting) {
 			var runtime = setting.runtime;
@@ -163,7 +180,7 @@
 			
 			item.delay && clearTimeout(item.delay);
 			//ignore dragging block;
-			if ($item.hasClass('fw-dragging')) return;
+			if ($item.hasClass('fw-float')) return;
 			
 			// kill the old transition;
 			self.setTransition(item, "");
@@ -728,7 +745,7 @@
 						layoutManager.setTransition(this, "");
 					}
 					this.style.zIndex = 9999;
-					$(this).addClass('fw-dragging');
+					$(this).addClass('fw-float');
 				},
 				move: function(evt, tracker) {
 					var position = $(this).position();
@@ -747,7 +764,7 @@
 					var left = Math.round(position.left / (cellW + gutterX));
 					var width = Math.round($(this).width() / (cellW + gutterX));
 					var height = Math.round($(this).height() / (cellH + gutterY));
-					$(this).removeClass('fw-dragging');
+					$(this).removeClass('fw-float');
 					top = Math.min(Math.max(0, top), runtime.totalRow - height);
 					left = Math.min(Math.max(0, left), runtime.totalCol - width);
 
@@ -764,21 +781,21 @@
 
 		$.extend(klass, {
 			
-
-			appendBlock: function(item) {
-				container.append(item);
-				this.refesh();
-				return this;
-			},
-
-			attachEvent: function(name, func) {
+			addCustomEvent: function(name, func) {
 				var events = runtime.events;
+				name = name.toLowerCase();
                 !events[name] && (events[name] = []);
                 func.eid = events[name].length;
                 events[name].push(func);
                 return this;
             },
-            
+
+            appendBlock: function(item) {
+				container.append(item);
+				this.refesh();
+				return this;
+			},
+
             container: container,
 
 			fillHoles: function() {
@@ -792,11 +809,12 @@
 				return this;
 			},
 
-			fireEvent: function(name, object, option) {
+			fireEvent: function(name, object, klass, setting) {
             	var events = runtime.events;
+            	name = name.toLowerCase();
                 if (events[name] && events[name].length) {
                 	for (var i = 0; i < events[name].length; ++i) {
-	                    events[name][i].call(object, option);
+	                    events[name][i].call(object, klass, setting);
 	                }
                 }
                 return this;
@@ -825,19 +843,27 @@
 
 				items.each(function(index, item) {
 					item.index = ++index;
-					block = layoutManager.loadBlock(item, setting);
-					block != null && activeBlock.push(block);
+					if (block = layoutManager.loadBlock(item, setting)) {
+						activeBlock.push(block);
+						klass.fireEvent('onBlockLoad', item, klass, setting);
+					}
 				});
 				
+				klass.fireEvent('onGridLoad', activeBlock, klass, setting);
+
 				engine[setting.engine](activeBlock, setting);
+				
 				layoutManager.setWallSize(runtime, container);
+
+				klass.fireEvent('onGridArrange', activeBlock, klass, setting);
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
+					klass.fireEvent('onBlockShow', item, klass, setting);
 				});
 
-				return this;
+				klass.fireEvent('onGridShow', activeBlock, klass, setting);
 			},
 
 			fitWidth: function(width) {
@@ -863,16 +889,20 @@
 				
 				items.each(function(index, item) {
 					item.index = ++index;
-					block = layoutManager.loadBlock(item, setting);
-					block != null && activeBlock.push(block);
+					if (block = layoutManager.loadBlock(item, setting)) {
+						activeBlock.push(block);
+						klass.fireEvent('onBlockLoad', item, klass, setting);
+					}
 				});
 				
-				this.fireEvent("beforeArrange", this, setting);
+				klass.fireEvent('onGridLoad', activeBlock, klass, setting);
+				
 				engine[setting.engine](activeBlock, setting);
-				this.fireEvent("finishArrange", this, setting);
 
 				layoutManager.setWallSize(runtime, container);
 				
+				klass.fireEvent('onGridArrange', activeBlock, klass, setting);
+
 				// ignore incase nested grid;
 				if (!container.attr('data-height')) {
 					container.height(container.attr("data-wall-height"));
@@ -881,9 +911,10 @@
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
+					klass.fireEvent('onBlockShow', item, klass, setting);
 				});
 
-				return this;
+				klass.fireEvent('onGridShow', activeBlock, klass, setting);
 			},
 
 			fitZone: function(width, height) {
@@ -910,32 +941,55 @@
 
 				items.each(function(index, item) {
 					item.index = ++index;
-					block = layoutManager.loadBlock(item, setting);
-					block != null && activeBlock.push(block);
+					if (block = layoutManager.loadBlock(item, setting)) {
+						activeBlock.push(block);
+						klass.fireEvent('onBlockLoad', item, klass, setting);
+					}
 				});
 
+				klass.fireEvent('onGridLoad', activeBlock, klass, setting);
+
 				engine[setting.engine](activeBlock, setting);
+				
 				layoutManager.setWallSize(runtime, container);
+				
+				klass.fireEvent('onGridArrange', activeBlock, klass, setting);
 
 				allBlock.each(function(index, item) {
 					setting.draggable && setDragable(item);
 					layoutManager.showBlock(item, setting);
+					klass.fireEvent('onBlockShow', item, klass, setting);
 				});
 
+				klass.fireEvent('onGridShow', activeBlock, klass, setting);
+			},
+			/*
+				set block with special position, the top and left are multiple of unit width/height;
+				example:
+
+					wall.fixSize({
+						top: 0,
+						left: 0,
+						block: $('.free')
+					});
+			*/
+			fixPos: function(option) {
+				$(option.block).attr({'data-fixPos': option.top + "-" + option.left});
 				return this;
 			},
-			
-			fixSize: function(option) {
-				var config = {
-					block: null,
-					width: null,
-					height: null
-				};
-				$.extend(config, option);
-				
-				config.width != null && $(config.block).attr({'data-width': config.width});
-				config.height != null && $(config.block).attr({'data-height': config.height});
+			/*
+				set block with special size, the width and height are multiple of unit width/height;
+				example:
 
+					wall.fixSize({
+						height: 5,
+						width: 2,
+						block: $('.free')
+					});
+			*/
+			fixSize: function(option) {
+				option.width != null && $(option.block).attr({'data-width': option.width});
+				option.height != null && $(option.block).attr({'data-height': option.height});
 				return this;
 			},
 
