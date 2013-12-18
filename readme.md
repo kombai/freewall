@@ -20,6 +20,8 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 
 ## Features
 * [Draggable support](http://vnjs.net/www/project/freewall/example/draggable.html)
+* [Direction support](http://vnjs.net/www/project/freewall/example/direction.html)
+* [Custom Plugin](http://vnjs.net/www/project/freewall/example/centering-grid.html)
 * [Responsive grid](http://vnjs.net/www/project/freewall/)
 * [Gaps control](http://vnjs.net/www/project/freewall/404.html)
 * [Filter items](http://vnjs.net/www/project/freewall/example/demo-filter.html)
