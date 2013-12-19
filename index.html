@@ -400,15 +400,18 @@ wall.reset({
 					<div class='float-left'>
 						<h2>Methods</h2>
 						<ul>
-							<li> appendMore </li>
+							<li> addCustomEvent </li>
+							<li> appendBlock </li>
 							<li> fillHoles </li>
 							<li> filter </li>
+							<li> fireEvent </li>
 							<li> fitHeight </li>
 							<li> fitWidth </li>
 							<li> fitZone </li>
+							<li> fixPos </li>
 							<li> fixSize </li>
 							<li> prepend </li>
-							<li> refesh </li>
+							<li> refresh </li>
 							<li> reset </li>
 							<li> setHoles </li>
 							<li> unFilter </li>
@@ -420,6 +423,10 @@ wall.reset({
 							<span>Methods</span>
 						</h2>
 						<ul>
+							<li>
+								<h3> addCustomEvent(name, handler) </h3>
+								<div> Support create custom event when arrange layout</div>
+							</li>
 							<li>
 								<h3> appendBlock(items) </h3>
 								<div> Append one or more items into layout</div>
@@ -433,6 +440,10 @@ wall.reset({
 								<div> Fillter blocks to show</div>
 							</li>
 							<li>
+								<h3> fireEvent() </h3>
+								<div> Fire custom event</div>
+							</li>
+							<li>
 								<h3> fitHeight(height) </h3>
 								<div> Made the layout fit with limit height</div>
 							</li>
@@ -443,6 +454,10 @@ wall.reset({
 							<li>
 								<h3> fitZone(width, height) </h3>
 								<div> Made the layout fit with limit width and height</div>
+							</li>
+							<li>
+								<h3> fixPos(object) </h3>
+								<div> Set a block at fixed position, top/left is multiple of cell with/height</div>
 							</li>
 							<li>
 								<h3> fixSize(object) </h3>
