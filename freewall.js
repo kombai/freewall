@@ -843,6 +843,8 @@
                     items = allBlock.removeClass('fw-filter');
                 }
 
+                klass.fireEvent('onGridReady', container, setting);
+
                 items.each(function(index, item) {
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
@@ -851,7 +853,7 @@
                     }
                 });
                 
-                klass.fireEvent('onGridLoad', activeBlock, setting);
+                klass.fireEvent('onGridLoad', container, setting);
 
                 engine[setting.engine](activeBlock, setting);
                 
@@ -889,6 +891,8 @@
                     items = allBlock.removeClass('fw-filter');
                 }
                 
+                klass.fireEvent('onGridReady', container, setting);
+
                 items.each(function(index, item) {
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
@@ -897,7 +901,7 @@
                     }
                 });
                 
-                klass.fireEvent('onGridLoad', activeBlock, setting);
+                klass.fireEvent('onGridLoad', container, setting);
                 
                 engine[setting.engine](activeBlock, setting);
 
@@ -940,6 +944,8 @@
                 } else {
                     items = allBlock.removeClass('fw-filter');
                 }
+                
+                klass.fireEvent('onGridReady', container, setting);
 
                 items.each(function(index, item) {
                     item.index = ++index;
@@ -949,7 +955,7 @@
                     }
                 });
 
-                klass.fireEvent('onGridLoad', activeBlock, setting);
+                klass.fireEvent('onGridLoad', container, setting);
 
                 engine[setting.engine](activeBlock, setting);
                 
