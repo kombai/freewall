@@ -177,11 +177,11 @@
 				gutterY: 2,
 				delay: 10,
 				onResize: function() {
-					this.refesh();
+					this.refresh();
 					var totalCol = this.container.attr('data-total-col');
 					var offsetLeft = Math.round(totalCol/2 - 16);
 					this.setHoles(getPosition(offsetLeft));
-					this.refesh();
+					this.refresh();
 				},
 				onStartSet: function(block, setting) {
 					// check for showing brick;
@@ -319,7 +319,7 @@
 			var totalCol = wall.container.attr('data-total-col');
 			var offsetLeft = Math.round(totalCol/2 - 16);
 			wall.setHoles(getPosition(offsetLeft));
-			wall.refesh();
+			wall.refresh();
 		},
 		options: function() {
 			$('.free-wall .options').click(function() {

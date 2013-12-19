@@ -756,7 +756,7 @@
                     top = Math.min(Math.max(0, top), runtime.totalRow - height);
                     left = Math.min(Math.max(0, left), runtime.totalCol - width);
                     klass.setHoles([{top: top, left: left, width: width, height: height}]);
-                    klass.refesh();
+                    klass.refresh();
                 },
                 end: function() {
                     var position = $(this).position();
@@ -792,7 +792,7 @@
 
             appendBlock: function(item) {
                 container.append(item);
-                this.refesh();
+                this.refresh();
                 return this;
             },
 
@@ -805,7 +805,7 @@
 
             filter: function(filter) {
                 runtime.filter = filter;
-                this.refesh();
+                this.refresh();
                 return this;
             },
 
@@ -997,11 +997,11 @@
 
             prepend: function(items) {
                 container.prepend(items);
-                this.refesh();
+                this.refresh();
                 return this;
             },
 
-            refesh: function() {
+            refresh: function() {
                 var args = arguments.length ? arguments : runtime.currentArguments;
                 runtime.currentMethod.apply(this, Array.prototype.slice.call(args, 0));
                 return this;
@@ -1047,7 +1047,7 @@
 
             unFilter: function() {
                 delete runtime.filter;
-                this.refesh();
+                this.refresh();
                 return this;
             }
             
