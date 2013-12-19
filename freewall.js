@@ -76,12 +76,14 @@
             // estimate size;
             if (!fixSize && setting.cellH == 'auto') {
                 $item.width(col ? cellW * col + gutterX * (col - 1) : cellW * col);
+                item.style.height = "";
                 height = $item.height();
                 row = !height ? 0 : Math.round((height + gutterY) / (cellH + gutterY));
             }
 
             if (!fixSize && setting.cellW == 'auto') {
                 $item.height(row ? cellH * row + gutterY * (row - 1) : cellH * row);
+                item.style.width = "";
                 width = $item.width();
                 col = !width ? 0 : Math.round((width + gutterX) / (cellW + gutterX));
             }
