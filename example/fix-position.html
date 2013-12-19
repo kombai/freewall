@@ -83,8 +83,8 @@
 						wall.fitWidth();
 					}
 				});
-				wall.addCustomEvent('onBlockLoad', function(klass, setting){
-					console.log(klass);
+				wall.addCustomEvent('onBlockLoad', function(setting){
+					console.log(setting);
 				});
 				wall.fitWidth();
 			});
