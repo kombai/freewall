@@ -209,106 +209,106 @@
 				return [
 					// F
 					{
-						top: 2,
+						top: 3,
 						left: offsetLeft,
 						width: 9,
 						height: 3
 					},
 					{
-						top: 4,
+						top: 5,
 						left: offsetLeft,
 						width: 3,
 						height: 14
 					},
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft,
 						width: 7,
 						height: 3
 					},
 					// r
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 11,
 						width: 2,
 						height: 10
 					},
 					{
-						top: 10,
+						top: 11,
 						left: offsetLeft + 13,
 						width: 1,
 						height: 2
 					},
 					{
-						top: 9,
+						top: 10,
 						left: offsetLeft + 14,
 						width: 1,
 						height: 2
 					},
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 15,
 						width: 2,
 						height: 2
 					},
 					// e
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 19,
 						width: 2,
 						height: 10
 					},
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 19,
 						width: 4,
 						height: 2
 					},
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 23,
 						width: 2,
 						height: 6
 					},
 					{
-						top: 12,
+						top: 13,
 						left: offsetLeft + 19,
 						width: 4,
 						height: 2
 					},
 					{
-						top: 16,
+						top: 17,
 						left: offsetLeft + 19,
 						width: 5,
 						height: 2
 					},
 					// e
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 27,
 						width: 2,
 						height: 10
 					},
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 27,
 						width: 4,
 						height: 2
 					},
 					{
-						top: 8,
+						top: 9,
 						left: offsetLeft + 31,
 						width: 2,
 						height: 6
 					},
 					{
-						top: 12,
+						top: 13,
 						left: offsetLeft + 27,
 						width: 4,
 						height: 2
 					},
 					{
-						top: 16,
+						top: 17,
 						left: offsetLeft + 27,
 						width: 5,
 						height: 2

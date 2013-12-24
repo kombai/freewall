@@ -485,6 +485,14 @@ table {
 	padding-left: 30px;
 }
 
+.fork {
+	float: right;
+	width: 100%;
+	height: 100%;
+	display: block;
+	background: url(../i/forkme.png) no-repeat top right;
+}
+
 .back-button {
 	position: fixed;
 	z-index: 9999;
