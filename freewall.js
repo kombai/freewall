@@ -179,7 +179,7 @@
             var $item = $(item);
             var self = this;
             var start = $item.attr("data-state") != "move";
-            var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s";
+            var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s, width 0.5s, height 0.5s";
             
             item.delay && clearTimeout(item.delay);
             //ignore dragging block;
@@ -201,7 +201,7 @@
                 // for hidden block;
                 if (!block) {
                     $item[method]({
-                        opacity: 0,
+                        //opacity: 0,
                         width: 0,
                         height: 0
                     });
@@ -212,7 +212,7 @@
                     }
 
                     $item["css"]({
-                        opacity: 1,
+                        //opacity: 1,
                         width: block.width,
                         height: block.height
                     });
