@@ -753,10 +753,10 @@
                 },
                 move: function(evt, tracker) {
                     var position = $(this).position();
-                    var top = Math.round(position.top / (cellH + gutterY));
-                    var left = Math.round(position.left / (cellW + gutterX));
-                    var width = Math.round($(this).width() / (cellW + gutterX));
-                    var height = Math.round($(this).height() / (cellH + gutterY));
+                    var top = Math.round(position.top / cellH);
+                    var left = Math.round(position.left / cellW);
+                    var width = Math.round($(this).width() / cellW);
+                    var height = Math.round($(this).height() / cellH);
                     top = Math.min(Math.max(0, top), runtime.totalRow - height);
                     left = Math.min(Math.max(0, left), runtime.totalCol - width);
                     klass.setHoles([{top: top, left: left, width: width, height: height}]);
@@ -764,17 +764,17 @@
                 },
                 end: function() {
                     var position = $(this).position();
-                    var top = Math.round(position.top / (cellH + gutterY));
-                    var left = Math.round(position.left / (cellW + gutterX));
-                    var width = Math.round($(this).width() / (cellW + gutterX));
-                    var height = Math.round($(this).height() / (cellH + gutterY));
+                    var top = Math.round(position.top / cellH);
+                    var left = Math.round(position.left / cellW);
+                    var width = Math.round($(this).width() / cellW);
+                    var height = Math.round($(this).height() / cellH);
                     $(this).removeClass('fw-float');
                     top = Math.min(Math.max(0, top), runtime.totalRow - height);
                     left = Math.min(Math.max(0, left), runtime.totalCol - width);
 
                     $(this).css({
-                        top: top * (cellH + gutterY),
-                        left: left * (cellW + gutterX)
+                        top: top * cellH,
+                        left: left * cellW
                     });
                     klass.fillHoles();
                     this.style.zIndex = "auto";
