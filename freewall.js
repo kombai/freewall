@@ -201,10 +201,10 @@
                 // for hidden block;
                 if (!block) {
                     $item[method]({
-                        //opacity: 0,
                         width: 0,
                         height: 0
                     });
+                    $item.animate({opacity: 0});
                 } else {
                     if (block.fixSize) {
                         block.height = 1 * $item.attr("data-height");
@@ -212,7 +212,7 @@
                     }
 
                     $item["css"]({
-                        //opacity: 1,
+                        opacity: 1,
                         width: block.width,
                         height: block.height
                     });
