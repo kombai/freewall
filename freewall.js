@@ -70,22 +70,22 @@
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
             
-            var col = !width ? 0 : Math.round((width + gutterX) / (cellW + gutterX));
-            var row = !height ? 0 : Math.round((height + gutterY) / (cellH + gutterY));
+            var col = !width ? 0 : Math.round((width + gutterX) / cellW);
+            var row = !height ? 0 : Math.round((height + gutterY) / cellH);
 
             // estimate size;
             if (!fixSize && setting.cellH == 'auto') {
-                $item.width(col ? cellW * col + gutterX * (col - 1) : cellW * col);
+                $item.width(cellW * col - gutterX);
                 item.style.height = "";
                 height = $item.height();
-                row = !height ? 0 : Math.round((height + gutterY) / (cellH + gutterY));
+                row = !height ? 0 : Math.round((height + gutterY) / cellH);
             }
 
             if (!fixSize && setting.cellW == 'auto') {
-                $item.height(row ? cellH * row + gutterY * (row - 1) : cellH * row);
+                $item.height(cellH * row - gutterY);
                 item.style.width = "";
                 width = $item.width();
-                col = !width ? 0 : Math.round((width + gutterX) / (cellW + gutterX));
+                col = !width ? 0 : Math.round((width + gutterX) / cellW);
             }
             
             // for none resize block;
@@ -134,7 +134,6 @@
             } else {
                 $item.attr("data-state", "move");
             }
-
             return fixPos ? null : block;
         },
         setBlock: function(block, setting) {
@@ -154,14 +153,16 @@
             if (setting.bottomToTop) {
                 y = runtime.totalRow - y - height;
             }
+
             var realBlock = {
                 fixSize: block.fixSize,
-                top: y * (cellH + gutterY),
-                left: x * (cellW + gutterX),
-                width: width ? cellW * width + gutterX * (width - 1) : cellW * width,
-                height: height ? cellH * height + gutterY * (height - 1) : cellH * height
+                top: y * cellH,
+                left: x  * cellW,
+                width: cellW * width - gutterX,
+                height: cellH * height - gutterY
             };
             
+
             realBlock.top = 1 * realBlock.top.toFixed(2);
             realBlock.left = 1 * realBlock.left.toFixed(2);
             realBlock.width = 1 * realBlock.width.toFixed(2);
@@ -269,22 +270,32 @@
                 }
             }
         },
+        adjustBlock: function(block, setting) {
+            var runtime = setting.runtime;
+            var $item = $("#" + block.id);
+            var cellH = runtime.cellH;
+            var cellW = runtime.cellW;
+            var gutterX = runtime.gutterX;
+            var gutterY = runtime.gutterY;
+
+            if (setting.cellH = 'auto') {
+                $item.width(block.width * cellW - gutterX);
+                $item.get(0).style = "";
+                block.height = Math.round(($item.height() + gutterY) / cellH);
+            }
+        },
         adjustWidth: function(width, setting) {
             var gutterX = setting.gutterX;
             var runtime = setting.runtime;
             var cellW = setting.cellW;
 
-            if (cellW == 'auto') {
-                cellW = 10;
-            } else if ($.isFunction(cellW)) {
-                cellW = cellW(width);
-            }
-            // correct unit to number;
+            $.isFunction(cellW) && (cellW = cellW(width));
             cellW = 1 * cellW;
-
+            !$.isNumeric(cellW) && (cellW = 1);
+            
             if ($.isNumeric(width)) {
                 // adjust cell width via container;
-                cellW <= 1 && (cellW = cellW * width);
+                cellW < 1 && (cellW = cellW * width);
 
                 // estimate total columns;
                 var totalCol = Math.max(1, Math.floor(width / cellW));
@@ -293,20 +304,17 @@
                 if (!$.isNumeric(gutterX)) {
                     gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
                     gutterX = Math.max(0, gutterX);
-                } else {
-                    // correct total column with gutter;
-                    totalCol = Math.max(1, Math.round(width / (cellW + gutterX)));
                 }
 
-                var deltaX = (width + gutterX) / totalCol - (cellW + gutterX);
-                runtime.cellW = cellW + deltaX;
+                totalCol = Math.floor((width + gutterX) / cellW);
+                runtime.cellW = (width + gutterX) / totalCol;
                 runtime.cellS = runtime.cellW / cellW;
                 runtime.gutterX = gutterX;
                 runtime.totalCol = totalCol;
             } else {
                 // adjust cell width via cell height;
-                cellW <= 1 && (cellW = runtime.cellH);
-                runtime.cellW = cellW * runtime.cellS;
+                cellW < 1 && (cellW = runtime.cellH);
+                runtime.cellW = cellW != 1 ? cellW * runtime.cellS : 1;
                 runtime.gutterX = gutterX;
                 runtime.totalCol = 666666;
             }
@@ -316,18 +324,13 @@
             var runtime = setting.runtime;
             var cellH = setting.cellH;
 
-            // dynamic type of unit;
-            if (cellH == 'auto') {
-                cellH = 10;
-            } else if ($.isFunction(cellH)) {
-                cellH = cellH(height);
-            }
-            // correct unit to number;
+            $.isFunction(cellH) && (cellH = cellH(height));
             cellH = 1 * cellH;
+            !$.isNumeric(cellH) && (cellH = 1);
 
             if ($.isNumeric(height)) {
                 // adjust cell height via container;
-                cellH <= 1 && (cellH = cellH * height);
+                cellH < 1 && (cellH = cellH * height);
 
                 // estimate total rows;
                 var totalRow = Math.max(1, Math.floor(height / cellH));
@@ -336,19 +339,17 @@
                 if (!$.isNumeric(gutterY)) {
                     gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
                     gutterY = Math.max(0, gutterY);
-                } else {
-                    totalRow = Math.max(1, Math.round(height / (cellH + gutterY)));
                 }
 
-                var deltaY = (height + gutterY) / totalRow - (cellH + gutterY);
-                runtime.cellH = cellH + deltaY;
+                totalRow = Math.floor((height + gutterY) / cellH);
+                runtime.cellH = (height + gutterY) / totalRow;
                 runtime.cellS = runtime.cellH / cellH;
                 runtime.gutterY = gutterY;
                 runtime.totalRow = totalRow;
             } else {
                 // adjust cell height via cell width;
-                cellH <= 1 && (cellH = runtime.cellW);
-                runtime.cellH = cellH * runtime.cellS;
+                cellH < 1 && (cellH = runtime.cellW);
+                runtime.cellH = cellH != 1 ? cellH * runtime.cellS : 1;
                 runtime.gutterY = gutterY;
                 runtime.totalRow = 666666;
             }
@@ -469,46 +470,32 @@
             var minX = maxX;
             var minY = maxY;
             var matrix = runtime.matrix;
-
-            // find limit width and limit height of zone;
-            for (var y = t; y < maxY; ++y) {
-                for (var x = l; x < maxX; ++x) {
-                    if (matrix[y + '-' + x] == true) {
-                        (t < y && y < minY) && (minY = y);
-                        (l < x && x < minX) && (minX = x);
-                        }
-                }
-            }
-
+            
             // find limit zone by horizon;
-            var minLeft = maxX;
             for (var y = t; y < minY; ++y) {
                 for (var x = l; x < maxX; ++x) {
                     if (matrix[y + '-' + x] == true) {
-                        (l < x && x < minLeft) && (minLeft = x);
+                        (l < x && x < minX) && (minX = x);
                     }
                 }
             }
+            
             // find limit zone by vertical;
-            var minTop = maxY;
             for (var y = t; y < maxY; ++y) {
                 for (var x = l; x < minX; ++x) {
                     if (matrix[y + '-' + x] == true) {
-                        (t < y && y < minTop) && (minTop = y);
+                        (t < y && y < minY) && (minY = y);
                     }
                 }
             }
 
-            var compare = minLeft * minY - minX * minTop;
-            
-            var freeArea = {
+            return {
                 top: t,
                 left: l,
-                width: compare ? minLeft - l : minX - l,
-                height: compare ? minY - t : minTop - t
+                width: minX - l,
+                height: minY - t
             };
 
-            return freeArea;
         },
         setWallSize: function(runtime, container) {
             var totalRow = Math.max(1, runtime.totalRow);
@@ -517,14 +504,25 @@
             var gutterX = runtime.gutterX;
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
-            var totalWidth = cellW * totalCol + gutterX * (totalCol - 1);
-            var totalHeight = cellH * totalRow + gutterY * (totalRow - 1);
+            var totalWidth = cellW * totalCol - gutterX;
+            var totalHeight = cellH * totalRow - gutterY;
+            
             container.attr({
                 'data-total-col': totalCol,
                 'data-total-row': totalRow,
                 'data-wall-width': Math.ceil(totalWidth),
                 'data-wall-height': Math.ceil(totalHeight)
             });
+        },
+        testBlock: function(y, x, setting) {
+            $("<div class='test-block'>").css({
+                position: 'absolute',
+                border: "1px solid orange",
+                top: y * setting.runtime.cellH,
+                left: x * setting.runtime.cellW,
+                width: setting.runtime.cellW - 2,
+                height: setting.runtime.cellH - 2
+            }).appendTo("#freewall");
         }
     };
 
@@ -552,7 +550,7 @@
                 smallLoop = Math.min(col, row);
 
             // fill area with top, left, width, height;
-            function fillMatrix(t, l, w, h) { 
+            function fillMatrix(t, l, w, h) {
                 for (var y = t; y < t + h;) {
                     for (var x = l; x < l + w;) {
                         matrix[y + '-' + x] = true;
@@ -577,9 +575,9 @@
                 for (var s = 0; s < smallLoop; ++s) {
                     if (!items.length) break;
                     fitWidth ? (x = s) : (y = s);
-                    if (matrix[y + '-' + x]) continue;
-                    block = null;
+                    if (runtime.matrix[y + '-' + x]) continue;
                     freeArea = layoutManager.getFreeArea(y, x, runtime);
+                    block = null;
                     for (var i = 0; i < items.length; ++i) {
                         if (items[i].height > freeArea.height) continue;
                         if (items[i].width > freeArea.width) continue;
@@ -607,12 +605,15 @@
                                 block = items.splice(i, 1)[0];
                                 if (fitWidth) {
                                     block.width = freeArea.width;
+                                    if (setting.cellH == 'auto') {
+                                        layoutManager.adjustBlock(block, setting);
+                                    }
                                     // for fitZone;
                                     block.height = Math.min(block.height, freeArea.height);
                                 } else {
+                                    block.height = freeArea.height;
                                     // for fitZone;
                                     block.width = Math.min(block.width, freeArea.width);
-                                    block.height = freeArea.height;
                                 }
                                 break;
                             }
@@ -631,6 +632,7 @@
                         
                         // keep success block for next round;
                         lastBlock = wall[block.id];
+
                         fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                         layoutManager.setBlock(lastBlock, setting);
                     } else {
