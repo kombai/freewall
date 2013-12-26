@@ -56,30 +56,30 @@
 		<div class="layout">
 			<h2>Nested grid</h2>
 			<div class="free-wall">
-				<div class="size320" data-nested=".level-1" data-gutterX=10 data-gutterY=10 >
+				<div class="size320" data-nested=".level-1" data-gutterX=10 data-gutterY=10 data-cellW=0.5 data-cellH=0.5 >
 					<div class="brick level-1 size24"></div>
 					<div class="brick level-1 size24"></div>
 				</div>
-				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 >
+				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 data-cellW=0.5 data-cellH=0.5 >
 					<div class="brick level-1 size42"></div>
 					<div class="brick level-1 size42"></div>
 				</div>
-				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 >
+				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 data-cellW=0.5 data-cellH=0.5 >
 					<div class="brick level-1 size24"></div>
 					<div class="brick level-1 size22"></div>
 					<div class="brick level-1 size22"></div>
 				</div>
-				<div class="size320" data-nested=".level-1" data-gutterX=10 data-gutterY=10 >
+				<div class="size320" data-nested=".level-1" data-gutterX=10 data-gutterY=10 data-cellW=0.5 data-cellH=0.5 >
 					<div class="brick level-1 size42"></div>
 					<div class="brick level-1 size22"></div>
 					<div class="brick level-1 size22"></div>
 				</div>
-				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 >
+				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 data-cellW=0.5 data-cellH=0.5 >
 					<div class="brick level-1 size22"></div>
 					<div class="brick level-1 size24"></div>
 					<div class="brick level-1 size22"></div>
 				</div>
-				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 >
+				<div class="size320" data-nested=".level-1"  data-gutterX=10 data-gutterY=10 data-cellW=0.5 data-cellH=0.5 >
 					<div class="brick level-1 size22"></div>
 					<div class="brick level-1 size22"></div>
 					<div class="brick level-1 size22"></div>
@@ -125,20 +125,8 @@
 					var wall = new freewall(this);
 					wall.reset({
 						selector: '.size320',
-						cellW: function(container) {
-							var cellWidth = 320;
-							if (container.hasClass('size320')) {
-								cellWidth = container.width()/2;
-							}
-							return cellWidth;
-						},
-						cellH: function(container) {
-							var cellHeight = 320;
-							if (container.hasClass('size320')) {
-								cellHeight = container.height()/2;
-							}
-							return cellHeight;
-						},
+						cellW: 320,
+						cellH: 320,
 						fixSize: 0,
 						gutterY: 20,
 						gutterX: 20,

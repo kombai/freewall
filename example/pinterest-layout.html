@@ -387,32 +387,18 @@
 		</div>
 		
 		<script type="text/javascript">
-			/*
-			var temp = "<div class='brick' >" +
-							"<img src='i/photo/{index}.jpg' width=100% />" +
-							"<div class='info'>" +
-								"<h3>Freewall</h3>" +
-								"<h5>Pinterest layout</h5>" +
-							"</div>" +
-						"</div>";
-			var html = '', limitItem = 49;
-			for (var i = 0; i < limitItem; ++i) {
-				html += temp.replace("{index}", i + 1);
-			}
-			$("#freewall").html(html);
-			*/
-			var ewall = new freewall("#freewall");
-			ewall.reset({
+			var wall = new freewall("#freewall");
+			wall.reset({
 				selector: '.brick',
 				animate: true,
 				cellW: 200,
 				cellH: 'auto',
 				onResize: function() {
-					ewall.fitWidth();
+					wall.fitWidth();
 				}
 			});
 			
-			var images = ewall.container.find('.brick');
+			var images = wall.container.find('.brick');
 			var length = images.length;
 			images.css({visibility: 'hidden'});
 			images.find('img').load(function() {
@@ -420,7 +406,7 @@
 				if (!length) {
 					setTimeout(function() {
 						images.css({visibility: 'visible'});
-						ewall.fitWidth();
+						wall.fitWidth();
 					}, 505);
 				}
 			});

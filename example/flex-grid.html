@@ -28,28 +28,38 @@
 		
 		<script type="text/javascript">
 			
-			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+			var temp = "<div class='brick' style='width:{width}px;'><img src='i/photo/{index}.jpg' width='100%'></div>";
 			var w = 1, h = 1, html = '', limitItem = 49;
 			for (var i = 0; i < limitItem; ++i) {
-				h = 1 + 3 * Math.random() << 0;
 				w = 1 + 3 * Math.random() << 0;
-				html += temp.replace(/\{height\}/g, h*150).replace(/\{width\}/g, w*150).replace("{index}", i + 1);
+				html += temp.replace(/\{width\}/g, w*150).replace("{index}", i + 1);
 			}
 			$("#freewall").html(html);
 			
 			var wall = new freewall("#freewall");
 			wall.reset({
-				selector: '.cell',
+				selector: '.brick',
 				animate: true,
 				cellW: 150,
-				cellH: 150,
+				cellH: 'auto',
 				onResize: function() {
 					wall.fitWidth();
 				}
 			});
-			wall.fitWidth();
-			// for scroll bar appear;
-			$(window).trigger("resize");
+
+			var images = wall.container.find('.brick');
+			var length = images.length;
+			images.css({visibility: 'hidden'});
+			images.find('img').load(function() {
+				-- length;
+				if (!length) {
+					setTimeout(function() {
+						images.css({visibility: 'visible'});
+						wall.fitWidth();
+					}, 505);
+				}
+			});
+
 		</script>
 	</body>
 </html>
