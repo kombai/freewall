@@ -89,7 +89,7 @@
             }
             
             // for none resize block;
-            if ((fixSize != null) && (col > runtime.totalCol || row > runtime.totalRow)) {
+            if ((fixSize != null) && (col > runtime.limitCol || row > runtime.limitRow)) {
                 block = null;
             } else {
                 // get smallest width and smallest height of block;
@@ -116,8 +116,8 @@
                     fixPos = fixPos.split("-");
                     block.y = 1 * fixPos[0];
                     block.x = 1 * fixPos[1];
-                    block.width = fixSize != null ? col : Math.min(col, runtime.totalCol - block.x);
-                    block.height = fixSize != null ? row : Math.min(row, runtime.totalRow - block.y);
+                    block.width = fixSize != null ? col : Math.min(col, runtime.limitCol - block.x);
+                    block.height = fixSize != null ? row : Math.min(row, runtime.limitRow - block.y);
                     runtime.holes.push({
                         top: block.y,
                         left: block.x,
@@ -148,10 +148,10 @@
             var y = block.y;
 
             if (setting.rightToLeft) {
-                x = runtime.totalCol - x - width;
+                x = runtime.limitCol - x - width;
             }
             if (setting.bottomToTop) {
-                y = runtime.totalRow - y - height;
+                y = runtime.limitRow - y - height;
             }
 
             var realBlock = {
@@ -298,25 +298,25 @@
                 cellW < 1 && (cellW = cellW * width);
 
                 // estimate total columns;
-                var totalCol = Math.max(1, Math.floor(width / cellW));
+                var limitCol = Math.max(1, Math.floor(width / cellW));
 
                 // adjust unit size for fit width;
                 if (!$.isNumeric(gutterX)) {
-                    gutterX = (width - totalCol * cellW) / Math.max(1, (totalCol - 1));
+                    gutterX = (width - limitCol * cellW) / Math.max(1, (limitCol - 1));
                     gutterX = Math.max(0, gutterX);
                 }
 
-                totalCol = Math.floor((width + gutterX) / cellW);
-                runtime.cellW = (width + gutterX) / totalCol;
+                limitCol = Math.floor((width + gutterX) / cellW);
+                runtime.cellW = (width + gutterX) / limitCol;
                 runtime.cellS = runtime.cellW / cellW;
                 runtime.gutterX = gutterX;
-                runtime.totalCol = totalCol;
+                runtime.limitCol = limitCol;
             } else {
                 // adjust cell width via cell height;
                 cellW < 1 && (cellW = runtime.cellH);
                 runtime.cellW = cellW != 1 ? cellW * runtime.cellS : 1;
                 runtime.gutterX = gutterX;
-                runtime.totalCol = 666666;
+                runtime.limitCol = 666666;
             }
         },
         adjustHeight: function(height, setting) {
@@ -333,25 +333,25 @@
                 cellH < 1 && (cellH = cellH * height);
 
                 // estimate total rows;
-                var totalRow = Math.max(1, Math.floor(height / cellH));
+                var limitRow = Math.max(1, Math.floor(height / cellH));
 
                 // adjust size unit for fit height;
                 if (!$.isNumeric(gutterY)) {
-                    gutterY = (height - totalRow * cellH) / Math.max(1, (totalRow - 1));
+                    gutterY = (height - limitRow * cellH) / Math.max(1, (limitRow - 1));
                     gutterY = Math.max(0, gutterY);
                 }
 
-                totalRow = Math.floor((height + gutterY) / cellH);
-                runtime.cellH = (height + gutterY) / totalRow;
+                limitRow = Math.floor((height + gutterY) / cellH);
+                runtime.cellH = (height + gutterY) / limitRow;
                 runtime.cellS = runtime.cellH / cellH;
                 runtime.gutterY = gutterY;
-                runtime.totalRow = totalRow;
+                runtime.limitRow = limitRow;
             } else {
                 // adjust cell height via cell width;
                 cellH < 1 && (cellH = runtime.cellW);
                 runtime.cellH = cellH != 1 ? cellH * runtime.cellS : 1;
                 runtime.gutterY = gutterY;
-                runtime.totalRow = 666666;
+                runtime.limitRow = 666666;
             }
         },
         resetGrid: function(runtime) {
@@ -465,8 +465,8 @@
             }
         },
         getFreeArea: function(t, l, runtime) {
-            var maxY = Math.min(t + runtime.maxHoB, runtime.totalRow);
-            var maxX = Math.min(l + runtime.maxWoB, runtime.totalCol);
+            var maxY = Math.min(t + runtime.maxHoB, runtime.limitRow);
+            var maxX = Math.min(l + runtime.maxWoB, runtime.limitCol);
             var minX = maxX;
             var minY = maxY;
             var matrix = runtime.matrix;
@@ -513,16 +513,11 @@
                 'data-wall-width': Math.ceil(totalWidth),
                 'data-wall-height': Math.ceil(totalHeight)
             });
-        },
-        testBlock: function(y, x, setting) {
-            $("<div class='test-block'>").css({
-                position: 'absolute',
-                border: "1px solid orange",
-                top: y * setting.runtime.cellH,
-                left: x * setting.runtime.cellW,
-                width: setting.runtime.cellW - 2,
-                height: setting.runtime.cellH - 2
-            }).appendTo("#freewall");
+
+            if (runtime.limitCol < runtime.limitRow) {
+                // do not set height with nesting grid;
+                !container.attr("data-height") && container.height(totalHeight);
+            }
         }
     };
 
@@ -532,12 +527,12 @@
         // Giot just a person name;
         giot: function(items, setting) {
             var runtime = setting.runtime,
-                row = runtime.totalRow,
-                col = runtime.totalCol,
+                row = runtime.limitRow,
+                col = runtime.limitCol,
                 x = 0,
                 y = 0,
-                maxX = 0,
-                maxY = 0,
+                maxX = runtime.totalCol,
+                maxY = runtime.totalRow,
                 wall = {},
                 holes = runtime.holes,
                 block = null,
@@ -716,8 +711,11 @@
             gutterX: 15, 
             gutterY: 15,
 
-            totalCol: 1,
+            totalCol: 0,
             totalRow: 1,
+
+            limitCol: 666666, // maximum column; 
+            limitRow: 666666,
             
             currentMethod: null,
             currentArguments: []
@@ -757,8 +755,8 @@
                     var left = Math.round(position.left / cellW);
                     var width = Math.round($(this).width() / cellW);
                     var height = Math.round($(this).height() / cellH);
-                    top = Math.min(Math.max(0, top), runtime.totalRow - height);
-                    left = Math.min(Math.max(0, left), runtime.totalCol - width);
+                    top = Math.min(Math.max(0, top), runtime.limitRow - height);
+                    left = Math.min(Math.max(0, left), runtime.limitCol - width);
                     klass.setHoles([{top: top, left: left, width: width, height: height}]);
                     klass.refresh();
                 },
@@ -769,8 +767,8 @@
                     var width = Math.round($(this).width() / cellW);
                     var height = Math.round($(this).height() / cellH);
                     $(this).removeClass('fw-float');
-                    top = Math.min(Math.max(0, top), runtime.totalRow - height);
-                    left = Math.min(Math.max(0, left), runtime.totalCol - width);
+                    top = Math.min(Math.max(0, top), runtime.limitRow - height);
+                    left = Math.min(Math.max(0, left), runtime.limitCol - width);
 
                     $(this).css({
                         top: top * cellH,
@@ -794,10 +792,28 @@
                 return this;
             },
 
-            appendBlock: function(item) {
-                container.append(item);
-                this.refresh();
-                return this;
+            appendBlock: function(items) {
+                var allBlock = $(items).appendTo(container);
+                var block = null;
+                var activeBlock = [];
+                
+                allBlock.each(function(index, item) {
+                    item.index = ++index;
+                    if (block = layoutManager.loadBlock(item, setting)) {
+                        activeBlock.push(block);
+                        klass.fireEvent('onBlockLoad', item, setting);
+                    }
+                });
+
+                engine[setting.engine](activeBlock, setting);
+                
+                layoutManager.setWallSize(runtime, container);
+
+                allBlock.each(function(index, item) {
+                    setting.draggable && setDragable(item);
+                    layoutManager.showBlock(item, setting);
+                    klass.fireEvent('onBlockShow', item, setting);
+                });
             },
 
             container: container,
@@ -911,11 +927,6 @@
                 
                 klass.fireEvent('onGridArrange', container, setting);
 
-                // don't set height when nesting block;
-                if (!container.attr('data-height')) {
-                    container.height(container.attr("data-wall-height"));
-                }
-                  
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
