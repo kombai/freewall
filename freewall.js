@@ -179,7 +179,7 @@
             var $item = $(item);
             var self = this;
             var start = $item.attr("data-state") != "move";
-            var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s, width 0.5s, height 0.5s";
+            var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s, width 0.5s, height 0.5s, opacity 0.5s";
             
             item.delay && clearTimeout(item.delay);
             //ignore dragging block;
@@ -200,11 +200,14 @@
 
                 // for hidden block;
                 if (!block) {
+                    var position = $item.position();
                     $item[method]({
+                        left: position.left + $item.width() / 2,
+                        top: position.top + $item.height() / 2,
                         width: 0,
-                        height: 0
+                        height: 0,
+                        opacity: 0
                     });
-                    $item.animate({opacity: 0});
                 } else {
                     if (block.fixSize) {
                         block.height = 1 * $item.attr("data-height");
@@ -746,8 +749,7 @@
                     if (setting.animate && layoutManager.transition) {
                         layoutManager.setTransition(this, "");
                     }
-                    this.style.zIndex = 9999;
-                    $(this).addClass('fw-float');
+                    $(this).css('z-index', 9999).addClass('fw-float');
                 },
                 move: function(evt, tracker) {
                     var position = $(this).position();
@@ -766,16 +768,15 @@
                     var left = Math.round(position.left / cellW);
                     var width = Math.round($(this).width() / cellW);
                     var height = Math.round($(this).height() / cellH);
-                    $(this).removeClass('fw-float');
                     top = Math.min(Math.max(0, top), runtime.limitRow - height);
                     left = Math.min(Math.max(0, left), runtime.limitCol - width);
 
                     $(this).css({
+                        zIndex: "auto",
                         top: top * cellH,
                         left: left * cellW
-                    });
+                    }).removeClass('fw-float');
                     klass.fillHoles();
-                    this.style.zIndex = "auto";
                 }
             });
         }
