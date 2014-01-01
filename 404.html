@@ -39,7 +39,7 @@
 				"#CD9B1D"
 			];
 
-			var w = 1, h = 1, html = '', color = '', limitItem = 220;
+			var w = 1, h = 1, html = '', color = '', limitItem = 244;
 			for (var i = 0; i < limitItem; ++i) {
 				h = 1 + 3 * Math.random() << 0;
 				w = 1 + 3 * Math.random() << 0;
@@ -53,77 +53,91 @@
 				selector: '.cell',
 				animate: true,
 				delay: 20,
-				cellW: 15,
+				cellW: 15.5,
 				cellH: 15,
 				gutterX: 2,
-				gutterY: 2
+				gutterY: 2,
+				onStartSet: function(block, setting) {
+					// check for showing brick;
+					if (block != null) {
+						$(this).css({
+							top: 3000,
+							left: block.left
+						});
+					} else {
+						$(this).css({
+							opacity: 0
+						});
+					}
+				}
 			});
 			wall.setHoles([
 				// 4
 				{
 					top: 6,
-					left: 4,
+					left: 6,
 					width: 2,
 					height: 8
 				},
 				{
 					top: 14,
-					left: 4,
+					left: 6,
 					width: 8,
 					height: 2
 				},
 				{
 					top: 12,
-					left: 8,
+					left: 10,
 					width: 2,
 					height: 6
 				},
 				// 0
 				{
 					top: 6,
-					left: 14,
+					left: 16,
 					width: 8,
 					height: 2
 				},
 				{
 					top: 8,
-					left: 14,
+					left: 16,
 					width: 2,
 					height: 8
 				},
 				{
 					top: 8,
-					left: 20,
+					left: 22,
 					width: 2,
 					height: 8
 				},
 				{
 					top: 16,
-					left: 14,
+					left: 16,
 					width: 8,
 					height: 2
 				},
 				// 4
 				{
 					top: 6,
-					left: 24,
+					left: 26,
 					width: 2,
 					height: 8
 				},
 				{
 					top: 14,
-					left: 24,
+					left: 26,
 					width: 8,
 					height: 2
 				},
 				{
 					top: 12,
-					left: 28,
+					left: 30,
 					width: 2,
 					height: 6
 				}
 			]);
 			wall.fitWidth();
+			wall.refresh();
 		</script>
 	</body>
 </html>
