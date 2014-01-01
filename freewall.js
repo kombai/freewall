@@ -365,6 +365,8 @@
             runtime.cellW = 0;
             runtime.lastId = 1;
             runtime.matrix = {};
+            runtime.totalCol = 0;
+            runtime.totalRow = 0;
         },
         setDragable: function(item, option) {
             var touch = false;
@@ -716,7 +718,7 @@
             gutterY: 15,
 
             totalCol: 0,
-            totalRow: 1,
+            totalRow: 0,
 
             limitCol: 666666, // maximum column; 
             limitRow: 666666,
