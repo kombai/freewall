@@ -275,11 +275,11 @@
         },
         adjustBlock: function(block, setting) {
             var runtime = setting.runtime;
+            var gutterX = runtime.gutterX;
+            var gutterY = runtime.gutterY;
             var $item = $("#" + block.id);
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
-            var gutterX = runtime.gutterX;
-            var gutterY = runtime.gutterY;
 
             if (setting.cellH = 'auto') {
                 $item.width(block.width * cellW - gutterX);
@@ -287,15 +287,21 @@
                 block.height = Math.round(($item.height() + gutterY) / cellH);
             }
         },
-        adjustWidth: function(width, setting) {
+        adjustUnit: function(width, height, setting) {
             var gutterX = setting.gutterX;
+            var gutterY = setting.gutterY;
             var runtime = setting.runtime;
             var cellW = setting.cellW;
+            var cellH = setting.cellH;
 
             $.isFunction(cellW) && (cellW = cellW(width));
             cellW = 1 * cellW;
             !$.isNumeric(cellW) && (cellW = 1);
             
+            $.isFunction(cellH) && (cellH = cellH(height));
+            cellH = 1 * cellH;
+            !$.isNumeric(cellH) && (cellH = 1);
+
             if ($.isNumeric(width)) {
                 // adjust cell width via container;
                 cellW < 1 && (cellW = cellW * width);
@@ -314,22 +320,7 @@
                 runtime.cellS = runtime.cellW / cellW;
                 runtime.gutterX = gutterX;
                 runtime.limitCol = limitCol;
-            } else {
-                // adjust cell width via cell height;
-                cellW < 1 && (cellW = runtime.cellH);
-                runtime.cellW = cellW != 1 ? cellW * runtime.cellS : 1;
-                runtime.gutterX = gutterX;
-                runtime.limitCol = 666666;
-            }
-        },
-        adjustHeight: function(height, setting) {
-            var gutterY = setting.gutterY;
-            var runtime = setting.runtime;
-            var cellH = setting.cellH;
-
-            $.isFunction(cellH) && (cellH = cellH(height));
-            cellH = 1 * cellH;
-            !$.isNumeric(cellH) && (cellH = 1);
+            } 
 
             if ($.isNumeric(height)) {
                 // adjust cell height via container;
@@ -349,7 +340,17 @@
                 runtime.cellS = runtime.cellH / cellH;
                 runtime.gutterY = gutterY;
                 runtime.limitRow = limitRow;
-            } else {
+            } 
+
+            if (!$.isNumeric(width)) {
+                // adjust cell width via cell height;
+                cellW < 1 && (cellW = runtime.cellH);
+                runtime.cellW = cellW != 1 ? cellW * runtime.cellS : 1;
+                runtime.gutterX = gutterX;
+                runtime.limitCol = 666666;
+            }
+
+            if (!$.isNumeric(height)) {
                 // adjust cell height via cell width;
                 cellH < 1 && (cellH = runtime.cellW);
                 runtime.cellH = cellH != 1 ? cellH * runtime.cellS : 1;
@@ -519,7 +520,7 @@
 
             if (runtime.limitCol < runtime.limitRow) {
                 // do not set height with nesting grid;
-                !container.attr("data-height") && container.height(totalHeight);
+                !container.attr("data-height") && container.height(Math.ceil(totalHeight));
             }
         }
     };
@@ -853,8 +854,7 @@
                 runtime.currentArguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
-                layoutManager.adjustHeight(height, setting);
-                layoutManager.adjustWidth('auto', setting);
+                layoutManager.adjustUnit('auto', height, setting);
                 
                 if (runtime.filter) {
                     items = allBlock.filter(runtime.filter).addClass('fw-filter');
@@ -901,8 +901,7 @@
                 runtime.currentArguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
-                layoutManager.adjustWidth(width, setting);
-                layoutManager.adjustHeight('auto', setting);
+                layoutManager.adjustUnit(width, 'auto', setting);
 
                 if (runtime.filter) {
                     items = allBlock.filter(runtime.filter).addClass('fw-filter');
@@ -950,8 +949,7 @@
                 runtime.currentArguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
-                layoutManager.adjustWidth(width, setting);
-                layoutManager.adjustHeight(height, setting);
+                layoutManager.adjustUnit(width, height, setting);
 
                 if (runtime.filter) {
                     items = allBlock.filter(runtime.filter).addClass('fw-filter');
@@ -1134,6 +1132,10 @@
     freewall.createEngine = function(engineData) {
         // create new engine;
         $.extend(engine, engineData);
+    };
+
+    freewall.getMethod = function(method) {
+        return layoutManager[method];
     };
  
 })(window.Zepto || window.jQuery);
