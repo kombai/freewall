@@ -33,9 +33,12 @@
 				cursor: pointer;
 				background: rgb(205, 149, 12);
 			}
+
+			.filter-label.active,
 			.filter-label:hover {
 				background: rgb(238, 180, 34);
 			}
+
 		</style>
 	</head>
 	<body>
@@ -49,7 +52,7 @@
 		</div>
 		<div class="layout">
 			<div class="filter-items">
-				<div class="filter-label" >All block</div>
+				<div class="filter-label active" >All block</div>
 				<div class="filter-label" data-filter=".size11">Block 1-1</div>
 				<div class="filter-label" data-filter=".size12">Block 1-2</div>
 				<div class="filter-label" data-filter=".size21">Block 2-1</div>
@@ -96,7 +99,8 @@
 				});
 				
 				$(".filter-label").click(function() {
-					var filter = $(this).data('filter');
+					$(".filter-label").removeClass("active");
+					var filter = $(this).addClass('active').data('filter');
 					if (filter) {
 						wall.filter(filter);
 					} else {
