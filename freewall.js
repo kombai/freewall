@@ -398,10 +398,10 @@
                         touch = true;
                         evt = evt.changedTouches[0];
                     }
-                    
-                    set.start.call(ele, evt);
 
                     if (evt.button != 2 && evt.which != 3) {
+                        set.start.call(ele, evt);
+                        
                         set.sX = evt.clientX;
                         set.sY = evt.clientY;
                         set.top = parseInt($ele.css("top")) || 0;
