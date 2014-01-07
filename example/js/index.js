@@ -175,11 +175,11 @@
 				cellH: 20,
 				gutterX: 2,
 				gutterY: 2,
-				delay: 10,
+				delay: 20,
 				onResize: function() {
 					this.refresh();
 					var totalCol = this.container.attr('data-total-col');
-					var offsetLeft = Math.round(totalCol/2 - 16);
+					var offsetLeft = Math.round(totalCol/2 - 31);
 					this.setHoles(getPosition(offsetLeft));
 					this.refresh();
 				},
@@ -312,12 +312,84 @@
 						left: offsetLeft + 27,
 						width: 5,
 						height: 2
-					}
+					},
+
+					// W
+					{
+						top: 6,
+						left: offsetLeft + 37,
+						width: 2,
+						height: 12
+					},
+					{
+						top: 17,
+						left: offsetLeft + 39,
+						width: 6,
+						height: 2
+					},
+					{
+						top: 12,
+						left: offsetLeft + 41,
+						width: 2,
+						height: 5
+					},
+					{
+						top: 6,
+						left: offsetLeft + 45,
+						width: 2,
+						height: 12
+					},
+					//a
+					{
+						top: 9,
+						left: offsetLeft + 50,
+						width: 3,
+						height: 2
+					},
+					{
+						top: 9,
+						left: offsetLeft + 53,
+						width: 2,
+						height: 10
+					},
+					{
+						top: 13,
+						left: offsetLeft + 49,
+						width: 4,
+						height: 2
+					},
+					{
+						top: 15,
+						left: offsetLeft + 49,
+						width: 2,
+						height: 2
+					},
+					{
+						top: 17,
+						left: offsetLeft + 49,
+						width: 4,
+						height: 2
+					},
+					//l
+					{
+						top: 6,
+						left: offsetLeft + 57,
+						width: 2,
+						height: 13
+					},
+					//l
+					{
+						top: 6,
+						left: offsetLeft + 61,
+						width: 2,
+						height: 13
+					},
+
 				];
 			}
 			wall.fitZone();
 			var totalCol = wall.container.attr('data-total-col');
-			var offsetLeft = Math.round(totalCol/2 - 16);
+			var offsetLeft = Math.round(totalCol/2 - 31);
 			wall.setHoles(getPosition(offsetLeft));
 			wall.refresh();
 		},
