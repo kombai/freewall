@@ -1,4 +1,3 @@
-
 // created by Minh Nguyen;
 // version 1.04;
 
@@ -48,7 +47,7 @@
             var block = null;
             var gutterX = runtime.gutterX;
             var gutterY = runtime.gutterY;
-            var fixSize = eval($item.attr('data-fixSize'));
+            var fixSize = $item.data('fixSize');
             var blockId = runtime.lastId++ + '-' + this.totalGrid;
             
             //ignore dragging block;
