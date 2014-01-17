@@ -979,7 +979,7 @@
                 layoutManager.setWallSize(runtime, container);
                 
                 klass.fireEvent('onGridArrange', container, setting);
-                
+
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
@@ -1139,6 +1139,11 @@
         $.extend(engine, engineData);
     };
 
+    /* support access helper function;
+    example:
+
+        freewall.getMethod('setBlock')(block, setting);
+    */
     freewall.getMethod = function(method) {
         return layoutManager[method];
     };
