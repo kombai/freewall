@@ -167,7 +167,11 @@
             realBlock.width = 1 * realBlock.width.toFixed(2);
             realBlock.height = 1 * realBlock.height.toFixed(2);
 
-            block.id && ++runtime.length && (runtime.blocks[block.id] = realBlock);
+            if (block.id) {
+                (runtime.blocks[block.id] == null) && (runtime.length += 1);
+                runtime.blocks[block.id] = realBlock;
+            }
+
             // for append feature;
             return realBlock;
         },
@@ -975,7 +979,7 @@
                 layoutManager.setWallSize(runtime, container);
                 
                 klass.fireEvent('onGridArrange', container, setting);
-
+                
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
