@@ -832,7 +832,7 @@
 
             filter: function(filter) {
                 runtime.filter = filter;
-                this.refresh();
+                runtime.currentMethod && this.refresh();
                 return this;
             },
 
@@ -1022,7 +1022,7 @@
 
             prepend: function(items) {
                 container.prepend(items);
-                this.refresh();
+                runtime.currentMethod && this.refresh();
                 return this;
             },
 
@@ -1139,7 +1139,8 @@
         $.extend(engine, engineData);
     };
 
-    /* support access helper function;
+    /*
+    support access helper function;
     example:
 
         freewall.getMethod('setBlock')(block, setting);
