@@ -161,16 +161,13 @@
                 height: cellH * height - gutterY
             };
             
-
             realBlock.top = 1 * realBlock.top.toFixed(2);
             realBlock.left = 1 * realBlock.left.toFixed(2);
             realBlock.width = 1 * realBlock.width.toFixed(2);
             realBlock.height = 1 * realBlock.height.toFixed(2);
 
-            if (block.id) {
-                (runtime.blocks[block.id] == null) && (runtime.length += 1);
-                runtime.blocks[block.id] = realBlock;
-            }
+            //runtime.length += 1;
+            block.id && (runtime.blocks[block.id] = realBlock);
 
             // for append feature;
             return realBlock;
@@ -203,10 +200,14 @@
 
                 // for hidden block;
                 if (!block) {
-                    var position = $item.position();
+                    //var position = $item.position(); <= make speed so slow;
+                    var height = parseInt(item.style.height) || 0;
+                    var width = parseInt(item.style.width) || 0;
+                    var left = parseInt(item.style.left) || 0;
+                    var top = parseInt(item.style.top) || 0;
                     $item[method]({
-                        left: position.left + $item.width() / 2,
-                        top: position.top + $item.height() / 2,
+                        left: left + width / 2,
+                        top: top + height / 2,
                         width: 0,
                         height: 0,
                         opacity: 0
@@ -229,12 +230,12 @@
                         left: block.left
                     });
 
-                    runtime.length -= 1;
+                    if ($item.attr('data-nested') != null) {
+                        self.nestedGrid(item, setting);
+                    }
                 }
 
-                if ($item.attr('data-nested') != null) {
-                    self.nestedGrid(item, setting);
-                }
+                runtime.length -= 1;
 
                 setting.onSetBlock.call(item, block, setting);
 
@@ -861,6 +862,8 @@
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit('auto', height, setting);
                 
+                //allBlock.css({width: "", height: ""});
+
                 if (runtime.filter) {
                     items = allBlock.filter(runtime.filter).addClass('fw-filter');
                 } else {
@@ -884,6 +887,8 @@
                 layoutManager.setWallSize(runtime, container);
 
                 klass.fireEvent('onGridArrange', container, setting);
+
+                runtime.length = allBlock.length;
 
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
@@ -908,6 +913,8 @@
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit(width, 'auto', setting);
 
+                //allBlock.css({width: "", height: ""});
+                
                 if (runtime.filter) {
                     items = allBlock.filter(runtime.filter).addClass('fw-filter');
                 } else {
@@ -931,6 +938,8 @@
                 layoutManager.setWallSize(runtime, container);
                 
                 klass.fireEvent('onGridArrange', container, setting);
+
+                runtime.length = allBlock.length;
 
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
@@ -956,6 +965,8 @@
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit(width, height, setting);
 
+                //allBlock.css({width: "", height: ""});
+
                 if (runtime.filter) {
                     items = allBlock.filter(runtime.filter).addClass('fw-filter');
                 } else {
@@ -980,6 +991,8 @@
                 
                 klass.fireEvent('onGridArrange', container, setting);
 
+                runtime.length = allBlock.length;
+               
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
