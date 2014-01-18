@@ -298,6 +298,18 @@ table {
 	height: 960px;
 }
 
+.donate form {
+	height: 100%;
+	width: 100%;
+	background: rgb(205, 155, 29);
+}
+
+.donate form .paypal {
+	display: block;
+	margin: auto;
+	outline: 0;
+}
+
 .img-demo {
 	vertical-align: bottom;
 	list-style: none;
