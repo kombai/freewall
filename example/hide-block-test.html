@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hide block test</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Hide block test" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
+		
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+			}
+			.free-wall {
+				margin: 15px;
+				height: 420px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="freewall" class="free-wall"></div>
+
+		<script type="text/javascript">
+			var wall = new freewall('.free-wall');
+			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'></div></div>";
+			var colour = ["#DAA520", "#CD950C",	"#EEB422", "#CD9B1D"];
+
+			var w = 1, h = 1, html = '', color = '', limitItem = 820;
+			for (var i = 0; i < limitItem; ++i) {
+				h = 1;
+				w = 2 + 4 * Math.random() << 0;
+				color = colour[colour.length * Math.random() << 0];
+				html += temp.replace(/\{height\}/g, h*20).replace(/\{width\}/g, w*15).replace("{color}", color);
+			}
+			wall.container.html(html);
+			
+			$(function() {
+				var start = new Date().getTime();
+				wall.reset({
+					selector: '.cell',
+					animate: true,
+					cellW: 15,
+					cellH: 20,
+					gutterX: 2,
+					gutterY: 2,
+					onResize: function() {
+						this.refresh();
+					},
+					onComplete: function() {
+						console.log("Showup", new Date().getTime() - start);
+					}
+				});
+
+				wall.addCustomEvent("onGridReady", function(container, setting) {
+					start = new Date().getTime();
+				});
+
+				wall.addCustomEvent("onGridArrange", function(container, setting) {
+					console.log("Arrange", new Date().getTime() - start);
+					start = new Date().getTime();
+				});
+
+				wall.fitZone();
+			});
+		</script>
+	</body>
+</html>
