@@ -850,7 +850,6 @@
 
             fitHeight: function(height) {
                 var allBlock = container.find(setting.selector).removeAttr('id'),
-                    items,
                     block = null,
                     activeBlock = [];
 
@@ -862,20 +861,20 @@
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit('auto', height, setting);
                 
-                //allBlock.css({width: "", height: ""});
-
                 if (runtime.filter) {
-                    items = allBlock.filter(runtime.filter).addClass('fw-filter');
+                    allBlock.data('active', 0);
+                    allBlock.filter(runtime.filter).data('active', 1);
                 } else {
-                    items = allBlock.removeClass('fw-filter');
+                    allBlock.data('active', 1);
                 }
 
                 klass.fireEvent('onGridReady', container, setting);
 
-                items.each(function(index, item) {
+                allBlock.each(function(index, item) {
+                    var $item = $(item);
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
-                        activeBlock.push(block);
+                        $item.data("active") && activeBlock.push(block);
                         klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });
@@ -901,7 +900,6 @@
 
             fitWidth: function(width) {
                 var allBlock = container.find(setting.selector).removeAttr('id'),
-                    items,
                     block = null,
                     activeBlock = [];
 
@@ -912,21 +910,21 @@
                 
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit(width, 'auto', setting);
-
-                //allBlock.css({width: "", height: ""});
                 
                 if (runtime.filter) {
-                    items = allBlock.filter(runtime.filter).addClass('fw-filter');
+                    allBlock.data('active', 0);
+                    allBlock.filter(runtime.filter).data('active', 1);
                 } else {
-                    items = allBlock.removeClass('fw-filter');
+                    allBlock.data('active', 1);
                 }
                 
                 klass.fireEvent('onGridReady', container, setting);
 
-                items.each(function(index, item) {
+                allBlock.each(function(index, item) {
+                    var $item = $(item);
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
-                        activeBlock.push(block);
+                        $item.data("active") && activeBlock.push(block);
                         klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });
@@ -952,7 +950,6 @@
 
             fitZone: function(width, height) {
                 var allBlock = container.find(setting.selector).removeAttr('id'),
-                    items,
                     block = null,
                     activeBlock = [];
 
@@ -965,20 +962,20 @@
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit(width, height, setting);
 
-                //allBlock.css({width: "", height: ""});
-
                 if (runtime.filter) {
-                    items = allBlock.filter(runtime.filter).addClass('fw-filter');
+                    allBlock.data('active', 0);
+                    allBlock.filter(runtime.filter).data('active', 1);
                 } else {
-                    items = allBlock.removeClass('fw-filter');
+                    allBlock.data('active', 1);
                 }
                 
                 klass.fireEvent('onGridReady', container, setting);
 
-                items.each(function(index, item) {
+                allBlock.each(function(index, item) {
+                    var $item = $(item);
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
-                        activeBlock.push(block);
+                        $item.data("active") && activeBlock.push(block);
                         klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });

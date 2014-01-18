@@ -52,14 +52,14 @@
 		</div>
 		<div class="layout">
 			<div class="filter-items">
-				<div class="filter-label active" >All block</div>
+				<div class="filter-label" >All block</div>
 				<div class="filter-label" data-filter=".size11">Block 1-1</div>
 				<div class="filter-label" data-filter=".size12">Block 1-2</div>
 				<div class="filter-label" data-filter=".size21">Block 2-1</div>
 				<div class="filter-label" data-filter=".size22">Block 2-2</div>
 				<div class="filter-label" data-filter=".size13">Block 1-3</div>
 				<div class="filter-label" data-filter=".size31">Block 3-1</div>
-				<div class="filter-label" data-filter=".size23">Block 2-3</div>
+				<div class="filter-label active" data-filter=".size23">Block 2-3</div>
 			</div>
 			<div id="freewall" class="free-wall"></div>
 		</div>
@@ -97,7 +97,7 @@
 						wall.refresh();
 					}
 				});
-				
+				wall.filter(".size23");
 				$(".filter-label").click(function() {
 					$(".filter-label").removeClass("active");
 					var filter = $(this).addClass('active').data('filter');
