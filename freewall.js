@@ -72,6 +72,7 @@
             var col = !width ? 0 : Math.round((width + gutterX) / cellW);
             var row = !height ? 0 : Math.round((height + gutterY) / cellH);
 
+            isNaN(fixSize) && (fixSize = null);
             // estimate size;
             if (!fixSize && setting.cellH == 'auto') {
                 $item.width(cellW * col - gutterX);
