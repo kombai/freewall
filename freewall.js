@@ -47,7 +47,7 @@
             var block = null;
             var gutterX = runtime.gutterX;
             var gutterY = runtime.gutterY;
-            var fixSize = $item.data('fixSize');
+            var fixSize = $item.attr('fixSize') * 1;
             var blockId = runtime.lastId++ + '-' + this.totalGrid;
             
             //ignore dragging block;
@@ -102,6 +102,8 @@
 
                 width == 0 && (col = 0);
                 height == 0 && (row = 0);
+                
+                console.log(fixSize);
 
                 block = {
                     id: blockId,
