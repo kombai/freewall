@@ -25,7 +25,7 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 * [Responsive grid](http://vnjs.net/www/project/freewall/)
 * [Gaps control](http://vnjs.net/www/project/freewall/404.html)
 * [Filter items](http://vnjs.net/www/project/freewall/example/demo-filter.html)
-* [Css3 animation](http://vnjs.net/www/project/freewall/example/css-animate.html)
+* [CSS3 animation (js fallback)](http://vnjs.net/www/project/freewall/example/css-animate.html)
 * [Nested grid](http://vnjs.net/www/project/freewall/example/nested-grid.html)
 * [Images grid/layout](http://vnjs.net/www/project/freewall/example/image-layout.html)
 * [Fit container](http://vnjs.net/www/project/freewall/example/fit-zone.html)
