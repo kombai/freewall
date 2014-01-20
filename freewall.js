@@ -824,6 +824,37 @@
                     klass.fireEvent('onBlockShow', item, setting);
                 });
             },
+            /*
+            add one or more blank area (hole) on layout;
+            example:
+                
+                wall.appendHoles({
+                    top: 10,
+                    left: 36,
+                    width: 2,
+                    height: 6
+                });
+
+                wall.appendHoles([
+                    {
+                        top: 16,
+                        left: 16,
+                        width: 8,
+                        height: 2
+                    },
+                    {
+                        top: 10,
+                        left: 36,
+                        width: 2,
+                        height: 6
+                    }
+                ]);
+
+            */
+            appendHoles: function(holes) {
+                runtime.holes = runtime.holes.concat(holes);
+                return this;
+            },
 
             container: container,
 
@@ -1063,22 +1094,21 @@
                 $.extend(setting, option);
                 return this;
             },
-
+            
             /*
-            create blank are on layout;
+            create one or more blank area (hole) on layout;
             example:
                 
-                wall.setHoles([
-                    {
-                        top: 2,
-                        left: 2,
-                        width: 2,
-                        height: 2
-                    }
-                ]);
+                wall.setHoles({
+                    top: 2,
+                    left: 2,
+                    width: 2,
+                    height: 2
+                });
             */
+            
             setHoles: function(holes) {
-                runtime.holes = holes;
+                runtime.holes = [].concat(holes);
                 return this;
             },
 
@@ -1087,7 +1117,6 @@
                 this.refresh();
                 return this;
             }
-            
         });
         
         container.attr('data-min-width', Math.floor($W.width() / 80) * 80);

@@ -398,6 +398,7 @@ wall.reset({
 						<ul>
 							<li> addCustomEvent </li>
 							<li> appendBlock </li>
+							<li> appendHoles </li>
 							<li> fillHoles </li>
 							<li> filter </li>
 							<li> fireEvent </li>
@@ -426,6 +427,10 @@ wall.reset({
 							<li>
 								<h3> appendBlock(items) </h3>
 								<div> Append one or more items into layout</div>
+							</li>
+							<li>
+								<h3> appendHoles(holes) </h3>
+								<div> Add one or more blank area into layout</div>
 							</li>
 							<li>
 								<h3> fillHoles() </h3>
@@ -491,15 +496,12 @@ var ewall = new freewall(demo);
 var demo = $(".example");
 ewall.reset({
   selector: '.cell',
-  animate: false,
-  block: {
-    flex: 1
-  },
-  cell: {
-    width: 150,
-    height: 150
-  },
-  fillGap: true
+  animate: true,
+  delay: 20,
+  cellW: 15.5,
+  cellH: 15,
+  gutterX: 2,
+  gutterY: 2
 });
 ewall.fitWidth(cwidth);
 									</code>

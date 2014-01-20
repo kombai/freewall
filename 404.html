@@ -69,8 +69,13 @@
 							opacity: 0
 						});
 					}
+				},
+				onComplete: function(item, setting) {
+					console.log(wall);
+					console.log(setting);
 				}
 			});
+
 			wall.setHoles([
 				// 4
 				{
@@ -90,8 +95,11 @@
 					left: 10,
 					width: 2,
 					height: 6
-				},
-				// 0
+				}
+			]);
+
+			// 0
+			wall.appendHoles([
 				{
 					top: 6,
 					left: 16,
@@ -115,8 +123,11 @@
 					left: 16,
 					width: 8,
 					height: 2
-				},
-				// 4
+				}
+			]);
+
+			// 4
+			wall.appendHoles([
 				{
 					top: 6,
 					left: 26,
@@ -136,6 +147,7 @@
 					height: 6
 				}
 			]);
+
 			wall.fitWidth();
 			wall.refresh();
 		</script>
