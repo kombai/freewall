@@ -28,7 +28,7 @@
             //fixSize: 1, no resize + no adjust = no fill gap;
             gutterX: 15, // width spacing between blocks;
             gutterY: 15, // height spacing between blocks;
-            selector: ':only-child',
+            selector: '> div',
             draggable: false,
             rightToLeft: false,
             bottomToTop: false,
@@ -250,7 +250,7 @@
             var gutterX = $item.attr("data-gutterX") || setting.gutterX;
             var gutterY = $item.attr("data-gutterY") || setting.gutterY;
             var method = $item.attr("data-method") || "fitZone";
-            var nested = $item.attr('data-nested') || ":only-child";
+            var nested = $item.attr('data-nested') || "> div";
             var cellH = $item.attr("data-cellH") || setting.cellH;
             var cellW = $item.attr("data-cellW") || setting.cellW;
             var block = runtime.blocks[item.id];
