@@ -817,6 +817,8 @@
                 engine[setting.engine](activeBlock, setting);
                 
                 layoutManager.setWallSize(runtime, container);
+                
+                runtime.length = allBlock.length;
 
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
