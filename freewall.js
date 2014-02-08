@@ -321,7 +321,7 @@
                 }
 
                 limitCol = Math.floor((width + gutterX) / cellW);
-                runtime.cellW = (width + gutterX) / limitCol;
+                runtime.cellW = (width + gutterX) / Math.max(limitCol, 1);
                 runtime.cellS = runtime.cellW / cellW;
                 runtime.gutterX = gutterX;
                 runtime.limitCol = limitCol;
@@ -341,7 +341,7 @@
                 }
 
                 limitRow = Math.floor((height + gutterY) / cellH);
-                runtime.cellH = (height + gutterY) / limitRow;
+                runtime.cellH = (height + gutterY) / Math.max(limitRow, 1);
                 runtime.cellS = runtime.cellH / cellH;
                 runtime.gutterY = gutterY;
                 runtime.limitRow = limitRow;
@@ -509,14 +509,14 @@
 
         },
         setWallSize: function(runtime, container) {
-            var totalRow = Math.max(1, runtime.totalRow);
-            var totalCol = Math.max(1, runtime.totalCol);
+            var totalRow = runtime.totalRow;
+            var totalCol = runtime.totalCol;
             var gutterY = runtime.gutterY;
             var gutterX = runtime.gutterX;
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
-            var totalWidth = cellW * totalCol - gutterX;
-            var totalHeight = cellH * totalRow - gutterY;
+            var totalWidth = Math.max(0, cellW * totalCol - gutterX);
+            var totalHeight = Math.max(0, cellH * totalRow - gutterY);
             
             container.attr({
                 'data-total-col': totalCol,
