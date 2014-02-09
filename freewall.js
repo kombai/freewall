@@ -118,12 +118,14 @@
                     block.x = 1 * fixPos[1];
                     block.width = fixSize != null ? col : Math.min(col, runtime.limitCol - block.x);
                     block.height = fixSize != null ? row : Math.min(row, runtime.limitRow - block.y);
-                    runtime.holes.push({
+                    var holeId = block.y + "-" + block.x + "-" + block.width + "-" + block.height;
+                    runtime.holes[holeId] = {
+                        id: block.id,
                         top: block.y,
                         left: block.x,
                         width: block.width,
                         height: block.height
-                    });
+                    };
                     this.setBlock(block, setting);
                 }
             }
@@ -485,7 +487,7 @@
             // find limit zone by horizon;
             for (var y = t; y < minY; ++y) {
                 for (var x = l; x < maxX; ++x) {
-                    if (matrix[y + '-' + x] == true) {
+                    if (matrix[y + '-' + x] != null) {
                         (l < x && x < minX) && (minX = x);
                     }
                 }
@@ -494,7 +496,7 @@
             // find limit zone by vertical;
             for (var y = t; y < maxY; ++y) {
                 for (var x = l; x < minX; ++x) {
-                    if (matrix[y + '-' + x] == true) {
+                    if (matrix[y + '-' + x] != null) {
                         (t < y && y < minY) && (minY = y);
                     }
                 }
@@ -556,10 +558,10 @@
                 smallLoop = Math.min(col, row);
 
             // fill area with top, left, width, height;
-            function fillMatrix(t, l, w, h) {
+            function fillMatrix(id, t, l, w, h) {
                 for (var y = t; y < t + h;) {
                     for (var x = l; x < l + w;) {
-                        matrix[y + '-' + x] = true;
+                        matrix[y + '-' + x] = id;
                         ++x > maxX && (maxX = x);
                     }
                     ++y > maxY && (maxY = y);
@@ -567,11 +569,12 @@
             }
             
             // set a hole on the wall;
-            if (holes.length) {
-                for (var i = 0; i < holes.length; ++i) {
-                    fillMatrix(holes[i]['top'], holes[i]['left'], holes[i]['width'], holes[i]['height']);
+            for (var i in holes) {
+                if (holes.hasOwnProperty(i)) {
+                    fillMatrix(holes[i]["id"] || true, holes[i]['top'], holes[i]['left'], holes[i]['width'], holes[i]['height']);
                 }
             }
+            
 
             for (var b = 0; b < bigLoop; ++b) {
                 if (!items.length) break;
@@ -596,12 +599,12 @@
                         // resize near block to fill gap;
                         if (lastBlock && !fitWidth && runtime.minHoB > freeArea.height) {
                             lastBlock.height += freeArea.height;
-                            fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+                            fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                             layoutManager.setBlock(lastBlock, setting);
                             continue;
                         } else if (lastBlock && fitWidth && runtime.minWoB > freeArea.width) {
                             lastBlock.width += freeArea.width;
-                            fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+                            fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                             layoutManager.setBlock(lastBlock, setting);
                             continue;
                         } else {
@@ -639,7 +642,7 @@
                         // keep success block for next round;
                         lastBlock = wall[block.id];
 
-                        fillMatrix(lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
+                        fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                         layoutManager.setBlock(lastBlock, setting);
                     } else {
                         // get expect area;
@@ -680,6 +683,7 @@
             runtime.matrix = matrix;
             runtime.totalRow = maxY;
             runtime.totalCol = maxX;
+            console.log(runtime.matrix)
         }
     };
 
@@ -751,40 +755,67 @@
             var gutterY = runtime.gutterY;
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
+            var $item = $(item);
 
             layoutManager.setDragable(item, {
                 start: function(event) {
                     if (setting.animate && layoutManager.transition) {
                         layoutManager.setTransition(this, "");
                     }
-                    $(this).css('z-index', 9999).addClass('fw-float');
+                    $item.css('z-index', 9999).addClass('fw-float');
                 },
                 move: function(evt, tracker) {
-                    var position = $(this).position();
+                    var position = $item.position();
                     var top = Math.round(position.top / cellH);
                     var left = Math.round(position.left / cellW);
-                    var width = Math.round($(this).width() / cellW);
-                    var height = Math.round($(this).height() / cellH);
+                    var width = Math.round($item.width() / cellW);
+                    var height = Math.round($item.height() / cellH);
                     top = Math.min(Math.max(0, top), runtime.limitRow - height);
                     left = Math.min(Math.max(0, left), runtime.limitCol - width);
-                    klass.setHoles([{top: top, left: left, width: width, height: height}]);
+                    klass.setHoles({top: top, left: left, width: width, height: height});
                     klass.refresh();
                 },
                 end: function() {
-                    var position = $(this).position();
+                    var position = $item.position();
                     var top = Math.round(position.top / cellH);
                     var left = Math.round(position.left / cellW);
-                    var width = Math.round($(this).width() / cellW);
-                    var height = Math.round($(this).height() / cellH);
+                    var width = Math.round($item.width() / cellW);
+                    var height = Math.round($item.height() / cellH);
                     top = Math.min(Math.max(0, top), runtime.limitRow - height);
                     left = Math.min(Math.max(0, left), runtime.limitCol - width);
 
-                    $(this).css({
+                    $item.css({
                         zIndex: "auto",
                         top: top * cellH,
                         left: left * cellW
                     }).removeClass('fw-float');
+                    
+                    $item.attr({
+                        "data-width": $item.width(),
+                        "data-height": $item.height()
+                    });
+
+                    //check old drag element;
+                    for (var y = 0; y < height; ++y) {
+                        for (var x = 0; x < width; ++x) {
+                            var xy = (y + top) + "-" + (x + left);
+                            var oldDropId = runtime.matrix[xy];
+                            if (oldDropId && oldDropId != true) {
+                                $("#" + oldDropId).removeAttr("data-fixPos");
+                            }
+                        }
+                    }
+                    
+                    //klass.refresh();
                     klass.fillHoles();
+                    
+                    klass.fixPos({
+                        block: this,
+                        top: top,
+                        left: left
+                    });
+                    
+                    klass.refresh();
                 }
             });
         }
@@ -854,14 +885,28 @@
 
             */
             appendHoles: function(holes) {
-                runtime.holes = runtime.holes.concat(holes);
+                holes = [].concat(holes);
+                var i, h = {};
+                for (i = 0; i < holes.length; ++i) {
+                    h = holes[i];
+                    runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = h;
+                }
                 return this;
             },
 
             container: container,
 
-            fillHoles: function() {
-                runtime.holes = [];
+            fillHoles: function(holes) {
+                if (arguments.length == 0) {
+                    runtime.holes = {};
+                } else {
+                    holes = [].concat(holes);
+                    var h= {}, i;
+                    for (i = 0; i < holes.length; ++i) {
+                        h = holes[i];
+                        runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = null;
+                    }
+                }
                 return this;
             },
 
@@ -1110,7 +1155,13 @@
             */
             
             setHoles: function(holes) {
-                runtime.holes = [].concat(holes);
+                holes = [].concat(holes);
+                runtime.holes = {};
+                var i, h = {};
+                for (i = 0; i < holes.length; ++i) {
+                    h = holes[i];
+                    runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = h;
+                }
                 return this;
             },
 
