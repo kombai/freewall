@@ -301,12 +301,13 @@ table {
 .donate form {
 	height: 100%;
 	width: 100%;
-	background: rgb(205, 155, 29);
+	background: rgb(44, 62, 80);
 }
 
 .donate form .paypal {
 	display: block;
 	margin: auto;
+	padding: 20px 0px 0px 0px;
 	outline: 0;
 }
 
