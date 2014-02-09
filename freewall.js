@@ -64,7 +64,7 @@
             $item.attr('data-width') == null && $item.attr('data-width', $item.width());
             var height = 1 * $item.attr('data-height');
             var width = 1 * $item.attr('data-width');
-            var fixPos = $item.attr('data-fixPos');
+            var fixPos = $item.attr('data-position');
 
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
@@ -376,25 +376,25 @@
             runtime.totalRow = 0;
         },
         setDragable: function(item, option) {
-            var touch = false;
-            var def = {
-                sX: 0, //start clientX;
-                sY: 0, 
+            var isTouch = false;
+            var config = {
+                startX: 0, //start clientX;
+                startY: 0, 
                 top: 0,
                 left: 0,
                 proxy: null,
-                end: function() {},
-                move: function() {},
-                start: function() {}
+                onDrop: function() {},
+                onDrag: function() {},
+                onStart: function() {}
             };
             
             $(item).each(function() {
-                var set = $.extend({}, def, option);
-                var ele = set.proxy || this;
-                var $ele = $(ele);
+                var setting = $.extend({}, config, option);
+                var ele = setting.proxy || this;
+                var $E = $(ele);
                 
-                var posStyle = $ele.css("position");
-                posStyle != "absolute" && $ele.css("position", "relative");
+                var posStyle = $E.css("position");
+                posStyle != "absolute" && $E.css("position", "relative");
                 
 
                 function mouseDown(evt) {
@@ -402,17 +402,17 @@
                     evt = evt.originalEvent;
 
                     if (evt.touches) {
-                        touch = true;
+                        isTouch = true;
                         evt = evt.changedTouches[0];
                     }
 
                     if (evt.button != 2 && evt.which != 3) {
-                        set.start.call(ele, evt);
+                        setting.onStart.call(ele, evt);
                         
-                        set.sX = evt.clientX;
-                        set.sY = evt.clientY;
-                        set.top = parseInt($ele.css("top")) || 0;
-                        set.left = parseInt($ele.css("left")) || 0;
+                        setting.startX = evt.clientX;
+                        setting.startY = evt.clientY;
+                        setting.top = parseInt($E.css("top")) || 0;
+                        setting.left = parseInt($E.css("left")) || 0;
                         
                         $D.bind("mouseup touchend", mouseUp);
                         $D.bind("mousemove touchmove", mouseMove); 
@@ -424,24 +424,24 @@
                         
                 function mouseMove(evt) {
                     evt = evt.originalEvent;
-                    touch && (evt = evt.changedTouches[0]);
+                    isTouch && (evt = evt.changedTouches[0]);
                     
-                    $ele.css({
-                        top: set.top - (set.sY - evt.clientY),
-                        left: set.left - (set.sX - evt.clientX)
+                    $E.css({
+                        top: setting.top - (setting.startY - evt.clientY),
+                        left: setting.left - (setting.startX - evt.clientX)
                     });
                     
-                    set.move.call(ele, evt);
+                    setting.onDrag.call(ele, evt);
                 };
                 
                 function mouseUp(evt) {
                     evt = evt.originalEvent;
-                    touch && (evt = evt.changedTouches[0]);
+                    isTouch && (evt = evt.changedTouches[0]);
         
-                    set.end.call(ele, evt);
+                    setting.onDrop.call(ele, evt);
 
                     $D.unbind("mouseup touchend", mouseUp);
-                     $D.unbind("mousemove touchmove", mouseMove);
+                    $D.unbind("mousemove touchmove", mouseMove);
                 };
 
                 // ignore drag drop on text field;
@@ -454,7 +454,7 @@
                 
                 $D.unbind("mouseup touchend", mouseUp);
                 $D.unbind("mousemove touchmove", mouseMove);
-                $ele.unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
+                $E.unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
 
             });
         },
@@ -487,7 +487,7 @@
             // find limit zone by horizon;
             for (var y = t; y < minY; ++y) {
                 for (var x = l; x < maxX; ++x) {
-                    if (matrix[y + '-' + x] != null) {
+                    if (matrix[y + '-' + x]) {
                         (l < x && x < minX) && (minX = x);
                     }
                 }
@@ -496,7 +496,7 @@
             // find limit zone by vertical;
             for (var y = t; y < maxY; ++y) {
                 for (var x = l; x < minX; ++x) {
-                    if (matrix[y + '-' + x] != null) {
+                    if (matrix[y + '-' + x]) {
                         (t < y && y < minY) && (minY = y);
                     }
                 }
@@ -683,7 +683,6 @@
             runtime.matrix = matrix;
             runtime.totalRow = maxY;
             runtime.totalCol = maxX;
-            console.log(runtime.matrix)
         }
     };
 
@@ -705,7 +704,7 @@
             blocks: {}, // store all items;
             events: {}, // store custome events;
             matrix: {},
-            holes: [], // forbidden zone;
+            holes: {}, // forbidden zone;
             
             cellW: 0,
             cellH: 0, // unit adjust;
@@ -758,13 +757,13 @@
             var $item = $(item);
 
             layoutManager.setDragable(item, {
-                start: function(event) {
+                onStart: function(event) {
                     if (setting.animate && layoutManager.transition) {
                         layoutManager.setTransition(this, "");
                     }
                     $item.css('z-index', 9999).addClass('fw-float');
                 },
-                move: function(evt, tracker) {
+                onDrag: function(evt, tracker) {
                     var position = $item.position();
                     var top = Math.round(position.top / cellH);
                     var left = Math.round(position.left / cellW);
@@ -775,7 +774,7 @@
                     klass.setHoles({top: top, left: left, width: width, height: height});
                     klass.refresh();
                 },
-                end: function() {
+                onDrop: function() {
                     var position = $item.position();
                     var top = Math.round(position.top / cellH);
                     var left = Math.round(position.left / cellW);
@@ -784,37 +783,33 @@
                     top = Math.min(Math.max(0, top), runtime.limitRow - height);
                     left = Math.min(Math.max(0, left), runtime.limitCol - width);
 
+                    $item.removeClass('fw-float');
                     $item.css({
                         zIndex: "auto",
                         top: top * cellH,
                         left: left * cellW
-                    }).removeClass('fw-float');
-                    
-                    $item.attr({
-                        "data-width": $item.width(),
-                        "data-height": $item.height()
                     });
-
+                    
                     //check old drag element;
-                    for (var y = 0; y < height; ++y) {
-                        for (var x = 0; x < width; ++x) {
-                            var xy = (y + top) + "-" + (x + left);
-                            var oldDropId = runtime.matrix[xy];
+                    var x, y, key, oldDropId;
+                    for (y = 0; y < height; ++y) {
+                        for (x = 0; x < width; ++x) {
+                            key = (y + top) + "-" + (x + left);
+                            oldDropId = runtime.matrix[key];
                             if (oldDropId && oldDropId != true) {
-                                $("#" + oldDropId).removeAttr("data-fixPos");
+                                $("#" + oldDropId).removeAttr("data-position");
                             }
                         }
                     }
                     
-                    //klass.refresh();
-                    klass.fillHoles();
+                    runtime.holes = {};
                     
-                    klass.fixPos({
-                        block: this,
-                        top: top,
-                        left: left
+                    $item.attr({
+                        "data-width": $item.width(),
+                        "data-height": $item.height(),
+                        "data-position": top + "-" + left
                     });
-                    
+
                     klass.refresh();
                 }
             });
@@ -885,10 +880,9 @@
 
             */
             appendHoles: function(holes) {
-                holes = [].concat(holes);
-                var i, h = {};
-                for (i = 0; i < holes.length; ++i) {
-                    h = holes[i];
+                var newHoles = [].concat(holes), h = {}, i;
+                for (i = 0; i < newHoles.length; ++i) {
+                    h = newHoles[i];
                     runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = h;
                 }
                 return this;
@@ -900,10 +894,9 @@
                 if (arguments.length == 0) {
                     runtime.holes = {};
                 } else {
-                    holes = [].concat(holes);
-                    var h= {}, i;
-                    for (i = 0; i < holes.length; ++i) {
-                        h = holes[i];
+                    var newHoles = [].concat(holes), h = {}, i;
+                    for (i = 0; i < newHoles.length; ++i) {
+                        h = newHoles[i];
                         runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = null;
                     }
                 }
@@ -1089,7 +1082,7 @@
                 });
             */
             fixPos: function(option) {
-                $(option.block).attr({'data-fixPos': option.top + "-" + option.left});
+                $(option.block).attr({'data-position': option.top + "-" + option.left});
                 return this;
             },
 
@@ -1155,11 +1148,10 @@
             */
             
             setHoles: function(holes) {
-                holes = [].concat(holes);
+                var newHoles = [].concat(holes), h = {}, i;
                 runtime.holes = {};
-                var i, h = {};
-                for (i = 0; i < holes.length; ++i) {
-                    h = holes[i];
+                for (i = 0; i < newHoles.length; ++i) {
+                    h = newHoles[i];
                     runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = h;
                 }
                 return this;
