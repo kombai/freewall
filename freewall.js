@@ -1168,30 +1168,19 @@
         });
     };
 
-
     /*
-    support create new plugin;
+    add default setting;
     example:
-        
-        freewall.createPlugin({
-            centering: function(setting, container) {
-                console.log(this);
-                console.log(setting);
-            }
-        }).addConfig({
+
+        freewall.addConfig({
             offsetLeft: 0
         });
     */
-    freewall.createPlugin = function(pluginData) {
-        // register new plugin;
-        $.extend(layoutManager.plugin, pluginData);
-        return {
-            addConfig: function(newConfig) {
-                // add default setting;
-                $.extend(layoutManager.defaultConfig, newConfig);    
-            }
-        }
+    freewall.addConfig = function(newConfig) {
+        // add default setting;
+        $.extend(layoutManager.defaultConfig, newConfig);    
     };
+    
 
     /*
     support create new arrange algorithm;
@@ -1207,6 +1196,22 @@
         // create new engine;
         $.extend(engine, engineData);
     };
+    
+    /*
+    support create new plugin;
+    example:
+        
+        freewall.createPlugin({
+            centering: function(setting, container) {
+                console.log(this);
+                console.log(setting);
+            }
+        })l
+    */
+    freewall.createPlugin = function(pluginData) {
+        // register new plugin;
+        $.extend(layoutManager.plugin, pluginData);
+    };
 
     /*
     support access helper function;
@@ -1215,6 +1220,7 @@
         freewall.getMethod('setBlock')(block, setting);
     */
     freewall.getMethod = function(method) {
+        // get helper method;
         return layoutManager[method];
     };
  
