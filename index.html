@@ -353,6 +353,7 @@ wall.reset({
 								<li> onGapFound </li>
 								<li> onComplete </li>
 								<li> onResize </li>
+								<li> onBlockReady </li>
 								<li> onBlockActive </li>
 								<li> onBlockFinish </li>
 							</ul>
@@ -391,12 +392,16 @@ wall.reset({
 								</pre>
 							</li>
 							<li>
+								<h3> onBlockReady </h3>
+								<div> Fire when block adjusted.</div>
+							</li>
+							<li>
 								<h3> onBlockActive </h3>
-								<div> Fire before block set into layout.</div>
+								<div> Fire before block show or hide in the layout.</div>
 							</li>
 							<li>
 								<h3> onBlockFinish </h3>
-								<div> Registry callback when arrange each block.</div>
+								<div> Fire when block finish show or hide in the layout.</div>
 							</li>
 						</ul>
 					</div>

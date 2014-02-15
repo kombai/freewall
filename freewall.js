@@ -36,6 +36,7 @@
             onGapFound: function() {},
             onComplete: function() {},
             onResize: function() {},
+            onBlockReady: function() {},
             onBlockFinish: function() {}
         },
         plugin: {},
@@ -136,6 +137,9 @@
             } else {
                 $item.attr("data-state", "move");
             }
+
+            setting.onBlockReady.call(item, block, setting);
+
             return fixPos ? null : block;
         },
         setBlock: function(block, setting) {
@@ -836,7 +840,6 @@
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
                         activeBlock.push(block);
-                        klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });
 
@@ -849,7 +852,6 @@
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
-                    klass.fireEvent('onBlockShow', item, setting);
                 });
             },
             /*
@@ -940,18 +942,15 @@
                     allBlock.data('active', 1);
                 }
 
-                klass.fireEvent('onGridReady', container, setting);
-
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
                         $item.data("active") && activeBlock.push(block);
-                        klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });
                 
-                klass.fireEvent('onGridLoad', container, setting);
+                klass.fireEvent('onGridReady', container, setting);
 
                 engine[setting.engine](activeBlock, setting);
                 
@@ -964,10 +963,7 @@
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
-                    klass.fireEvent('onBlockShow', item, setting);
                 });
-
-                klass.fireEvent('onGridShow', container, setting);
             },
 
             fitWidth: function(width) {
@@ -990,18 +986,15 @@
                     allBlock.data('active', 1);
                 }
                 
-                klass.fireEvent('onGridReady', container, setting);
-
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
                         $item.data("active") && activeBlock.push(block);
-                        klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });
                 
-                klass.fireEvent('onGridLoad', container, setting);
+                klass.fireEvent('onGridReady', container, setting);
                 
                 engine[setting.engine](activeBlock, setting);
 
@@ -1014,10 +1007,7 @@
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
-                    klass.fireEvent('onBlockShow', item, setting);
                 });
-
-                klass.fireEvent('onGridShow', container, setting);
             },
 
             fitZone: function(width, height) {
@@ -1041,18 +1031,15 @@
                     allBlock.data('active', 1);
                 }
                 
-                klass.fireEvent('onGridReady', container, setting);
-
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
                     if (block = layoutManager.loadBlock(item, setting)) {
                         $item.data("active") && activeBlock.push(block);
-                        klass.fireEvent('onBlockLoad', item, setting);
                     }
                 });
 
-                klass.fireEvent('onGridLoad', container, setting);
+                klass.fireEvent('onGridReady', container, setting);
 
                 engine[setting.engine](activeBlock, setting);
                 
@@ -1065,10 +1052,7 @@
                 allBlock.each(function(index, item) {
                     setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
-                    klass.fireEvent('onBlockShow', item, setting);
                 });
-
-                klass.fireEvent('onGridShow', container, setting);
             },
 
             /*
