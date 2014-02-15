@@ -183,7 +183,7 @@
 					this.setHoles(getPosition(offsetLeft));
 					this.refresh();
 				},
-				onStartSet: function(block, setting) {
+				onBlockActive: function(block, setting) {
 					// check for showing brick;
 					if (block != null) {
 						$(this).css({
@@ -200,7 +200,7 @@
 					wall.reset({
 						delay: 0,
 						animate: false,
-						onStartSet: function() {}
+						onBlockActive: function() {}
 					})
 				}
 			});

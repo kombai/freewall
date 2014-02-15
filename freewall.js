@@ -32,11 +32,11 @@
             draggable: false,
             rightToLeft: false,
             bottomToTop: false,
-            onStartSet: function() {},
+            onBlockActive: function() {},
             onGapFound: function() {},
             onComplete: function() {},
             onResize: function() {},
-            onSetBlock: function() {}
+            onBlockFinish: function() {}
         },
         plugin: {},
         totalGrid: 1,
@@ -191,7 +191,7 @@
             // kill the old transition;
             self.setTransition(item, "");
             item.style.position = "absolute";
-            setting.onStartSet.call(item, block, setting);
+            setting.onBlockActive.call(item, block, setting);
             
             function action() {
                 // start to arrange;
@@ -240,7 +240,7 @@
 
                 runtime.length -= 1;
 
-                setting.onSetBlock.call(item, block, setting);
+                setting.onBlockFinish.call(item, block, setting);
 
                 runtime.length == 0 && setting.onComplete.call(item, block, setting);
             }
