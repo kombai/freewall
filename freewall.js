@@ -33,11 +33,11 @@
             rightToLeft: false,
             bottomToTop: false,
             onBlockActive: function() {},
+            onBlockFinish: function() {},
+            onBlockReady: function() {},
             onGapFound: function() {},
             onComplete: function() {},
-            onResize: function() {},
-            onBlockReady: function() {},
-            onBlockFinish: function() {}
+            onResize: function() {}
         },
         plugin: {},
         totalGrid: 1,
@@ -916,7 +916,7 @@
                 name = name.toLowerCase();
                 if (events[name] && events[name].length) {
                     for (var i = 0; i < events[name].length; ++i) {
-                        events[name][i].call(object, setting);
+                        events[name][i].call(this, object, setting);
                     }
                 }
                 return this;
