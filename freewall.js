@@ -32,6 +32,7 @@
             draggable: false,
             rightToLeft: false,
             bottomToTop: false,
+            wallID: null, //differentiates several walls;
             onBlockActive: function() {},
             onBlockFinish: function() {},
             onBlockReady: function() {},
@@ -49,7 +50,7 @@
             var gutterX = runtime.gutterX;
             var gutterY = runtime.gutterY;
             var fixSize = parseInt($item.attr('data-fixSize'));
-            var blockId = runtime.lastId++ + '-' + this.totalGrid;
+            var blockId = (setting.wallID ? setting.wallID + '-' : '')+ runtime.lastId++ + '-' + this.totalGrid;
             
             //ignore dragging block;
             if ($item.hasClass('fw-float')) return;
