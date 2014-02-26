@@ -49,7 +49,7 @@
             var gutterX = runtime.gutterX;
             var gutterY = runtime.gutterY;
             var fixSize = parseInt($item.attr('data-fixSize'));
-            var blockId = runtime.lastId++ + '-' + this.totalGrid;
+            var blockId = runtime.lastId++ + '-' + runtime.totalGrid;
             
             //ignore dragging block;
             if ($item.hasClass('fw-float')) return;
@@ -739,6 +739,7 @@
             currentArguments: []
         };
         setting.runtime = runtime;
+        runtime.totalGrid = layoutManager.totalGrid;
         
         // check browser support transition;
         var bodyStyle = document.body.style;
