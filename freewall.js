@@ -386,17 +386,19 @@
                 startY: 0, 
                 top: 0,
                 left: 0,
-                proxy: null,
+                handle: null,
                 onDrop: function() {},
                 onDrag: function() {},
                 onStart: function() {}
             };
-            
+
             $(item).each(function() {
                 var setting = $.extend({}, config, option);
-                var ele = setting.proxy || this;
+                var handle = setting.handle || this;
+                var ele = this;
                 var $E = $(ele);
-                
+                var $H = $(handle);
+
                 var posStyle = $E.css("position");
                 posStyle != "absolute" && $E.css("position", "relative");
                 
@@ -449,7 +451,7 @@
                 };
 
                 // ignore drag drop on text field;
-                $(this).find("iframe, form, input, textarea, .ignore-drag")
+                $E.find("iframe, form, input, textarea, .ignore-drag")
                 .each(function() {
                     $(this).on("touchstart mousedown", function(evt) {
                         evt.stopPropagation();
@@ -458,7 +460,7 @@
                 
                 $D.unbind("mouseup touchend", mouseUp);
                 $D.unbind("mousemove touchmove", mouseMove);
-                $E.unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
+                $H.unbind("mousedown touchstart").bind("mousedown touchstart", mouseDown);
 
             });
         },
@@ -760,8 +762,9 @@
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
             var $item = $(item);
-
+            var handle = $item.find($item.attr("data-handle"));
             layoutManager.setDragable(item, {
+                handle: handle[0],
                 onStart: function(event) {
                     if (setting.animate && layoutManager.transition) {
                         layoutManager.setTransition(this, "");
