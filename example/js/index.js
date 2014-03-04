@@ -43,7 +43,7 @@
 		layout: function() {
 			var lwidth = $(window).width();
 			wall = new freewall('.free-wall');
-			//wall.container.width('auto')
+			
 			wall.reset({
 				selector: '> div',
 				animate: true,
@@ -59,6 +59,9 @@
 						});
 					});
 					wall.fitWidth();
+				},
+				onComplete: function(lastItem, lastBlock, setting) {
+					wall.container.find(".example-draggable").removeAttr("data-position");
 				}
 			});
 			wall.fitWidth();
@@ -72,6 +75,7 @@
 				});
 			});
 
+			window["console"] && console.log(wall);
 			// for responsive demo;
 			$(".reponsive-block li>a").click(function() {
 				var viewWidth = $(window).width();

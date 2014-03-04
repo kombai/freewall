@@ -455,6 +455,18 @@ table {
 	overflow: visible !important; /* for ie7 */
 }
 
+.example-draggable {
+	cursor: move;
+}
+
+.example-draggable * {
+	cursor: move;
+}
+
+.example-draggable a {
+	cursor: pointer;
+}
+
 .cell {
 	background-position: center center;
 	background-repeat: no-repeat;

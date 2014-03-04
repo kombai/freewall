@@ -32,12 +32,12 @@
             draggable: false,
             rightToLeft: false,
             bottomToTop: false,
-            onBlockActive: function() {},
-            onBlockFinish: function() {},
-            onBlockReady: function() {},
             onGapFound: function() {},
             onComplete: function() {},
-            onResize: function() {}
+            onResize: function() {},
+            onBlockReady: function() {},
+            onBlockFinish: function() {},
+            onBlockActive: function() {}
         },
         plugin: {},
         totalGrid: 1,
@@ -379,7 +379,7 @@
             runtime.totalCol = 0;
             runtime.totalRow = 0;
         },
-        setDragable: function(item, option) {
+        setDraggable: function(item, option) {
             var isTouch = false;
             var config = {
                 startX: 0, //start clientX;
@@ -755,7 +755,7 @@
         }
         
 
-        function setDragable(item) {
+        function setDraggable(item) {
             
             var gutterX = runtime.gutterX;
             var gutterY = runtime.gutterY;
@@ -763,7 +763,7 @@
             var cellW = runtime.cellW;
             var $item = $(item);
             var handle = $item.find($item.attr("data-handle"));
-            layoutManager.setDragable(item, {
+            layoutManager.setDraggable(item, {
                 handle: handle[0],
                 onStart: function(event) {
                     if (setting.animate && layoutManager.transition) {
@@ -854,8 +854,10 @@
                 runtime.length = allBlock.length;
 
                 allBlock.each(function(index, item) {
-                    setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
+                    if (setting.draggable || item.getAttribute('data-draggable')) {
+                        setDraggable(item);
+                    }
                 });
             },
             /*
@@ -965,8 +967,10 @@
                 runtime.length = allBlock.length;
 
                 allBlock.each(function(index, item) {
-                    setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
+                    if (setting.draggable || item.getAttribute('data-draggable')) {
+                        setDraggable(item);
+                    }
                 });
             },
 
@@ -1009,8 +1013,10 @@
                 runtime.length = allBlock.length;
 
                 allBlock.each(function(index, item) {
-                    setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
+                    if (setting.draggable || item.getAttribute('data-draggable')) {
+                        setDraggable(item);
+                    }
                 });
             },
 
@@ -1054,8 +1060,10 @@
                 runtime.length = allBlock.length;
                
                 allBlock.each(function(index, item) {
-                    setting.draggable && setDragable(item);
                     layoutManager.showBlock(item, setting);
+                    if (setting.draggable || item.getAttribute('data-draggable')) {
+                        setDraggable(item);
+                    }
                 });
             },
 
@@ -1063,7 +1071,7 @@
             set block with special position, the top and left are multiple of unit width/height;
             example:
 
-                wall.fixSize({
+                wall.fixPos({
                     top: 0,
                     left: 0,
                     block: $('.free')
