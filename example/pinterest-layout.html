@@ -378,7 +378,7 @@
 		        </div>
 		    </div>
 		    <div class="brick">
-		        <img src="i/photo/49.jpg" width="100%">
+		        <img src="i/photo/54.jpg" width="100%">
 		        <div class="info">
 		            <h3>Freewall</h3>
 		            <h5>Pinterest layout</h5>
@@ -401,7 +401,11 @@
 			var images = wall.container.find('.brick');
 			var length = images.length;
 			images.css({visibility: 'hidden'});
-			images.find('img').load(function() {
+			images.find('img')
+			.error(function() {
+				-- length;
+			})
+			.load(function() {
 				-- length;
 				if (!length) {
 					setTimeout(function() {
