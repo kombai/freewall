@@ -75,6 +75,10 @@
 				});
 			});
 
+			wall.container.find(".destroy").click(function() {
+				wall.destroy();
+			});
+
 			window["console"] && console.log(wall);
 			// for responsive demo;
 			$(".reponsive-block li>a").click(function() {
