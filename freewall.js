@@ -292,7 +292,7 @@
             var cellH = runtime.cellH;
             var cellW = runtime.cellW;
 
-            if (setting.cellH = 'auto') {
+            if (setting.cellH == 'auto') {
                 $item.width(block.width * cellW - gutterX);
                 $item.get(0).style = "";
                 block.height = Math.round(($item.height() + gutterY) / cellH);
