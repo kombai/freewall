@@ -398,22 +398,10 @@
 				}
 			});
 			
-			var images = wall.container.find('.brick');
-			var length = images.length;
-			images.css({visibility: 'hidden'});
-			images.find('img')
-			.error(function() {
-				-- length;
-			})
-			.load(function() {
-				-- length;
-				if (!length) {
-					setTimeout(function() {
-						images.css({visibility: 'visible'});
-						wall.fitWidth();
-					}, 505);
-				}
+			wall.container.find('.brick img').load(function() {
+				wall.fitWidth();
 			});
+
 
 		</script>
 	</body>
