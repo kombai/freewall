@@ -158,7 +158,7 @@
 				window.location.hash = "";
 			});
 		},
-		logo: function() {
+		drillhole: function() {
 			var wall = new freewall('.free-wall-logo');
 			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'></div></div>";
 			var colour = [
@@ -391,8 +391,7 @@
 						left: offsetLeft + 61,
 						width: 2,
 						height: 13
-					},
-
+					}
 				];
 			}
 			wall.fitZone();
