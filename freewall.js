@@ -19,6 +19,7 @@
         // default setting;
         defaultConfig: {
             animate: false,
+            cache: true, // cache the size of blocks for performance;
             cellW: 100, // function(container) {return 100;}
             cellH: 100, // function(container) {return 100;}
             delay: 0, // slowdown active block;
@@ -61,10 +62,20 @@
             }
             
             // store original size;
+           
             $item.attr('data-height') == null && $item.attr('data-height', $item.height());
             $item.attr('data-width') == null && $item.attr('data-width', $item.width());
             var height = 1 * $item.attr('data-height');
             var width = 1 * $item.attr('data-width');
+            
+            if (!setting.cache) {
+                item.style.width = "";
+                width = $item.width();
+
+                item.style.height = "";
+                height = $item.height();
+            }
+
             var fixPos = $item.attr('data-position');
 
             var cellH = runtime.cellH;
