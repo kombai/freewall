@@ -85,22 +85,12 @@
 				start = new Date().getTime();
 			});
 
-  
-
 
 			$(function() {
 				
 				var images = wall.container.find('.brick');
-				var length = images.length;
-				images.css({visibility: 'hidden'});
 				images.find('img').load(function() {
-					-- length;
-					if (!length) {
-						setTimeout(function() {
-							images.css({visibility: 'visible'});
-							wall.fitWidth();
-						}, 505);
-					}
+					wall.fitWidth();
 				});
 
 			});
