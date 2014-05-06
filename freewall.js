@@ -45,10 +45,14 @@
         transition: false,
         loadBlock: function(item, setting) {
             var runtime = setting.runtime;
-            var $item = $(item);
-            var block = null;
             var gutterX = runtime.gutterX;
             var gutterY = runtime.gutterY;
+            var cellH = runtime.cellH;
+            var cellW = runtime.cellW;
+            var block = null;
+            var $item = $(item);
+            var active = $item.data("active");
+            var fixPos = $item.attr('data-position');
             var fixSize = parseInt($item.attr('data-fixSize'));
             var blockId = runtime.lastId++ + '-' + runtime.totalGrid;
             
@@ -76,11 +80,6 @@
                 height = $item.height();
             }
 
-            var fixPos = $item.attr('data-position');
-
-            var cellH = runtime.cellH;
-            var cellW = runtime.cellW;
-            
             var col = !width ? 0 : Math.round((width + gutterX) / cellW);
             var row = !height ? 0 : Math.round((height + gutterY) / cellH);
 
@@ -131,14 +130,19 @@
                     block.width = fixSize != null ? col : Math.min(col, runtime.limitCol - block.x);
                     block.height = fixSize != null ? row : Math.min(row, runtime.limitRow - block.y);
                     var holeId = block.y + "-" + block.x + "-" + block.width + "-" + block.height;
-                    runtime.holes[holeId] = {
-                        id: block.id,
-                        top: block.y,
-                        left: block.x,
-                        width: block.width,
-                        height: block.height
-                    };
-                    this.setBlock(block, setting);
+                    if (active) {
+                        runtime.holes[holeId] = {
+                            id: block.id,
+                            top: block.y,
+                            left: block.x,
+                            width: block.width,
+                            height: block.height
+                        };
+                        this.setBlock(block, setting);
+                    } else {
+                        delete runtime.holes[holeId];
+                    }
+                    
                 }
             }
 
@@ -151,7 +155,7 @@
 
             setting.onBlockReady.call(item, block, setting);
 
-            return fixPos ? null : block;
+            return (fixPos && active) ? null : block;
         },
         setBlock: function(block, setting) {
             var runtime = setting.runtime;
@@ -931,7 +935,7 @@
                     var newHoles = [].concat(holes), h = {}, i;
                     for (i = 0; i < newHoles.length; ++i) {
                         h = newHoles[i];
-                        runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height] = null;
+                        delete runtime.holes[h.top + "-" + h.left + "-" + h.width + "-" + h.height];
                     }
                 }
                 return this;

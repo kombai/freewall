@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Fixed position block</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type">
+		<meta name="description" content="Fixed position block" />
+		<meta name="keywords" content="javascript, dynamic, grid, layout, jquery plugin, flex layouts"/>
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="../freewall.js"></script>
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.layout {
+				padding: 15px;
+			}
+			
+			.free-wall {
+			}
+			
+			.filter-items {
+				padding: 10px 0px;
+			}
+
+			.filter-label {
+				display: inline-block;
+				margin: 0px 5px 5px 0px;
+				padding: 10px;
+				cursor: pointer;
+				background: rgb(205, 149, 12);
+			}
+
+			.filter-label.active,
+			.filter-label:hover {
+				background: rgb(238, 180, 34);
+			}
+
+		</style>
+	</head>
+<body>
+		<div class="layout">
+			<div class="filter-items">
+				<div class="filter-label" >Vinilo</div>
+				<div class="filter-label" data-filter=".proyecto">Proyectos</div>
+				<div class="filter-label" data-filter=".equipo">Equipo</div>
+				<div class="filter-label" data-filter=".estudio">Estudio</div>
+
+			</div>
+
+            <div id="freewall" class="free-wall">
+			<div class="brick size22 estudio" data-position="0-1">
+				<div class='cover'>
+					<h2>Fixed postion at</h2>
+					<p> top: 0 </p>
+					<p> left: 1</p>
+				</div>	
+			</div>
+			<div class="brick size22 equipo"></div>
+			<div class="brick size12 equipo"></div>
+			<div class="brick size22 equipo"></div>
+            <div class="brick size22 proyecto"></div>
+			<div class="brick size11 proyecto"></div>
+			<div class="brick size22 proyecto"></div>
+			<div class="brick size11 proyecto"></div>
+			<div class="brick size22 proyecto"></div>
+			<div class="brick size23 estudio"></div>
+			<div class="brick size22 estudio"></div>
+			<div class="brick size22 estudio"></div>
+			<div class="brick size22 estudio"></div>
+			<div class="brick size11 estudio"></div>
+			<div class="brick size23 estudio"></div>
+			<div class="brick size22 estudio"></div>
+			<div class="brick size11 logo" data-position="0-0">
+				<div class='cover'>
+					<h2>LOGO</h2>
+					<p> test </p>
+				</div>	
+			</div>
+		</div>
+		</div>
+
+		<script type="text/javascript">
+			
+			$(function() {
+				var wall = new freewall("#freewall");
+				wall.reset({
+					selector: '.brick',
+					animate: true,
+					cellW: 160,
+					cellH: 160,
+					fixSize: 0,
+					onResize: function() {
+						wall.refresh();
+					}
+				});
+                
+				wall.filter("");
+				$(".filter-label").click(function() {
+					$(".filter-label").removeClass("active");
+					var filter = $(this).addClass('active').data('filter');
+					if (filter) {
+						wall.filter(filter);
+					} else {
+						wall.unFilter();
+					}
+				});
+
+				wall.fitWidth();
+                
+			});
+		</script>
+	</body>
+
+</html>
