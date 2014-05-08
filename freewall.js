@@ -855,25 +855,27 @@
                 var block = null;
                 var activeBlock = [];
                 
-                allBlock.each(function(index, item) {
-                    item.index = ++index;
-                    if (block = layoutManager.loadBlock(item, setting)) {
-                        activeBlock.push(block);
-                    }
-                });
-
-                engine[setting.engine](activeBlock, setting);
+                if (runtime.currentMethod) {
+                    allBlock.each(function(index, item) {
+                        item.index = ++index;
+                        if (block = layoutManager.loadBlock(item, setting)) {
+                            activeBlock.push(block);
+                        }
+                    });
                 
-                layoutManager.setWallSize(runtime, container);
-                
-                runtime.length = allBlock.length;
+                    engine[setting.engine](activeBlock, setting);
+                    
+                    layoutManager.setWallSize(runtime, container);
+                    
+                    runtime.length = allBlock.length;
 
-                allBlock.each(function(index, item) {
-                    layoutManager.showBlock(item, setting);
-                    if (setting.draggable || item.getAttribute('data-draggable')) {
-                        setDraggable(item);
-                    }
-                });
+                    allBlock.each(function(index, item) {
+                        layoutManager.showBlock(item, setting);
+                        if (setting.draggable || item.getAttribute('data-draggable')) {
+                            setDraggable(item);
+                        }
+                    });
+                }
             },
             /*
             add one or more blank area (hole) on layout;
