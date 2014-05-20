@@ -84,6 +84,8 @@
             var row = !height ? 0 : Math.round((height + gutterY) / cellH);
 
             isNaN(fixSize) && (fixSize = null);
+            (fixSize == null) && (fixSize = setting.fixSize);
+            
             // estimate size;
             if (!fixSize && setting.cellH == 'auto') {
                 $item.width(cellW * col - gutterX);
@@ -1125,8 +1127,8 @@
                 });
             */
             fixSize: function(option) {
-                option.width != null && $(option.block).attr({'data-width': option.width});
                 option.height != null && $(option.block).attr({'data-height': option.height});
+                option.width != null && $(option.block).attr({'data-width': option.width});
                 return this;
             },
 
