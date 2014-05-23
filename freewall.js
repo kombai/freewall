@@ -64,7 +64,10 @@
             if (setting.animate && this.transition) {
                 this.setTransition(item, "");
             }
-            
+
+            isNaN(fixSize) && (fixSize = null);
+            (fixSize == null) && (fixSize = setting.fixSize);
+            var makeRound = (fixSize == 1) ? "ceil" : "round";
             // store original size;
            
             $item.attr('data-height') == null && $item.attr('data-height', $item.height());
@@ -80,12 +83,9 @@
                 height = $item.height();
             }
 
-            var col = !width ? 0 : Math.round((width + gutterX) / cellW);
-            var row = !height ? 0 : Math.round((height + gutterY) / cellH);
+            var col = !width ? 0 : Math[makeRound]((width + gutterX) / cellW);
+            var row = !height ? 0 : Math[makeRound]((height + gutterY) / cellH);
 
-            isNaN(fixSize) && (fixSize = null);
-            (fixSize == null) && (fixSize = setting.fixSize);
-            
             // estimate size;
             if (!fixSize && setting.cellH == 'auto') {
                 $item.width(cellW * col - gutterX);
