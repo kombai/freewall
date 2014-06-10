@@ -1,0 +1,11 @@
+{
+  "name": "kombai/freewall",
+  "version": "1.0.4",
+  "main": "freewall.js",
+  "description": "Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts",
+  "license": "MIT",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ]
+}
