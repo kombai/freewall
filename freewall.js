@@ -269,7 +269,7 @@
                 runtime.length == 0 && setting.onComplete.call(item, block, setting);
             }
 
-            block.resize && setting.onBlockResize.call(item, block, setting);
+            block && block.resize && setting.onBlockResize.call(item, block, setting);
             
             setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
         },
