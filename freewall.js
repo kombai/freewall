@@ -38,7 +38,8 @@
             onResize: function() {},
             onBlockReady: function() {},
             onBlockFinish: function() {},
-            onBlockActive: function() {}
+            onBlockActive: function() {},
+            onBlockResize: function() {}
         },
         plugin: {},
         totalGrid: 1,
@@ -118,6 +119,7 @@
                 height == 0 && (row = 0);
 
                 block = {
+                    resize: false,
                     id: blockId,
                     width: col,
                     height: row,
@@ -179,6 +181,7 @@
 
             var realBlock = {
                 fixSize: block.fixSize,
+                resize: block.resize,
                 top: y * cellH,
                 left: x  * cellW,
                 width: cellW * width - gutterX,
@@ -266,6 +269,8 @@
                 runtime.length == 0 && setting.onComplete.call(item, block, setting);
             }
 
+            block.resize && setting.onBlockResize.call(item, block, setting);
+            
             setting.delay > 0 ? (item.delay = setTimeout(action, setting.delay * $item.attr("data-delay"))) : action(); 
         },
         nestedGrid: function(item, setting) {
@@ -622,11 +627,13 @@
                         // resize near block to fill gap;
                         if (lastBlock && !fitWidth && runtime.minHoB > freeArea.height) {
                             lastBlock.height += freeArea.height;
+                            lastBlock.resize = true;
                             fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                             layoutManager.setBlock(lastBlock, setting);
                             continue;
                         } else if (lastBlock && fitWidth && runtime.minWoB > freeArea.width) {
                             lastBlock.width += freeArea.width;
+                            lastBlock.resize = true;
                             fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                             layoutManager.setBlock(lastBlock, setting);
                             continue;
@@ -635,6 +642,7 @@
                             for (var i = 0; i < items.length; ++i) {
                                 if (items[i]['fixSize'] != null) continue;
                                 block = items.splice(i, 1)[0];
+                                block.resize = true;
                                 if (fitWidth) {
                                     block.width = freeArea.width;
                                     if (setting.cellH == 'auto') {
@@ -650,6 +658,7 @@
                                 break;
                             }
                         }
+
                     }
                     
                     if (block != null) {
@@ -659,6 +668,7 @@
                             y: y,
                             width: block.width,
                             height: block.height,
+                            resize: block.resize,
                             fixSize: block.fixSize
                         };
                         
