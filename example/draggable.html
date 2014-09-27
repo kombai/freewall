@@ -79,7 +79,11 @@
 			
 			var wall = new freewall("#freewall");
 			wall.reset({
-				draggable: true,
+				draggable: {
+					onDrop: function(event) {
+						console.log(this);
+					}
+				},
 				selector: '.cell',
 				animate: true,
 				cellW: 150,

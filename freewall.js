@@ -797,8 +797,12 @@
                         layoutManager.setTransition(this, "");
                     }
                     $item.css('z-index', 9999).addClass('fw-float');
+
+                    if (setting.draggable && setting.draggable.onDragStart) {
+                        setting.draggable.onDragStart.call(item, event);
+                    }
                 },
-                onDrag: function(evt, tracker) {
+                onDrag: function(event, tracker) {
                     var position = $item.position();
                     var top = Math.round(position.top / cellH);
                     var left = Math.round(position.left / cellW);
@@ -808,8 +812,12 @@
                     left = Math.min(Math.max(0, left), runtime.limitCol - width);
                     klass.setHoles({top: top, left: left, width: width, height: height});
                     klass.refresh();
+
+                    if (setting.draggable && setting.draggable.onDrag) {
+                        setting.draggable.onDrag.call(item, event);
+                    }
                 },
-                onDrop: function() {
+                onDrop: function(event) {
                     var position = $item.position();
                     var top = Math.round(position.top / cellH);
                     var left = Math.round(position.left / cellW);
@@ -846,6 +854,10 @@
                     });
 
                     klass.refresh();
+
+                    if (setting.draggable && setting.draggable.onDrop) {
+                        setting.draggable.onDrop.call(item, event);
+                    }
                 }
             });
         }
