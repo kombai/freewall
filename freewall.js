@@ -19,7 +19,6 @@
         // default setting;
         defaultConfig: {
             animate: false,
-            cache: true, // cache the size of blocks for performance;
             cellW: 100, // function(container) {return 100;}
             cellH: 100, // function(container) {return 100;}
             delay: 0, // slowdown active block;
@@ -31,6 +30,7 @@
             gutterY: 15, // height spacing between blocks;
             selector: '> div',
             draggable: false,
+            sizeCache: true, // caches the original size of block;
             rightToLeft: false,
             bottomToTop: false,
             onGapFound: function() {},
@@ -79,7 +79,7 @@
             var height = 1 * $item.attr('data-height');
             var width = 1 * $item.attr('data-width');
             
-            if (!setting.cache) {
+            if (!setting.sizeCache) {
                 item.style.width = "";
                 width = $item.width();
 
@@ -289,12 +289,12 @@
             if (block) {
                 innerWall = new freewall($item);
                 innerWall.reset({
-                    cache: false,
                     cellH: cellH,
                     cellW: cellW,
                     gutterX: 1 * gutterX,
                     gutterY: 1 * gutterY,
-                    selector: nested
+                    selector: nested,
+                    sizeCache: false
                 });
 
                 switch (method) {
