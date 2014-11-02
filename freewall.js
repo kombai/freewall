@@ -36,6 +36,9 @@
             onGapFound: function() {},
             onComplete: function() {},
             onResize: function() {},
+            onBlockDrag: function() {},
+            onBlockMove: function() {},
+            onBlockDrop: function() {},
             onBlockReady: function() {},
             onBlockFinish: function() {},
             onBlockActive: function() {},
@@ -797,10 +800,8 @@
                         layoutManager.setTransition(this, "");
                     }
                     $item.css('z-index', 9999).addClass('fw-float');
-
-                    if (setting.draggable && setting.draggable.onDragStart) {
-                        setting.draggable.onDragStart.call(item, event);
-                    }
+                    
+                    setting.onBlockDrag.call(item, event);
                 },
                 onDrag: function(event, tracker) {
                     var position = $item.position();
@@ -813,9 +814,7 @@
                     klass.setHoles({top: top, left: left, width: width, height: height});
                     klass.refresh();
 
-                    if (setting.draggable && setting.draggable.onDrag) {
-                        setting.draggable.onDrag.call(item, event);
-                    }
+                    setting.onBlockMove.call(item, event);
                 },
                 onDrop: function(event) {
                     var position = $item.position();
@@ -855,9 +854,7 @@
 
                     klass.refresh();
 
-                    if (setting.draggable && setting.draggable.onDrop) {
-                        setting.draggable.onDrop.call(item, event);
-                    }
+                    setting.onBlockDrop.call(item, event);
                 }
             });
         }
