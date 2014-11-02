@@ -289,6 +289,7 @@
             if (block) {
                 innerWall = new freewall($item);
                 innerWall.reset({
+                    cache: false,
                     cellH: cellH,
                     cellW: cellW,
                     gutterX: 1 * gutterX,
