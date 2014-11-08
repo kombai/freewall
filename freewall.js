@@ -880,9 +880,8 @@
                 if (runtime.currentMethod) {
                     allBlock.each(function(index, item) {
                         item.index = ++index;
-                        if (block = layoutManager.loadBlock(item, setting)) {
-                            activeBlock.push(block);
-                        }
+                        block = layoutManager.loadBlock(item, setting);
+                        block && activeBlock.push(block);
                     });
                 
                     engine[setting.engine](activeBlock, setting);
@@ -1005,9 +1004,8 @@
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
-                    if (block = layoutManager.loadBlock(item, setting)) {
-                        $item.data("active") && activeBlock.push(block);
-                    }
+                    block = layoutManager.loadBlock(item, setting);
+                    block && $item.data("active") && activeBlock.push(block);
                 });
                 
                 klass.fireEvent('onGridReady', container, setting);
@@ -1051,9 +1049,8 @@
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
-                    if (block = layoutManager.loadBlock(item, setting)) {
-                        $item.data("active") && activeBlock.push(block);
-                    }
+                    block = layoutManager.loadBlock(item, setting);
+                    block && $item.data("active") && activeBlock.push(block);
                 });
                 
                 klass.fireEvent('onGridReady', container, setting);
@@ -1098,9 +1095,8 @@
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
-                    if (block = layoutManager.loadBlock(item, setting)) {
-                        $item.data("active") && activeBlock.push(block);
-                    }
+                    block = layoutManager.loadBlock(item, setting);
+                    block && $item.data("active") && activeBlock.push(block);
                 });
 
                 klass.fireEvent('onGridReady', container, setting);
