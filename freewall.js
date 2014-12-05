@@ -24,7 +24,7 @@
             delay: 0, // slowdown active block;
             engine: 'giot', // 'giot' is a person name;
             fixSize: null, // resize + adjust = fill gap;
-            //fixSize: 0, allow adjust size = no fill gap;
+            //fixSize: 0, resize but keep ratio = no fill gap;
             //fixSize: 1, no resize + no adjust = no fill gap;
             gutterX: 15, // width spacing between blocks;
             gutterY: 15, // height spacing between blocks;
@@ -71,7 +71,7 @@
 
             isNaN(fixSize) && (fixSize = null);
             (fixSize == null) && (fixSize = setting.fixSize);
-            var makeRound = (fixSize == 1) ? "ceil" : "round";
+            var makeRound = (fixSize >= 1) ? "ceil" : "round";
             // store original size;
            
             $item.attr('data-height') == null && $item.attr('data-height', $item.height());
