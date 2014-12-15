@@ -1,5 +1,5 @@
 // created by Minh Nguyen;
-// version 1.04;
+// version 1.05;
 
 (function($) {
     
@@ -28,9 +28,10 @@
             //fixSize: 1, no resize + no adjust = no fill gap;
             gutterX: 15, // width spacing between blocks;
             gutterY: 15, // height spacing between blocks;
+            keepOrder: false,
             selector: '> div',
             draggable: false,
-            sizeCache: true, // caches the original size of block;
+            cacheSize: true, // caches the original size of block;
             rightToLeft: false,
             bottomToTop: false,
             onGapFound: function() {},
@@ -79,7 +80,7 @@
             var height = 1 * $item.attr('data-height');
             var width = 1 * $item.attr('data-width');
             
-            if (!setting.sizeCache) {
+            if (!setting.cacheSize) {
                 item.style.width = "";
                 width = $item.width();
 
@@ -294,7 +295,7 @@
                     gutterX: 1 * gutterX,
                     gutterY: 1 * gutterY,
                     selector: nested,
-                    sizeCache: false
+                    cacheSize: false
                 });
 
                 switch (method) {
@@ -600,7 +601,7 @@
                 }
             }
             
-            // set a hole on the wall;
+            // set holes on the wall;
             for (var i in holes) {
                 if (holes.hasOwnProperty(i)) {
                     fillMatrix(holes[i]["id"] || true, holes[i]['top'], holes[i]['left'], holes[i]['width'], holes[i]['height']);
@@ -615,19 +616,13 @@
 
                 for (var s = 0; s < smallLoop; ++s) {
                     if (!items.length) break;
+                    block = null;
                     fitWidth ? (x = s) : (y = s);
                     if (runtime.matrix[y + '-' + x]) continue;
                     freeArea = layoutManager.getFreeArea(y, x, runtime);
-                    block = null;
-                    for (var i = 0; i < items.length; ++i) {
-                        if (items[i].height > freeArea.height) continue;
-                        if (items[i].width > freeArea.width) continue;
-                        block = items.splice(i, 1)[0];
-                        break;
-                    }
 
-                    // trying resize the other block to fit gap;
-                    if (block == null && setting.fixSize == null) {
+                    // trying resize last block to fit free area;
+                    if (setting.fixSize == null) {
                         // resize near block to fill gap;
                         if (lastBlock && !fitWidth && runtime.minHoB > freeArea.height) {
                             lastBlock.height += freeArea.height;
@@ -641,31 +636,53 @@
                             fillMatrix(lastBlock.id, lastBlock.y, lastBlock.x, lastBlock.width, lastBlock.height);
                             layoutManager.setBlock(lastBlock, setting);
                             continue;
-                        } else {
+                        }
+                    }
+                    
+                    // get the next block to keep order;
+                    if (setting.keepOrder) {
+                        block = items.shift();
+                        block.resize = true;
+                    } else {
+                        // find a suitable block to fit gap;
+                        for (var i = 0; i < items.length; ++i) {
+                            if (items[i].height > freeArea.height) continue;
+                            if (items[i].width > freeArea.width) continue;
+                            block = items.splice(i, 1)[0];
+                            break;
+                        }
+
+                        // trying resize the other block to fit gap;
+                        if (block == null && setting.fixSize == null) {
                             // get other block fill to gap;
                             for (var i = 0; i < items.length; ++i) {
                                 if (items[i]['fixSize'] != null) continue;
                                 block = items.splice(i, 1)[0];
                                 block.resize = true;
-                                if (fitWidth) {
-                                    block.width = freeArea.width;
-                                    if (setting.cellH == 'auto') {
-                                        layoutManager.adjustBlock(block, setting);
-                                    }
-                                    // for fitZone;
-                                    block.height = Math.min(block.height, freeArea.height);
-                                } else {
-                                    block.height = freeArea.height;
-                                    // for fitZone;
-                                    block.width = Math.min(block.width, freeArea.width);
-                                }
                                 break;
+                            }
+                            
+                        }
+                    }
+
+                    
+                    if (block != null) {
+                        // resize block with free area;
+                        if (block.resize) {
+                            if (fitWidth) {
+                                block.width = freeArea.width;
+                                if (setting.cellH == 'auto') {
+                                    layoutManager.adjustBlock(block, setting);
+                                }
+                                // for fitZone;
+                                block.height = Math.min(block.height, freeArea.height);
+                            } else {
+                                block.height = freeArea.height;
+                                // for fitZone;
+                                block.width = Math.min(block.width, freeArea.width);
                             }
                         }
 
-                    }
-                    
-                    if (block != null) {
                         wall[block.id] = {
                             id: block.id,
                             x: x,
