@@ -62,7 +62,7 @@
             var blockId = runtime.lastId++ + '-' + runtime.totalGrid;
             
             //ignore dragging block;
-            if ($item.hasClass('fw-float')) return;
+            if ($item.hasClass('fw-float')) return null;
             $item.attr({id: blockId, 'data-delay': item.index});
 
             //remove animation for speed render;
@@ -395,6 +395,8 @@
                 runtime.gutterY = gutterY;
                 runtime.limitRow = 666666;
             }
+
+            runtime.keepOrder = setting.keepOrder;
         },
         resetGrid: function(runtime) {
             runtime.blocks = {};
@@ -589,7 +591,7 @@
                 fitWidth = col < row ? 1 : 0,
                 lastBlock = null,
                 smallLoop = Math.min(col, row);
-
+            
             // fill area with top, left, width, height;
             function fillMatrix(id, t, l, w, h) {
                 for (var y = t; y < t + h;) {
@@ -640,7 +642,7 @@
                     }
                     
                     // get the next block to keep order;
-                    if (setting.keepOrder) {
+                    if (runtime.keepOrder) {
                         block = items.shift();
                         block.resize = true;
                     } else {
@@ -755,6 +757,7 @@
 
         var setting = $.extend({}, layoutManager.defaultConfig);
         var runtime = {
+            arguments: null,
             blocks: {}, // store all items;
             events: {}, // store custome events;
             matrix: {},
@@ -765,7 +768,6 @@
             cellS: 1, // unit scale;
             
             filter: '', // filter selector;
-            
             lastId: 0,
             length: 0,
 
@@ -784,9 +786,9 @@
 
             limitCol: 666666, // maximum column; 
             limitRow: 666666,
-            
-            currentMethod: null,
-            currentArguments: []
+
+            sortFunc: null,
+            keepOrder: false
         };
         setting.runtime = runtime;
         runtime.totalGrid = layoutManager.totalGrid;
@@ -894,13 +896,18 @@
                 var block = null;
                 var activeBlock = [];
                 
-                if (runtime.currentMethod) {
+                if (runtime.arguments) {
+
+                    if ($.isFunction(runtime.sortFunc)) {
+                        allBlock.sort(runtime.sortFunc);
+                    }
+
                     allBlock.each(function(index, item) {
                         item.index = ++index;
                         block = layoutManager.loadBlock(item, setting);
                         block && activeBlock.push(block);
                     });
-                
+
                     engine[setting.engine](activeBlock, setting);
                     
                     layoutManager.setWallSize(runtime, container);
@@ -983,7 +990,9 @@
 
             filter: function(filter) {
                 runtime.filter = filter;
-                runtime.currentMethod && this.refresh();
+                if (runtime.arguments) {
+                    this.refresh();
+                }
                 return this;
             },
 
@@ -1005,8 +1014,7 @@
 
                 height = height ? height : container.height() || $W.height();
                 
-                runtime.currentMethod = arguments.callee;
-                runtime.currentArguments = arguments;
+                runtime.arguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit('auto', height, setting);
@@ -1016,6 +1024,10 @@
                     allBlock.filter(runtime.filter).data('active', 1);
                 } else {
                     allBlock.data('active', 1);
+                }
+
+                if ($.isFunction(runtime.sortFunc)) {
+                    allBlock.sort(runtime.sortFunc);
                 }
 
                 allBlock.each(function(index, item) {
@@ -1050,8 +1062,7 @@
 
                 width = width ? width : container.width() || $W.width();
 
-                runtime.currentMethod = arguments.callee;
-                runtime.currentArguments = arguments;
+                runtime.arguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit(width, 'auto', setting);
@@ -1063,6 +1074,10 @@
                     allBlock.data('active', 1);
                 }
                 
+                if ($.isFunction(runtime.sortFunc)) {
+                    allBlock.sort(runtime.sortFunc);
+                }
+
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
@@ -1071,7 +1086,7 @@
                 });
                 
                 klass.fireEvent('onGridReady', container, setting);
-                
+
                 engine[setting.engine](activeBlock, setting);
 
                 layoutManager.setWallSize(runtime, container);
@@ -1096,8 +1111,7 @@
                 height = height ? height : container.height() || $W.height();
                 width = width ? width : container.width() || $W.width();
                 
-                runtime.currentMethod = arguments.callee;
-                runtime.currentArguments = arguments;
+                runtime.arguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
                 layoutManager.adjustUnit(width, height, setting);
@@ -1109,6 +1123,10 @@
                     allBlock.data('active', 1);
                 }
                 
+                if ($.isFunction(runtime.sortFunc)) {
+                    allBlock.sort(runtime.sortFunc);
+                }
+
                 allBlock.each(function(index, item) {
                     var $item = $(item);
                     item.index = ++index;
@@ -1167,14 +1185,17 @@
 
             prepend: function(items) {
                 container.prepend(items);
-                runtime.currentMethod && this.refresh();
+                if (runtime.arguments) {
+                    this.refresh();
+                }
                 return this;
             },
 
             refresh: function() {
-                var params = arguments.length ? arguments : runtime.currentArguments;
-                runtime.currentMethod == null && (runtime.currentMethod = this.fitWidth);
-                runtime.currentMethod.apply(this, Array.prototype.slice.call(params, 0));
+                var params = arguments.length ? arguments : runtime.arguments;
+                var oldArg = runtime.arguments;
+                var method = oldArg ? oldArg.callee : this.fitWidth; 
+                method.apply(this, Array.prototype.slice.call(params, 0));
                 return this;
             },
 
@@ -1219,7 +1240,22 @@
                 }
                 return this;
             },
+            /*
+            sort items by using array sort function;
+            example:
 
+                wall.sortBy(function(itemA, itemB) {
+                    return $(itemA).width() - $(itemB).width();
+                });
+            */
+            sortBy: function(func) {
+                runtime.sortFunc = func;
+                if (runtime.arguments) {
+                    this.refresh();
+                }
+                return this;
+            },
+            
             unFilter: function() {
                 delete runtime.filter;
                 this.refresh();
