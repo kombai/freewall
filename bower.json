@@ -1,6 +1,6 @@
 {
   "name": "freewall",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts.",
   "homepage": "http://vnjs.net/www/project/freewall",
   "main": "freewall.js",

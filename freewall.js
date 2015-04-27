@@ -72,7 +72,7 @@
 
             isNaN(fixSize) && (fixSize = null);
             (fixSize == null) && (fixSize = setting.fixSize);
-            var makeRound = (fixSize >= 1) ? "ceil" : "round";
+            var makeRound = (fixSize == null) ? "round" : "ceil";
             // store original size;
            
             $item.attr('data-height') == null && $item.attr('data-height', $item.height());
