@@ -3,7 +3,7 @@
 // centering plugin;
 
 // to make grid center in container;
-freewall.createPlugin({
+Freewall.createPlugin({
 	centering: function(setting, container) {
 		var runtime = setting.runtime;
 		this.addCustomEvent("onGridArrange", function(setting) {

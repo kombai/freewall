@@ -165,7 +165,7 @@
   &lt;/div&gt;
   &lt;script&gt;
     $(function() {
-      var wall = new freewall("#container");
+      var wall = new Freewall("#container");
       wall.fitWidth();
     });
   &lt;/script&gt;
@@ -249,7 +249,7 @@
 								<h3> Example </h3>
 									<pre>
 										<code>
-var wall = new freewall('.free-wall');
+var wall = new Freewall('.free-wall');
 wall.reset({
   selector: '.brick',
   cellW: function(width) {
@@ -320,7 +320,7 @@ wall.reset({
 								<h3> Example </h3>
 								<pre>
 									<code>
-var wall = new freewall('.free-wall');
+var wall = new Freewall('.free-wall');
 wall.reset({
   selector: '.brick',
   animate: true,
@@ -395,7 +395,7 @@ wall.reset({
 								<h3> Example </h3>
 								<pre>
 									<code>
-var wall = new freewall('.free-wall');
+var wall = new Freewall('.free-wall');
 wall.reset({
   selector: '.brick',
   onResize: function() {
@@ -501,7 +501,7 @@ wall.reset({
 								<h5> Example </h5>
 								<pre>
 									<code>
-var wall = new freewall('.free-wall');
+var wall = new Freewall('.free-wall');
 var dna = $(".free-wall .flex-layout");
 wall.unsetFilter();
 wall.fixSize({
@@ -527,7 +527,7 @@ wall.fitWidth();
 								<h5> Example </h5>
 								<pre>
 									<code>
-var ewall = new freewall(demo);
+var ewall = new Freewall(demo);
 var demo = $(".example");
 ewall.reset({
   selector: '.cell',

@@ -288,7 +288,7 @@
             var block = runtime.blocks[item.id];
             
             if (block) {
-                innerWall = new freewall($item);
+                innerWall = new Freewall($item);
                 innerWall.reset({
                     cellH: cellH,
                     cellW: cellW,
@@ -744,7 +744,7 @@
 
 
 
-    window.freewall = function(selector) {
+    window.Freewall = function(selector) {
         
         var container = $(selector);
         if (container.css('position') == 'static') {
@@ -1287,11 +1287,11 @@
     add default setting;
     example:
 
-        freewall.addConfig({
+        Freewall.addConfig({
             offsetLeft: 0
         });
     */
-    freewall.addConfig = function(newConfig) {
+    Freewall.addConfig = function(newConfig) {
         // add default setting;
         $.extend(layoutManager.defaultConfig, newConfig);    
     };
@@ -1301,13 +1301,13 @@
     support create new arrange algorithm;
     example:
 
-        freewall.createEngine({
+        Freewall.createEngine({
             slice: function(items, setting) {
                 // slice engine;
             }
         });
     */
-    freewall.createEngine = function(engineData) {
+    Freewall.createEngine = function(engineData) {
         // create new engine;
         $.extend(engine, engineData);
     };
@@ -1316,14 +1316,14 @@
     support create new plugin;
     example:
         
-        freewall.createPlugin({
+        Freewall.createPlugin({
             centering: function(setting, container) {
                 console.log(this);
                 console.log(setting);
             }
         })l
     */
-    freewall.createPlugin = function(pluginData) {
+    Freewall.createPlugin = function(pluginData) {
         // register new plugin;
         $.extend(layoutManager.plugin, pluginData);
     };
@@ -1332,9 +1332,9 @@
     support access helper function;
     example:
 
-        freewall.getMethod('setBlock')(block, setting);
+        Freewall.getMethod('setBlock')(block, setting);
     */
-    freewall.getMethod = function(method) {
+    Freewall.getMethod = function(method) {
         // get helper method;
         return layoutManager[method];
     };
