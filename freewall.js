@@ -744,7 +744,7 @@
 
 
 
-    window.Freewall = function(selector) {
+    function Freewall(selector) {
         
         var container = $(selector);
         if (container.css('position') == 'static') {
@@ -1338,5 +1338,7 @@
         // get helper method;
         return layoutManager[method];
     };
+    
+    window.Freewall = window.freewall = Freewall;
  
 })(window.Zepto || window.jQuery);
