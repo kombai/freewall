@@ -72,7 +72,7 @@
 
             isNaN(fixSize) && (fixSize = null);
             (fixSize == null) && (fixSize = setting.fixSize);
-            var makeRound = (fixSize == null) ? "round" : "ceil";
+            var makeRound = (!fixSize) ? "round" : "ceil";
             // store original size;
            
             $item.attr('data-height') == null && $item.attr('data-height', $item.height());
@@ -1008,99 +1008,21 @@
             },
 
             fitHeight: function(height) {
-                var allBlock = container.find(setting.selector).removeAttr('id'),
-                    block = null,
-                    activeBlock = [];
 
-                height = height ? height : container.height() || $W.height();
+                var height = height ? height : container.height() || $W.height();
                 
+                this.fitZone('auto', height);
+
                 runtime.arguments = arguments;
-                
-                layoutManager.resetGrid(runtime);
-                layoutManager.adjustUnit('auto', height, setting);
-                
-                if (runtime.filter) {
-                    allBlock.data('active', 0);
-                    allBlock.filter(runtime.filter).data('active', 1);
-                } else {
-                    allBlock.data('active', 1);
-                }
-
-                if ($.isFunction(runtime.sortFunc)) {
-                    allBlock.sort(runtime.sortFunc);
-                }
-
-                allBlock.each(function(index, item) {
-                    var $item = $(item);
-                    item.index = ++index;
-                    block = layoutManager.loadBlock(item, setting);
-                    block && $item.data("active") && activeBlock.push(block);
-                });
-                
-                klass.fireEvent('onGridReady', container, setting);
-
-                engine[setting.engine](activeBlock, setting);
-                
-                layoutManager.setWallSize(runtime, container);
-
-                klass.fireEvent('onGridArrange', container, setting);
-
-                runtime.length = allBlock.length;
-
-                allBlock.each(function(index, item) {
-                    layoutManager.showBlock(item, setting);
-                    if (setting.draggable || item.getAttribute('data-draggable')) {
-                        setDraggable(item);
-                    }
-                });
             },
 
             fitWidth: function(width) {
-                var allBlock = container.find(setting.selector).removeAttr('id'),
-                    block = null,
-                    activeBlock = [];
 
-                width = width ? width : container.width() || $W.width();
+                var width = width ? width : container.width() || $W.width();
+                
+                this.fitZone(width, 'auto');
 
                 runtime.arguments = arguments;
-                
-                layoutManager.resetGrid(runtime);
-                layoutManager.adjustUnit(width, 'auto', setting);
-                
-                if (runtime.filter) {
-                    allBlock.data('active', 0);
-                    allBlock.filter(runtime.filter).data('active', 1);
-                } else {
-                    allBlock.data('active', 1);
-                }
-                
-                if ($.isFunction(runtime.sortFunc)) {
-                    allBlock.sort(runtime.sortFunc);
-                }
-
-                allBlock.each(function(index, item) {
-                    var $item = $(item);
-                    item.index = ++index;
-                    block = layoutManager.loadBlock(item, setting);
-                    block && $item.data("active") && activeBlock.push(block);
-                });
-                
-                klass.fireEvent('onGridReady', container, setting);
-
-                engine[setting.engine](activeBlock, setting);
-
-                layoutManager.setWallSize(runtime, container);
-                
-                klass.fireEvent('onGridArrange', container, setting);
-
-                runtime.length = allBlock.length;
-
-                allBlock.each(function(index, item) {
-                    layoutManager.showBlock(item, setting);
-                    if (setting.draggable || item.getAttribute('data-draggable')) {
-                        setDraggable(item);
-                    }
-                });
             },
 
             fitZone: function(width, height) {
@@ -1114,6 +1036,7 @@
                 runtime.arguments = arguments;
                 
                 layoutManager.resetGrid(runtime);
+                
                 layoutManager.adjustUnit(width, height, setting);
 
                 if (runtime.filter) {
