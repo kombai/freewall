@@ -1,24 +1,24 @@
 {
-  "name": "freewall",
-  "version": "1.0.5",
-  "description": "Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts.",
-  "homepage": "http://vnjs.net/www/project/freewall",
-  "main": "freewall.js",
-  "license": "MIT",
-  "author": {
-    "name": "Minh Nguyen",
-    "email": "mnx2012@gmail.com"
-  },
-  "dependencies": {
-    "jquery": ">= 1.7"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kombai/freewall.git"
-  },
-  "ignore": [
-    "example",
-    "i",
-    "*.html"
-  ]
+    "name": "freewall",
+    "version": "1.0.5",
+    "description": "Amazing grid layout.",
+    "homepage": "http://vnjs.net/www/project/freewall",
+    "main": "freewall.js",
+    "license": "MIT",
+    "author": {
+        "name": "Minh Nguyen",
+        "email": "mnx2012@gmail.com"
+    },
+    "dependencies": {
+        "jquery": ">= 1.7"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kombai/freewall.git"
+    },
+    "ignore": [
+        "example",
+        "i",
+        "*.html"
+    ]
 }

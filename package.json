@@ -11,7 +11,7 @@
         "type": "git",
         "url": "git://github.com/kombai/freewall.git"
     },
-    "main": "lib",
+    "main": "freewall.js",
     "homepage": "http://vnjs.net/www/project/freewall/",
     "dependencies": {
         "jQuery": "~1.7"
