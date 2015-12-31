@@ -32,12 +32,12 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 * [Fit container](http://vnjs.net/www/project/freewall/example/fit-zone.html)
 * [Vertical grid/layout](http://vnjs.net/www/project/freewall/)
 * [Horizontal grid/layout](http://vnjs.net/www/project/freewall/example/fit-height.html)
-* [Window 8 metro style](http://vnjs.net/www/project/freewall/example/metro-style.html)
+* [Window 10 style](http://vnjs.net/www/project/freewall/example/metro-style.html)
 * [Pinterest like grid/layout](http://vnjs.net/www/project/freewall/example/pinterest-layout.html)
 
 ## Supports
 Freewall supports almost browser
-* Chrome 
+* Chrome
 * Opera
 * Safari
 * IE 8.0+

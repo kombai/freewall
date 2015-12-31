@@ -14,14 +14,14 @@
 				margin: 0;
 				padding: 0;
 			}
-			
+
 			.layout {
 				padding: 15px;
 			}
-			
+
 			.free-wall {
 			}
-			
+
 			.filter-items {
 				padding: 10px 0px;
 			}
@@ -57,7 +57,7 @@
 					<h2>Fixed postion at</h2>
 					<p> top: 0 </p>
 					<p> left: 1</p>
-				</div>	
+				</div>
 			</div>
 			<div class="brick size22 equipo">1</div>
 			<div class="brick size12 equipo">2</div>
@@ -78,13 +78,13 @@
 				<div class='cover'>
 					<h2>LOGO</h2>
 					<p> test </p>
-				</div>	
+				</div>
 			</div>
 		</div>
 		</div>
 
 		<script type="text/javascript">
-			
+
 			$(function() {
 				var wall = new Freewall("#freewall");
 				wall.reset({
@@ -98,7 +98,7 @@
 						wall.refresh();
 					}
 				});
-                
+
 				wall.filter("");
 				$(".filter-label").click(function() {
 					$(".filter-label").removeClass("active");
@@ -111,7 +111,7 @@
 				});
 
 				wall.fitWidth();
-                
+
 			});
 		</script>
 	</body>

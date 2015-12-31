@@ -3,9 +3,9 @@
 // demo for freewall layout;
 // created by Minh Nguyen;
 (function($) {
-	
+
 	var setting = {}, wall;
-	
+
 	var colour = [
 		"#16A085",
 		"#27AE60",
@@ -43,7 +43,7 @@
 		layout: function() {
 			var lwidth = $(window).width();
 			wall = new Freewall('.free-wall');
-			
+
 			wall.reset({
 				selector: '> div',
 				animate: true,
@@ -84,7 +84,7 @@
 			$(".reponsive-block li>a").click(function() {
 				var viewWidth = $(window).width();
 				var preWidth = $(this).data("width");
-				
+
 				if (preWidth != "auto" && (preWidth - viewWidth) > 0) {
 					alert('The screen\'s width not enought to test this size');
 					return;
@@ -132,7 +132,7 @@
 
 						$item.removeAttr("data-width");
 						$item.removeAttr("data-height");
-						
+
 						$item.attr({
 							"class": $item.attr("data-class")
 						});
@@ -141,7 +141,7 @@
 							backgroundColor: $item.attr("data-bgcolor")
 						});
 					});
-					
+
 					wall.unFilter();
 					$(".back-button").hide();
 					$(".free-wall-logo").show();
@@ -453,7 +453,7 @@
 				leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
 				topPosition = (window.screen.height / 2) - ((height / 2) + 50);
 			var windowFeatures = "status=no, height=" + height + ", width=" + width + ", resizable=yes, left=" + leftPosition + ", top=" + topPosition + ", screenX=" + leftPosition + ", screenY=" + topPosition + ", toolbar=no, menubar=no, scrollbars=no, location=no, directories=no";
-			
+
 			$(".free-wall .facebook-share").click(function() {
 				window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(location.href), 'sharer', windowFeatures);
 			});
@@ -471,10 +471,10 @@
 				$(window.location.hash).trigger("click");
 				$('.back-button').show();
 				$(".free-wall-logo").hide();
-			} 
+			}
 		}
 	};
-	
+
 	window.app = {
 		config: function(key, data) {
 			setting[key] = data;

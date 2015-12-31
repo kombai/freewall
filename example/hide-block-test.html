@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="../freewall.js"></script>
-		
+
 		<style type="text/css">
 			html, body {
 				margin: 0;
@@ -21,7 +21,7 @@
 		</style>
 	</head>
 	<body>
-		
+
 		<div id="freewall" class="free-wall"></div>
 
 		<script type="text/javascript">
@@ -37,7 +37,7 @@
 				html += temp.replace(/\{height\}/g, h*20).replace(/\{width\}/g, w*15).replace("{color}", color);
 			}
 			wall.container.html(html);
-			
+
 			$(function() {
 				var start = new Date().getTime();
 				wall.reset({

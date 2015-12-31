@@ -29,9 +29,9 @@
 			</div>
 		</div>
 		<div id="freewall" class="free-wall"></div>
-		
+
 		<script type="text/javascript">
-			
+
 			var temp = "<div class='brick' style='width:{width}px;'><img src='i/photo/{index}.jpg' width='100%'></div>";
 			var w = 1, h = 1, html = '', limitItem = 49;
 			for (var i = 0; i < limitItem; ++i) {
@@ -39,7 +39,7 @@
 				html += temp.replace(/\{width\}/g, w*150).replace("{index}", i + 1);
 			}
 			$("#freewall").html(html);
-			
+
 			var wall = new Freewall("#freewall");
 			wall.reset({
 				selector: '.brick',

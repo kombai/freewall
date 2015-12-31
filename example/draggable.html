@@ -55,7 +55,7 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-			
+
 			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-color: {color}'><div class='cover'>Demo draggable</div></div>";
 			var colour = [
 				"rgb(243, 156, 18)",
@@ -75,8 +75,8 @@
 				html = temp.replace(/\{height\}/g, h*150).replace(/\{width\}/g, w*150).replace("{color}", color);
 				$("#freewall").append(html);
 			}
-			
-			
+
+
 			var wall = new Freewall("#freewall");
 			wall.reset({
 				draggable: true,

@@ -60,7 +60,7 @@
                 cacheSize: false,
                 onResize: function (container) {
                     var containerWidth = container.width();
-                    
+
                     if (containerWidth > 1024) {
                         container.attr("class", "for6col");
                     } else if (containerWidth > 768) {
@@ -68,7 +68,7 @@
                     } else {
                         container.attr("class", "for2col");
                     }
-                    
+
                     wall.fitWidth();
 
                     document.title = containerWidth;
@@ -76,7 +76,7 @@
             });
 
             wall.fitWidth();
-            
+
             wall.container.find('.block img').load(function () {
                 $(window).trigger("resize");
             });

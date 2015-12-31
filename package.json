@@ -1,21 +1,19 @@
 {
-  "name": "freewall",
-  "version": "1.0.5",
-  "description": "Amazing grid layout.",
-  "author": "Minh Nguyen",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/kombai/freewall/blob/master/license.md"
+    "name": "freewall",
+    "version": "1.0.5",
+    "description": "Amazing grid layout.",
+    "author": "Minh Nguyen",
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/kombai/freewall/blob/master/license.md"
+    }],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/kombai/freewall.git"
+    },
+    "main": "lib",
+    "homepage": "http://vnjs.net/www/project/freewall/",
+    "dependencies": {
+        "jQuery": "~1.7"
     }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/kombai/freewall.git"
-  },
-  "main": "lib",
-  "homepage": "http://vnjs.net/www/project/freewall/",
-  "dependencies": {
-    "jQuery": "~1.7"
-  }
 }

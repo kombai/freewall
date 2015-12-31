@@ -20,8 +20,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -31,7 +31,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -105,15 +105,15 @@ table {
 	padding: 14px 0;
 	background-color: rgb(19, 17, 17);
 	background-color: #006a3f;
-	background-image:	
-					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+	background-image:
+					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%),
+					radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%),
+					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
 					radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-	background-image:	
-					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%), 
-					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), 
+	background-image:
+					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%),
+					-webkit-radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%),
+					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
 					-webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
     background-position: 0 0px, 4px 4px, 0 1px, 4px 5px;
     background-size: 8px 8px;
@@ -155,61 +155,61 @@ table {
 	margin: 0 5px;
 	cursor: pointer;
 	background: url(../i/reponsive.png) no-repeat;
-}	
+}
 
 .header .reponsive-block a.desktop {
 	background-position: 3px 0;
 	width: 34px; height: 26px;
-}	
+}
 
 .header .reponsive-block a.tablet-landscape {
 	background-position: -49px 0;
 	width: 22px;
 	height: 22px;
-}	
+}
 
 .header .reponsive-block a.tablet-portrait {
 	background-position: -90px 0;
 	width: 18px;
 	height: 24px;
-}	
+}
 
 .header .reponsive-block a.iphone-landscape {
 	background-position: -129px 0;
 	width: 20px;
 	height: 20px;
-}	
+}
 
 .header .reponsive-block a.iphone-portrait {
 	background-position: -166px 0;
 	width: 16px;
 	height: 26px;
-}	
+}
 
 .header .reponsive-block a.desktop:hover,
 .header .reponsive-block a.desktop.active {
 	background-position: 3px -34px;
-}	
+}
 
 .header .reponsive-block a.tablet-landscape:hover,
 .header .reponsive-block a.tablet-landscape.active {
 	background-position: -49px -34px;
-}	
+}
 
 .header .reponsive-block a.tablet-portrait:hover,
 .header .reponsive-block a.tablet-portrait.active {
 	background-position: -91px -33px;
-}	
+}
 
 .header .reponsive-block a.iphone-landscape:hover,
 .header .reponsive-block a.iphone-landscape.active {
 	background-position: -128px -33px;
-}	
+}
 
 .header .reponsive-block a.iphone-portrait:hover,
 .header .reponsive-block a.iphone-portrait.active {
 	background-position: -166px -33px;
-}	
+}
 .free-wall {
 	margin: auto;
 }
@@ -322,7 +322,7 @@ table {
 	float: left;
 	width: 25%;
 	text-align: center;
-}	
+}
 
 .img-demo li img {
 	border: 2px solid white;
@@ -428,7 +428,7 @@ table {
 	background: none !important;
 }
 
-.full-width.brick .cover { 
+.full-width.brick .cover {
 	margin: 0px 20px;
 	color: #333;
 }
