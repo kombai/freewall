@@ -1,6 +1,6 @@
 {
     "name": "freewall",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Amazing grid layout.",
     "homepage": "http://vnjs.net/www/project/freewall",
     "main": "freewall.js",

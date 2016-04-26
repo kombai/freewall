@@ -1,5 +1,5 @@
 // created by Minh Nguyen;
-// version 1.05;
+// version 1.0.6;
 
 (function($) {
 
