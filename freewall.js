@@ -22,7 +22,7 @@
             cellW: 100, // function(container) {return 100;}
             cellH: 100, // function(container) {return 100;}
             delay: 0, // slowdown active block;
-            engine: 'giot', // 'giot' is a person name;
+            engine: 'giot',
             fixSize: null, // resize + adjust = fill gap;
             //fixSize: 0, resize but keep ratio = no fill gap;
             //fixSize: 1, no resize + no adjust = no fill gap;
@@ -229,6 +229,8 @@
                     self.setTransition(item, trans);
                 }
 
+                runtime.length -= 1;
+
                 // for hidden block;
                 if (!block) {
                     //var position = $item.position(); <= make speed so slow;
@@ -266,11 +268,14 @@
                     }
                 }
 
-                runtime.length -= 1;
-
                 setting.onBlockFinish.call(item, block, setting);
 
-                runtime.length == 0 && setting.onComplete.call(item, block, setting);
+                if (runtime.length == 0) {
+                    var duration = setting.animate ? 500 : 0;
+                    item.delay = setTimeout(function() {
+                        setting.onComplete.call(item, block, setting);
+                    }, duration);
+                }
             }
 
             block && block.resize && setting.onBlockResize.call(item, block, setting);
