@@ -206,11 +206,12 @@
         showBlock: function(item, setting) {
             var runtime = setting.runtime;
             var method = setting.animate && !this.transition ? 'animate' : 'css';
+            var time = typeof setting.animate == 'string' || typeof setting.animate == 'number' ? setting.animate : 0.5
             var block = runtime.blocks[item.id];
             var $item = $(item);
             var self = this;
             var start = $item.attr("data-state") != "move";
-            var trans = start ? "width 0.5s, height 0.5s" : "top 0.5s, left 0.5s, width 0.5s, height 0.5s, opacity 0.5s";
+            var trans = start ? "width "+time+"s, height "+time+"s": "top "+time+"s, left "+time+"s, width "+time+"s, height "+time+"s, opacity "+time+"s";
 
             item.delay && clearTimeout(item.delay);
             //ignore dragging block;
