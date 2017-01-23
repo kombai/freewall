@@ -4,7 +4,9 @@
 _Freewall is a cross-browser and responsive jQuery plugin to help you create many types of grid layouts: flexible layouts, images layouts, nested grid layouts, metro style layouts, pinterest like layouts ... with nice CSS3 animation effects and call back events. Freewall is all-in-one solution for creating dynamic grid layouts for desktop, mobile, and tablet..._
 ##### [Buy me a beer :)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SZSGB3GJ3T4VU)
 <br>
-### Document [http://vnjs.net/www/project/freewall/](http://vnjs.net/www/project/freewall/)
+### Document:
+Please download this project then open the index.html
+The sample code in the: example folder.
 ##### Some example layouts
 <br>
 <img src='https://raw.github.com/kombai/freewall/master/i/flex.png'>
