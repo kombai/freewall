@@ -5,8 +5,9 @@ _Freewall is a cross-browser and responsive jQuery plugin to help you create man
 ##### [Buy me a beer :)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SZSGB3GJ3T4VU)
 <br>
 ### Document:
-Please download this project then open the index.html
-The sample code in the: example folder.
+Please download this project then open the **index.html**
+<br>
+The sample code in the: *example* folder.
 ##### Some example layouts
 <br>
 <img src='https://raw.github.com/kombai/freewall/master/i/flex.png'>
