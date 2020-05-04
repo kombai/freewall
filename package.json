@@ -14,6 +14,6 @@
     "main": "freewall.js",
     "homepage": "http://vnjs.net/www/project/freewall/",
     "dependencies": {
-        "jQuery": "~1.7"
+        "jquery": ">=3.5.0"
     }
 }
